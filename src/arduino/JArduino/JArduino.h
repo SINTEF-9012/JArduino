@@ -54,7 +54,7 @@
 #define DigitalPin_PIN_10 10
 #define DigitalPin_PIN_11 11
 #define DigitalPin_PIN_12 12
-#define DigitalPin_PIN_13 12
+#define DigitalPin_PIN_13 13
 #define DigitalPin_A_0 14
 #define DigitalPin_A_1 15
 #define DigitalPin_A_2 16

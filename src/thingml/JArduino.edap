@@ -63,7 +63,7 @@ enumeration DigitalPin
 	PIN_10 @enum_val "10"
 	PIN_11 @enum_val "11"
 	PIN_12 @enum_val "12"
-	PIN_13 @enum_val "12"
+	PIN_13 @enum_val "13"
 	A_0 @enum_val "14"
 	A_1 @enum_val "15"
 	A_2 @enum_val "16"

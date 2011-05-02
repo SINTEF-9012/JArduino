@@ -34,7 +34,7 @@ public enum DigitalPin {
 	PIN_10((byte)10),
 	PIN_11((byte)11),
 	PIN_12((byte)12),
-	PIN_13((byte)12),
+	PIN_13((byte)13),
 	A_0((byte)14),
 	A_1((byte)15),
 	A_2((byte)16),
@@ -69,7 +69,7 @@ public enum DigitalPin {
 		map.put((byte)10, DigitalPin.PIN_10);
 		map.put((byte)11, DigitalPin.PIN_11);
 		map.put((byte)12, DigitalPin.PIN_12);
-		map.put((byte)12, DigitalPin.PIN_13);
+		map.put((byte)13, DigitalPin.PIN_13);
 		map.put((byte)14, DigitalPin.A_0);
 		map.put((byte)15, DigitalPin.A_1);
 		map.put((byte)16, DigitalPin.A_2);
