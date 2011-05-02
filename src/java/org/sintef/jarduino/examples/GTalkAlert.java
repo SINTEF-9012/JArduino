@@ -17,11 +17,14 @@
  */
 package org.sintef.jarduino.examples;
 
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import org.sintef.jarduino.DigitalPin;
 import org.sintef.jarduino.DigitalState;
+import org.sintef.jarduino.InterruptPin;
+import org.sintef.jarduino.InterruptTrigger;
 import org.sintef.jarduino.JArduino;
 import org.sintef.jarduino.PinMode;
 
@@ -44,37 +47,53 @@ import com.voiceclearly.api.model.Call;
 public class GTalkAlert extends JArduino implements CallListener{
 
 	private DigitalPin led;
-	
+	private InterruptPin button;
+
 	private String gmailUser;
+	private String gmailReceivingUser;
 	private String gmailPassword;
 	private Timer timer;
+
+	private VoiceClearlyService service;
 
 	public GTalkAlert(String port) {
 		super(port);
 	}
-	
-	public GTalkAlert(String port, String user, String pwd, DigitalPin led){
+
+	public GTalkAlert(String port, String user, String pwd, String receivingUser, DigitalPin led, InterruptPin button){
 		this(port);
 		this.led = led;
+		this.button = button;
 		this.timer = new Timer();
 		this.gmailUser = user;
+		this.gmailReceivingUser = receivingUser;
 		this.gmailPassword = pwd;
 		//Initialize the VoiceClearly Service with the listener
-        VoiceClearlyService service = new VoiceClearlyService(this);
+		service = new VoiceClearlyService(this);
 
-        //Login with Google Talk credentials
-        service.login(gmailUser,gmailPassword);
+		//Login with Google Talk credentials
+		service.login(gmailUser,gmailPassword);
 	}
-	
+
 	public void turnOffLED() {
 		digitalWrite(led, DigitalState.LOW);
 		System.out.println("Hopefully, the LED should now be turned OFF");
 	}
-	
+
 	@Override
 	protected void setup() {
 		//Connect Pin9 on a LED
 		pinMode(led, PinMode.OUTPUT);
+		attachInterrupt(button, InterruptTrigger.RISING);
+	}
+
+	@Override
+	protected void receiveinterruptNotification(InterruptPin interrupt) {
+		super.receiveinterruptNotification(interrupt);
+		if (interrupt.getValue() == button.getValue()){
+			service.sendIM(gmailReceivingUser, "buttonPush: "+new Date(System.currentTimeMillis()));
+			System.out.println("An IM has hopefully be sent to "+gmailReceivingUser);
+		}
 	}
 
 	@Override
@@ -85,51 +104,57 @@ public class GTalkAlert extends JArduino implements CallListener{
 
 		GTalkAlert gTalk;
 
-        public Timeout(GTalkAlert gTalk) {
-            this.gTalk = gTalk;
-        }
-        
+		public Timeout(GTalkAlert gTalk) {
+			this.gTalk = gTalk;
+		}
+
 		@Override
 		public void run() {
 			gTalk.turnOffLED();
 		}
 	}	
-	
-    public void incomingCall(Call call) {
-    }
 
-    public void callAnswered(Call call) {
-    }
+	public void incomingCall(Call call) {
+	}
 
-    public void callDeclined(Call call, String reason) {
-    }
+	public void callAnswered(Call call) {
+	}
 
-    public void callDisconnected(Call call, String reason) {
-    }
+	public void callDeclined(Call call, String reason) {
+	}
 
-    public void incomingIm(Chat chat, Message message) {
-        digitalWrite(led, DigitalState.HIGH);
-        System.out.println("Hopefully, the LED should now be turned ON");
-		timer.schedule(new Timeout(this), 10000);
-    }
+	public void callDisconnected(Call call, String reason) {
+	}
 
-    /**
-     * Please set the serial port with the proper port,
-     * the credentials of your Google Account, as well as the PIN 
-     * where your LED is connected on your Arduino board.
-     * Disclaimer: We are not responsible for any troubles with your google account. 
-     * The connection to your Google account is entirely delegated to the
-     * VoiceClearly APIs: http://voiceclearly.com/googleTalkVoiceClearly.jsp
-     */
-    public static void main(String[] args)
-    {   
-    	String userName = "first.last@gmail.com";
-    	String password = "mySecretPassword";
-    	String serialPort = "COM9";
-    	
-    	DigitalPin led = DigitalPin.PIN_12;
-    	
-        JArduino arduino = new GTalkAlert(serialPort, userName, password, led);
+	public void incomingIm(Chat chat, Message message) {
+		if(!chat.getParticipant().equals(gmailUser)){
+			digitalWrite(led, DigitalState.HIGH);
+			System.out.println("Hopefully, the LED should now be turned ON");
+			timer.schedule(new Timeout(this), 10000);
+		}
+	}
+
+	/**
+	 * Please set the serial port with the proper port,
+	 * the credentials of your Google Account + another other of GTalk 
+	 * as well as 
+	 * 		the digital PIN where the LED is connected
+	 * 		the interrupt PIN where the button is connected 
+	 * Disclaimer: We are not responsible for any troubles with your google account. 
+	 * The connection to your Google account is entirely delegated to the
+	 * VoiceClearly APIs: http://voiceclearly.com/googleTalkVoiceClearly.jsp
+	 */
+	public static void main(String[] args)
+	{   
+		String receivingUserName = "first.last@gmail.com";//This guy will receive an IM each time the button is pushed...
+		String userName = "first.last@gmail.com";//Your account
+		String password = "mySecretPassword";//Your account
+		String serialPort = "COM8";
+
+		DigitalPin led = DigitalPin.PIN_12;
+		InterruptPin button = InterruptPin.PIN_2_INT0;
+
+		JArduino arduino = new GTalkAlert(serialPort, userName, password, receivingUserName, led, button);
 		arduino.runArduinoProcess();
-    }
+	}
 }
