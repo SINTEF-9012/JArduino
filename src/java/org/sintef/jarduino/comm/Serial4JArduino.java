@@ -29,6 +29,7 @@ import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -52,6 +53,7 @@ public class Serial4JArduino implements JArduinoClientObserver, JArduinoSubject 
 	
 	void connect ( String portName )
     {
+		registerPort(portName);
         try {
 			CommPortIdentifier portIdentifier = CommPortIdentifier.getPortIdentifier(portName);
 			if ( portIdentifier.isCurrentlyOwned() )
@@ -246,6 +248,28 @@ public class Serial4JArduino implements JArduinoClientObserver, JArduinoSubject 
         return h;
     }
 	
+    public static void registerPort(String port) {
+        String prop = System.getProperty("gnu.io.rxtx.SerialPorts");
+        if (prop == null) {
+            prop = "";
+        }
+        if (!prop.contains(port)) {
+            prop += port + File.pathSeparator;
+            System.setProperty("gnu.io.rxtx.SerialPorts", prop);
+        }
+        //System.out.println("gnu.io.rxtx.SerialPorts = " + prop);
+
+        prop = System.getProperty("javax.comm.rxtx.SerialPorts");
+        if (prop == null) {
+            prop = "";
+        }
+        if (!prop.contains(port)) {
+            prop += port + File.pathSeparator;
+            System.setProperty("javax.comm.rxtx.SerialPorts", prop);
+        }
+        //System.out.println("javax.comm.rxtx.SerialPorts = " + prop);
+    }
+    
 	/* ***********************************************************************
 	 * Main
 	 *************************************************************************/
