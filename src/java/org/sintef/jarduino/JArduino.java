@@ -20,11 +20,12 @@ package org.sintef.jarduino;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import org.sintef.jarduino.AbstractJArduino;
-import org.sintef.jarduino.InterruptPin;
+import org.sintef.jarduino.msg.*;
+import org.sintef.jarduino.comm.*;
+import org.sintef.jarduino.observer.*;
 
-public abstract class JArduino extends AbstractJArduino {
-	
+public abstract class JArduino extends AbstractJArduino{
+
 	ExecutorService interruptRoutineExecutor = Executors.newSingleThreadExecutor();
 	
 	@Override
