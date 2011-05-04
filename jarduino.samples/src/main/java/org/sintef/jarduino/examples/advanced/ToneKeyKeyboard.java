@@ -112,6 +112,7 @@ public class ToneKeyKeyboard extends JArduino{
 			//play the newly acquired tone on the ordain board
 			tone(pin, (short) tone, (short)0);
 			//create a new timeout that will end the tone after 1,3 seconds
+                        timer.cancel();
 			timer.schedule(new Timeout(), 1300);
 		}
 	}
