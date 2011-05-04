@@ -1,9 +1,5 @@
 package org.sintef.jarduino.examples.digital;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.sintef.jarduino.AnalogPin;
 
 public interface Pitches {
 	/*************************************************

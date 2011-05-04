@@ -21,7 +21,6 @@ import org.sintef.jarduino.AnalogPin;
 import org.sintef.jarduino.DigitalPin;
 import org.sintef.jarduino.DigitalState;
 import org.sintef.jarduino.JArduino;
-import org.sintef.jarduino.PWMPin;
 import org.sintef.jarduino.PinMode;
 
 public class AnalogInput extends JArduino {

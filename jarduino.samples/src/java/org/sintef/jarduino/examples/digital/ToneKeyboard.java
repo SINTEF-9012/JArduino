@@ -18,7 +18,6 @@
 package org.sintef.jarduino.examples.digital;
 
 import org.sintef.jarduino.AnalogPin;
-import org.sintef.jarduino.AnalogReference;
 import org.sintef.jarduino.DigitalPin;
 import org.sintef.jarduino.JArduino;
 

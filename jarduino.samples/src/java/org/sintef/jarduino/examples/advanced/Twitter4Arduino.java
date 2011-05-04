@@ -26,12 +26,6 @@ import org.sintef.jarduino.DigitalState;
 import org.sintef.jarduino.JArduino;
 import org.sintef.jarduino.PinMode;
 
-/**
- * The libraries located in lib/twitter4j are property of Twitter4j:
- * Copyright 2007 Yusuke Yamamoto
- * Please visit http://twitter4j.org/en/index.html#license
- * before reusing these libraries into your application.
- */
 import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -84,7 +78,7 @@ public class Twitter4Arduino extends JArduino{
 
 	@Override
 	protected void loop() {
-		List statuses;
+		List<Status> statuses;
 		try {
 			//Get status updates from your tweet feed
 			statuses = twitter.getFriendsTimeline();

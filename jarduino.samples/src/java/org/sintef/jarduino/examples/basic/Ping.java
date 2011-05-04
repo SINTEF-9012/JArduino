@@ -17,10 +17,7 @@
  */
 package org.sintef.jarduino.examples.basic;
 
-import org.sintef.jarduino.DigitalPin;
-import org.sintef.jarduino.DigitalState;
 import org.sintef.jarduino.JArduino;
-import org.sintef.jarduino.PinMode;
 /*
 This example pings the arduino and outputs its response time
 */
