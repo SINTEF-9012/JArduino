@@ -1,0 +1,36 @@
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.sintef.jarduino</groupId>
+    <artifactId>org.sintef.jarduino</artifactId>
+    <packaging>pom</packaging>
+    <version>0.1.4</version>
+    <name>org.sintef.jarduino</name>
+
+    <distributionManagement>
+        <repository>
+            <id>maven.kevoree.org-releases</id>
+            <name>maven.kevoree.org-releases</name>
+            <url>http://maven.kevoree.org/libs-release-local</url>
+        </repository>
+    </distributionManagement>
+
+    <modules>
+        <module>jarduino.core</module>
+        <module>jarduino.samples</module>
+    </modules>
+    
+    <properties>
+        <jarduino.version>${project.version}</jarduino.version>
+    </properties>
+    
+    <repositories>
+        <repository>
+            <id>kevoree-libs-release-local</id>
+            <url>http://maven.kevoree.org/release</url>
+        </repository>
+    </repositories>
+    
+</project>
