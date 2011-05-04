@@ -37,13 +37,15 @@ public class ToneKeyKeyboard extends JArduino{
 	private JPanel contentPane;
 	private JTextField textField;
 	//Connect your pieze element to digital pin 8
-	private DigitalPin pin = DigitalPin.PIN_8;
+	private DigitalPin pin = DigitalPin.A_0;
 	private Timer timer;
 	private JFrame frame;
 	
 	
 	public ToneKeyKeyboard(String port) {
 		super(port);
+		timer = new Timer();
+		
 		//Initialize a key listener
 		this.keyPressed = new KeyPressed();
 		
@@ -83,7 +85,7 @@ public class ToneKeyKeyboard extends JArduino{
 	//Starts the application
 	//Remember to set the correct com port
 	public static void main(String[] args){
-		JArduino arduino = new ToneKeyKeyboard("COM6");
+		JArduino arduino = new ToneKeyKeyboard("COM8");
 		arduino.runArduinoProcess();
 	}
 	
@@ -102,8 +104,6 @@ public class ToneKeyKeyboard extends JArduino{
 
 		@Override
 		public void keyTyped(KeyEvent arg0) {
-			//release the timer thread so the garbage collector will have something to do
-			timer = null;
 			//get the key value
 			int tone = arg0.getKeyChar();
 			//map the value to a tone
@@ -111,8 +111,7 @@ public class ToneKeyKeyboard extends JArduino{
 			System.out.println(tone);
 			//play the newly acquired tone on the ordain board
 			tone(pin, (short) tone, (short)0);
-			//create a new timer that will end the tone after 1,3 seconds
-			timer = new Timer();
+			//create a new timeout that will end the tone after 1,3 seconds
 			timer.schedule(new Timeout(), 1300);
 		}
 	}
