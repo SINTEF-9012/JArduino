@@ -23,6 +23,7 @@ import org.sintef.jarduino.sim.InteractiveJArduinoDataControllerClient;
 public class JArduinoGUI {
  
 public static void main(String[] args) {
+
 	Serial4JArduino device = null;
 	try {
 		// TODO: Change this with the actual port of your arduino
