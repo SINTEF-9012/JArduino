@@ -35,57 +35,57 @@ public abstract class AbstractJArduino {
 	//*************************************************************************
 	// Asynchronous remote calls. No expected result or ack. "Send and forget" 
 	//*************************************************************************
-	public void pinMode(DigitalPin pin, PinMode mode) {
+	public void pinMode(EDigitalPin pin, EPinMode mode) {
 		// Create message using the factory
-		FixedSizePacket p = JArduinoProtocol.createpinMode(pin, mode);
+		FixedSizePacket p = JArduinoProtocol.createPinMode(pin, mode);
 		// Send the message on the serial line
 		serial.receiveMsg(p.getPacket());
 	}
-	public void digitalWrite(DigitalPin pin, DigitalState value) {
+	public void digitalWrite(EDigitalPin pin, EDigitalState value) {
 		// Create message using the factory
-		FixedSizePacket p = JArduinoProtocol.createdigitalWrite(pin, value);
+		FixedSizePacket p = JArduinoProtocol.createDigitalWrite(pin, value);
 		// Send the message on the serial line
 		serial.receiveMsg(p.getPacket());
 	}
-	public void analogReference(AnalogReference type) {
+	public void analogReference(EAnalogReference type) {
 		// Create message using the factory
-		FixedSizePacket p = JArduinoProtocol.createanalogReference(type);
+		FixedSizePacket p = JArduinoProtocol.createAnalogReference(type);
 		// Send the message on the serial line
 		serial.receiveMsg(p.getPacket());
 	}
-	public void analogWrite(PWMPin pin, byte value) {
+	public void analogWrite(EPWMPin pin, byte value) {
 		// Create message using the factory
-		FixedSizePacket p = JArduinoProtocol.createanalogWrite(pin, value);
+		FixedSizePacket p = JArduinoProtocol.createAnalogWrite(pin, value);
 		// Send the message on the serial line
 		serial.receiveMsg(p.getPacket());
 	}
-	public void tone(DigitalPin pin, short frequency, short duration) {
+	public void tone(EDigitalPin pin, short frequency, short duration) {
 		// Create message using the factory
-		FixedSizePacket p = JArduinoProtocol.createtone(pin, frequency, duration);
+		FixedSizePacket p = JArduinoProtocol.createTone(pin, frequency, duration);
 		// Send the message on the serial line
 		serial.receiveMsg(p.getPacket());
 	}
-	public void noTone(DigitalPin pin) {
+	public void noTone(EDigitalPin pin) {
 		// Create message using the factory
-		FixedSizePacket p = JArduinoProtocol.createnoTone(pin);
+		FixedSizePacket p = JArduinoProtocol.createNoTone(pin);
 		// Send the message on the serial line
 		serial.receiveMsg(p.getPacket());
 	}
-	public void attachInterrupt(InterruptPin interrupt, InterruptTrigger mode) {
+	public void attachInterrupt(EInterruptPin interrupt, EInterruptTrigger mode) {
 		// Create message using the factory
-		FixedSizePacket p = JArduinoProtocol.createattachInterrupt(interrupt, mode);
+		FixedSizePacket p = JArduinoProtocol.createAttachInterrupt(interrupt, mode);
 		// Send the message on the serial line
 		serial.receiveMsg(p.getPacket());
 	}
-	public void detachInterrupt(InterruptPin interrupt) {
+	public void detachInterrupt(EInterruptPin interrupt) {
 		// Create message using the factory
-		FixedSizePacket p = JArduinoProtocol.createdetachInterrupt(interrupt);
+		FixedSizePacket p = JArduinoProtocol.createDetachInterrupt(interrupt);
 		// Send the message on the serial line
 		serial.receiveMsg(p.getPacket());
 	}
 	public void eeprom_write(short address, byte value) {
 		// Create message using the factory
-		FixedSizePacket p = JArduinoProtocol.createeeprom_write(address, value);
+		FixedSizePacket p = JArduinoProtocol.createEeprom_write(address, value);
 		// Send the message on the serial line
 		serial.receiveMsg(p.getPacket());
 	}
@@ -94,11 +94,11 @@ public abstract class AbstractJArduino {
 	// Synchronous remote calls. Wait for the ack and return true if it comes
 	//*************************************************************************
 	private boolean ping_ack_available;
-	private Object pingMonitor = "pingMonitor";
+	private final Object pingMonitor = "pingMonitor";
 	public boolean ping() {
 		ping_ack_available = false;
 		// Create message using the factory
-		FixedSizePacket p = JArduinoProtocol.createping();
+		FixedSizePacket p = JArduinoProtocol.createPing();
 		// Create message using the factory
 		serial.receiveMsg(p.getPacket());
 		try {
@@ -112,11 +112,11 @@ public abstract class AbstractJArduino {
 		else return false;
 	}
 	private boolean eeprom_sync_write_ack_available;
-	private Object eeprom_sync_writeMonitor = "eeprom_sync_writeMonitor";
+	private final Object eeprom_sync_writeMonitor = "eeprom_sync_writeMonitor";
 	public boolean eeprom_sync_write(short address, byte value) {
 		eeprom_sync_write_ack_available = false;
 		// Create message using the factory
-		FixedSizePacket p = JArduinoProtocol.createeeprom_sync_write(address, value);
+		FixedSizePacket p = JArduinoProtocol.createEeprom_sync_write(address, value);
 		// Create message using the factory
 		serial.receiveMsg(p.getPacket());
 		try {
@@ -133,15 +133,15 @@ public abstract class AbstractJArduino {
 	//*************************************************************************
 	// Synchronous remote calls with result
 	//*************************************************************************
-	private DigitalState digitalRead_result;
+	private EDigitalState digitalRead_result;
 	private boolean digitalRead_result_available;
-	private Object digitalReadMonitor = "digitalReadMonitor";
-	public DigitalState digitalRead(DigitalPin pin) {
+	private final Object digitalReadMonitor = "digitalReadMonitor";
+	public EDigitalState digitalRead(EDigitalPin pin) {
 		try {
 			synchronized(digitalReadMonitor) {
 				digitalRead_result_available = false;
 				// Create message using the factory
-				FixedSizePacket p = JArduinoProtocol.createdigitalRead(pin);
+				FixedSizePacket p = JArduinoProtocol.createDigitalRead(pin);
 				// Create message using the factory
 				serial.receiveMsg(p.getPacket());
 				digitalReadMonitor.wait(500);
@@ -159,13 +159,13 @@ public abstract class AbstractJArduino {
 	}
 	private short analogRead_result;
 	private boolean analogRead_result_available;
-	private Object analogReadMonitor = "analogReadMonitor";
-	public short analogRead(AnalogPin pin) {
+	private final Object analogReadMonitor = "analogReadMonitor";
+	public short analogRead(EAnalogPin pin) {
 		try {
 			synchronized(analogReadMonitor) {
 				analogRead_result_available = false;
 				// Create message using the factory
-				FixedSizePacket p = JArduinoProtocol.createanalogRead(pin);
+				FixedSizePacket p = JArduinoProtocol.createAnalogRead(pin);
 				// Create message using the factory
 				serial.receiveMsg(p.getPacket());
 				analogReadMonitor.wait(500);
@@ -183,13 +183,13 @@ public abstract class AbstractJArduino {
 	}
 	private byte eeprom_read_result;
 	private boolean eeprom_read_result_available;
-	private Object eeprom_readMonitor = "eeprom_readMonitor";
+	private final Object eeprom_readMonitor = "eeprom_readMonitor";
 	public byte eeprom_read(short address) {
 		try {
 			synchronized(eeprom_readMonitor) {
 				eeprom_read_result_available = false;
 				// Create message using the factory
-				FixedSizePacket p = JArduinoProtocol.createeeprom_read(address);
+				FixedSizePacket p = JArduinoProtocol.createEeprom_read(address);
 				// Create message using the factory
 				serial.receiveMsg(p.getPacket());
 				eeprom_readMonitor.wait(500);
@@ -212,7 +212,7 @@ public abstract class AbstractJArduino {
 	/**
 	 * Implement this method to handle the incoming message interruptNotification
 	 */
-	protected abstract void receiveinterruptNotification(InterruptPin interrupt);
+	protected abstract void receiveInterruptNotification(EInterruptPin interrupt);
 	
 	private class JArduinoDriverMessageHandler extends JArduinoMessageHandler implements JArduinoObserver {
 		
@@ -227,7 +227,7 @@ public abstract class AbstractJArduino {
 		// Results of Synchronous remote calls with results
 		//*************************************************************************
 		@Override
-		public void handledigitalReadResult(digitalReadResult msg) {
+		public void handleDigitalReadResult(DigitalReadResult msg) {
 			digitalRead_result = msg.getValue();
 			digitalRead_result_available = true;
 			synchronized(digitalReadMonitor) {
@@ -235,7 +235,7 @@ public abstract class AbstractJArduino {
 			}
 		}
 		@Override
-		public void handleanalogReadResult(analogReadResult msg) {
+		public void handleAnalogReadResult(AnalogReadResult msg) {
 			analogRead_result = msg.getValue();
 			analogRead_result_available = true;
 			synchronized(analogReadMonitor) {
@@ -243,7 +243,7 @@ public abstract class AbstractJArduino {
 			}
 		}
 		@Override
-		public void handleeeprom_value(eeprom_value msg) {
+		public void handleEeprom_value(Eeprom_value msg) {
 			eeprom_read_result = msg.getValue();
 			eeprom_read_result_available = true;
 			synchronized(eeprom_readMonitor) {
@@ -255,14 +255,14 @@ public abstract class AbstractJArduino {
 		// Results of Synchronous remote calls with acks
 		//*************************************************************************
 		@Override
-		public void handlepong(pong msg) {
+		public void handlePong(Pong msg) {
 			synchronized(pingMonitor) {
 				ping_ack_available = true;
 				pingMonitor.notify();
 			}
 		}
 		@Override
-		public void handleeeprom_write_ack(eeprom_write_ack msg) {
+		public void handleEeprom_write_ack(Eeprom_write_ack msg) {
 			synchronized(eeprom_sync_writeMonitor) {
 				eeprom_sync_write_ack_available = true;
 				eeprom_sync_writeMonitor.notify();
@@ -273,8 +273,8 @@ public abstract class AbstractJArduino {
 		// Asynchonous incoming messages
 		//*************************************************************************
 		@Override
-		public void handleinterruptNotification(interruptNotification msg) {
-			receiveinterruptNotification(msg.getInterrupt());
+		public void handleInterruptNotification(InterruptNotification msg) {
+			receiveInterruptNotification(msg.getInterrupt());
 		}
 	}
 }

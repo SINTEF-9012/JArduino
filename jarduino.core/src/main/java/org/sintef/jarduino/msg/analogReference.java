@@ -19,27 +19,25 @@ package org.sintef.jarduino.msg;
 
 import org.sintef.jarduino.*;
 
-import java.nio.ByteBuffer;
+public class AnalogReference extends JArduinoProtocolPacket {
 
-public class analogReference extends JArduinoProtocolPacket {
-
-	private AnalogReference type;
+	private EAnalogReference type;
 	
-	public analogReference(AnalogReference type) {
+	public AnalogReference(EAnalogReference type) {
 		setCommandID(JArduinoProtocol.ANALOG_REFERENCE);
 		setByteValue(type.getValue());
 		this.type = type;
 	}
 	
-	public analogReference(byte[] packet) {
+	public AnalogReference(byte[] packet) {
 		setPacketData(packet);
-		type = AnalogReference.fromValue(buffer.get());		
+		type = EAnalogReference.fromValue(buffer.get());		
 		
 	}
 	
 	@Override
 	public void acceptHandler(JArduinoMessageHandler v) {
-		v.handleanalogReference(this);
+		v.handleAnalogReference(this);
 	}
 
 	@Override
@@ -49,7 +47,7 @@ public class analogReference extends JArduinoProtocolPacket {
 		return myString;
 	}
 
-	public AnalogReference getType() {
+	public EAnalogReference getType() {
 		return type;
 	}
 	

@@ -19,19 +19,17 @@ package org.sintef.jarduino.msg;
 
 import org.sintef.jarduino.*;
 
-import java.nio.ByteBuffer;
-
-public class eeprom_value extends JArduinoProtocolPacket {
+public class Eeprom_value extends JArduinoProtocolPacket {
 
 	private byte value;
 	
-	public eeprom_value(byte value) {
+	public Eeprom_value(byte value) {
 		setCommandID(JArduinoProtocol.EEPROM__VALUE);
 		setByteValue(value);
 		this.value = value;
 	}
 	
-	public eeprom_value(byte[] packet) {
+	public Eeprom_value(byte[] packet) {
 		setPacketData(packet);
 		value = buffer.get();
 		
@@ -39,7 +37,7 @@ public class eeprom_value extends JArduinoProtocolPacket {
 	
 	@Override
 	public void acceptHandler(JArduinoMessageHandler v) {
-		v.handleeeprom_value(this);
+		v.handleEeprom_value(this);
 	}
 
 	@Override

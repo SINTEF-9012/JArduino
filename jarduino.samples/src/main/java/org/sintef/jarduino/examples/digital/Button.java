@@ -17,20 +17,20 @@
  */
 package org.sintef.jarduino.examples.digital;
 
-import org.sintef.jarduino.DigitalPin;
-import org.sintef.jarduino.DigitalState;
+import org.sintef.jarduino.EDigitalPin;
+import org.sintef.jarduino.EDigitalState;
 import org.sintef.jarduino.JArduino;
-import org.sintef.jarduino.PinMode;
+import org.sintef.jarduino.EPinMode;
 
 public class Button extends JArduino {
 
 	// the number of the pushbutton pin
-	final DigitalPin buttonPin = DigitalPin.PIN_8;
+	final EDigitalPin buttonPin = EDigitalPin.PIN_8;
 	// the number of the LED pin
-	final DigitalPin ledPin =  DigitalPin.PIN_9;
+	final EDigitalPin ledPin =  EDigitalPin.PIN_9;
 	
 	// variable for reading the pushbutton status
-	DigitalState buttonState = DigitalState.LOW;         
+	EDigitalState buttonState = EDigitalState.LOW;         
 	
 	public Button(String port) {
 		super(port);
@@ -39,9 +39,9 @@ public class Button extends JArduino {
 	@Override
 	protected void setup() {
 		// initialize the LED pin as an output:
-		pinMode(ledPin, PinMode.OUTPUT);      
+		pinMode(ledPin, EPinMode.OUTPUT);      
 		// initialize the pushbutton pin as an input:
-		pinMode(buttonPin, PinMode.INPUT);     
+		pinMode(buttonPin, EPinMode.INPUT);     
 	}
 
 	@Override
@@ -51,13 +51,13 @@ public class Button extends JArduino {
 		buttonState = digitalRead(buttonPin);
 		// check if the pushbutton is pressed.
 		// if it is, the buttonState is HIGH:
-		if (buttonState == DigitalState.HIGH) {     
+		if (buttonState == EDigitalState.HIGH) {     
 			// turn LED on:    
-			digitalWrite(ledPin, DigitalState.HIGH);  
+			digitalWrite(ledPin, EDigitalState.HIGH);  
 		} 
 		else {
 			// turn LED off:
-			digitalWrite(ledPin, DigitalState.LOW); 
+			digitalWrite(ledPin, EDigitalState.LOW); 
 		}
 	}
 

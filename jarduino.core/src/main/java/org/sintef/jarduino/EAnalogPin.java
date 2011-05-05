@@ -15,40 +15,43 @@
  * Company: SINTEF IKT, Oslo, Norway
  * Date: 2011
  */
-package org.sintef.jarduino.msg;
+package org.sintef.jarduino;
 
-import org.sintef.jarduino.*;
+import java.util.HashMap;
+import java.util.Map;
 
-public class AnalogReadResult extends JArduinoProtocolPacket {
+public enum EAnalogPin {
+	A_0((byte)14),
+	A_1((byte)15),
+	A_2((byte)16),
+	A_3((byte)17),
+	A_4((byte)18),
+	A_5((byte)19);
 
-	private short value;
+	private final byte value;
 	
-	public AnalogReadResult(short value) {
-		setCommandID(JArduinoProtocol.ANALOG_READ_RESULT);
-		setShortValue(value);
+	private EAnalogPin(byte value){
 		this.value = value;
 	}
 	
-	public AnalogReadResult(byte[] packet) {
-		setPacketData(packet);
-		value = buffer.getShort();
-		
+	public byte getValue(){
+		return value;
 	}
 	
-	@Override
-	public void acceptHandler(JArduinoMessageHandler v) {
-		v.handleAnalogReadResult(this);
+	private static final Map<Byte, EAnalogPin> map;
+	
+	static {
+		map = new HashMap<Byte, EAnalogPin>();
+		map.put((byte)14, EAnalogPin.A_0);
+		map.put((byte)15, EAnalogPin.A_1);
+		map.put((byte)16, EAnalogPin.A_2);
+		map.put((byte)17, EAnalogPin.A_3);
+		map.put((byte)18, EAnalogPin.A_4);
+		map.put((byte)19, EAnalogPin.A_5);
 	}
-
-	@Override
-	public String toString(){
-		String myString = "analogReadResult:";
-		myString += " [value: "+value+"]";
-		return myString;
-	}
-
-	public short getValue() {
-		return value;
+	
+	public static EAnalogPin fromValue(byte b) {
+		return map.get(b);
 	}
 	
 }

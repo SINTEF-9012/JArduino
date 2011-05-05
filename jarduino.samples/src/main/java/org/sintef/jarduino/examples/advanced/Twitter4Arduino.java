@@ -21,10 +21,10 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.sintef.jarduino.DigitalPin;
-import org.sintef.jarduino.DigitalState;
+import org.sintef.jarduino.EDigitalPin;
+import org.sintef.jarduino.EDigitalState;
 import org.sintef.jarduino.JArduino;
-import org.sintef.jarduino.PinMode;
+import org.sintef.jarduino.EPinMode;
 
 import twitter4j.Status;
 import twitter4j.Twitter;
@@ -44,7 +44,7 @@ import twitter4j.auth.AccessToken;
  */
 public class Twitter4Arduino extends JArduino{
 	
-	private DigitalPin led = DigitalPin.PIN_13;
+	private EDigitalPin led = EDigitalPin.PIN_13;
 	private Twitter twitter;
 	private Status last;
 	private Timer timer;
@@ -66,13 +66,13 @@ public class Twitter4Arduino extends JArduino{
 	 * Turns off the LED
 	 */
 	public void turnOffLED() {
-		digitalWrite(led, DigitalState.LOW);
+		digitalWrite(led, EDigitalState.LOW);
 	}	
 	
 	@Override
 	public void setup() {	
 		//connect pin 13 to LED
-		pinMode(led, PinMode.OUTPUT);
+		pinMode(led, EPinMode.OUTPUT);
 		turnOffLED(); //turn it of in case it is on after running another application
 	}
 
@@ -93,7 +93,7 @@ public class Twitter4Arduino extends JArduino{
 							status.getText()); 	
 					last = status;
 					//light up the Arduino
-					digitalWrite(led, DigitalState.HIGH);
+					digitalWrite(led, EDigitalState.HIGH);
 					timer.schedule(new Timeout(this), 10000);
 				}
 			}

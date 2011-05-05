@@ -19,27 +19,25 @@ package org.sintef.jarduino.msg;
 
 import org.sintef.jarduino.*;
 
-import java.nio.ByteBuffer;
+public class DigitalRead extends JArduinoProtocolPacket {
 
-public class digitalRead extends JArduinoProtocolPacket {
-
-	private DigitalPin pin;
+	private EDigitalPin pin;
 	
-	public digitalRead(DigitalPin pin) {
+	public DigitalRead(EDigitalPin pin) {
 		setCommandID(JArduinoProtocol.DIGITAL_READ);
 		setByteValue(pin.getValue());
 		this.pin = pin;
 	}
 	
-	public digitalRead(byte[] packet) {
+	public DigitalRead(byte[] packet) {
 		setPacketData(packet);
-		pin = DigitalPin.fromValue(buffer.get());		
+		pin = EDigitalPin.fromValue(buffer.get());		
 		
 	}
 	
 	@Override
 	public void acceptHandler(JArduinoMessageHandler v) {
-		v.handledigitalRead(this);
+		v.handleDigitalRead(this);
 	}
 
 	@Override
@@ -49,7 +47,7 @@ public class digitalRead extends JArduinoProtocolPacket {
 		return myString;
 	}
 
-	public DigitalPin getPin() {
+	public EDigitalPin getPin() {
 		return pin;
 	}
 	

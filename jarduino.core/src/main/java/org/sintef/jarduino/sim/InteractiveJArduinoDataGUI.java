@@ -142,7 +142,7 @@ public class InteractiveJArduinoDataGUI implements ActionListener {
 			logOwnEventsButton = new JButton("Log Own Events (Click to Activate)");
 			frame = new JFrame("Interactive JArduino Data Simulator");
 			frame.setLayout(new GridBagLayout());
-                        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			
 			GridBagConstraints c = new GridBagConstraints();
 			c.gridwidth = 1;
@@ -273,7 +273,7 @@ public class InteractiveJArduinoDataGUI implements ActionListener {
  		c.gridx = 0;
 		c.gridy = 0;
  		panel.add(labelvalue, c);
-		DigitalState[] valuesdigitalReadResultValue = {DigitalState.LOW, DigitalState.HIGH};
+		EDigitalState[] valuesdigitalReadResultValue = {EDigitalState.LOW, EDigitalState.HIGH};
 		fielddigitalReadResultValue = new JComboBox(valuesdigitalReadResultValue);		
  		c.gridx = 1;
 		c.gridy = 0;
@@ -329,7 +329,7 @@ public class InteractiveJArduinoDataGUI implements ActionListener {
  		c.gridx = 0;
 		c.gridy = 0;
  		panel.add(labelinterrupt, c);
-		InterruptPin[] valuesinterruptNotificationInterrupt = {InterruptPin.PIN_2_INT0, InterruptPin.PIN_3_INT1};
+		EInterruptPin[] valuesinterruptNotificationInterrupt = {EInterruptPin.PIN_2_INT0, EInterruptPin.PIN_3_INT1};
 		fieldinterruptNotificationInterrupt = new JComboBox(valuesinterruptNotificationInterrupt);		
  		c.gridx = 1;
 		c.gridy = 0;

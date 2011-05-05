@@ -20,10 +20,10 @@ package org.sintef.jarduino.examples.advanced;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.sintef.jarduino.DigitalPin;
-import org.sintef.jarduino.DigitalState;
+import org.sintef.jarduino.EDigitalPin;
+import org.sintef.jarduino.EDigitalState;
 import org.sintef.jarduino.JArduino;
-import org.sintef.jarduino.PinMode;
+import org.sintef.jarduino.EPinMode;
 
 /**
  * The libraries located in lib/voiceclearly are property of VoiceClealy:
@@ -37,7 +37,7 @@ import com.voiceclearly.api.chat.Message;
 import com.voiceclearly.api.listener.CallListener;
 import com.voiceclearly.api.model.Call;
 import java.util.Date;
-import org.sintef.jarduino.InterruptPin;
+import org.sintef.jarduino.EInterruptPin;
 
 /**
  * Run the main according to the instructions and ask your friends to send
@@ -45,8 +45,8 @@ import org.sintef.jarduino.InterruptPin;
  */
 public class GTalkAlert extends JArduino implements CallListener {
 
-    private DigitalPin led;
-    private InterruptPin button;
+    private EDigitalPin led;
+    private EInterruptPin button;
     private String gmailOtherUser;
     private String gmailUser;
     private String gmailPassword;
@@ -57,7 +57,7 @@ public class GTalkAlert extends JArduino implements CallListener {
         super(port);
     }
 
-    public GTalkAlert(String port, String user, String pwd, String otherUser, DigitalPin led, InterruptPin button) {
+    public GTalkAlert(String port, String user, String pwd, String otherUser, EDigitalPin led, EInterruptPin button) {
         this(port);
         this.led = led;
         this.button = button;
@@ -73,21 +73,21 @@ public class GTalkAlert extends JArduino implements CallListener {
     }
 
     @Override
-    protected void receiveinterruptNotification(InterruptPin interrupt) {
-        super.receiveinterruptNotification(interrupt);
+    protected void receiveInterruptNotification(EInterruptPin interrupt) {
+        super.receiveInterruptNotification(interrupt);
         if (interrupt == button) {
             service.sendIM(gmailOtherUser, "Button pushed: "+new Date(System.currentTimeMillis()));
         }
     }
 
     public void turnOffLED() {
-        digitalWrite(led, DigitalState.LOW);
+        digitalWrite(led, EDigitalState.LOW);
         System.out.println("Hopefully, the LED should now be turned OFF");
     }
 
     @Override
     protected void setup() {
-        pinMode(led, PinMode.OUTPUT);
+        pinMode(led, EPinMode.OUTPUT);
     }
 
     @Override
@@ -121,7 +121,7 @@ public class GTalkAlert extends JArduino implements CallListener {
     }
 
     public void incomingIm(Chat chat, Message message) {
-        digitalWrite(led, DigitalState.HIGH);
+        digitalWrite(led, EDigitalState.HIGH);
         System.out.println("Hopefully, the LED should now be turned ON");
         timer.schedule(new Timeout(this), 10000);
     }
@@ -140,8 +140,8 @@ public class GTalkAlert extends JArduino implements CallListener {
         String password = "mySecretPassword";
         String serialPort = "COM9";
 
-        DigitalPin led = DigitalPin.PIN_12;
-        InterruptPin button = InterruptPin.PIN_2_INT0;
+        EDigitalPin led = EDigitalPin.PIN_12;
+        EInterruptPin button = EInterruptPin.PIN_2_INT0;
 
         JArduino arduino = new GTalkAlert(serialPort, userName, password, otherName, led, button);
         arduino.runArduinoProcess();

@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author ffouquet
+ * @author Francois Fouquet
  */
 public class NativeLibUtil {
 

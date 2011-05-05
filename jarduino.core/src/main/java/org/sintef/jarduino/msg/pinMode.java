@@ -19,14 +19,12 @@ package org.sintef.jarduino.msg;
 
 import org.sintef.jarduino.*;
 
-import java.nio.ByteBuffer;
+public class PinMode extends JArduinoProtocolPacket {
 
-public class pinMode extends JArduinoProtocolPacket {
-
-	private DigitalPin pin;
-	private PinMode mode;
+	private EDigitalPin pin;
+	private EPinMode mode;
 	
-	public pinMode(DigitalPin pin, PinMode mode) {
+	public PinMode(EDigitalPin pin, EPinMode mode) {
 		setCommandID(JArduinoProtocol.PIN_MODE);
 		setByteValue(pin.getValue());
 		this.pin = pin;
@@ -34,16 +32,16 @@ public class pinMode extends JArduinoProtocolPacket {
 		this.mode = mode;
 	}
 	
-	public pinMode(byte[] packet) {
+	public PinMode(byte[] packet) {
 		setPacketData(packet);
-		pin = DigitalPin.fromValue(buffer.get());		
-		mode = PinMode.fromValue(buffer.get());		
+		pin = EDigitalPin.fromValue(buffer.get());		
+		mode = EPinMode.fromValue(buffer.get());		
 		
 	}
 	
 	@Override
 	public void acceptHandler(JArduinoMessageHandler v) {
-		v.handlepinMode(this);
+		v.handlePinMode(this);
 	}
 
 	@Override
@@ -54,11 +52,11 @@ public class pinMode extends JArduinoProtocolPacket {
 		return myString;
 	}
 
-	public DigitalPin getPin() {
+	public EDigitalPin getPin() {
 		return pin;
 	}
 	
-	public PinMode getMode() {
+	public EPinMode getMode() {
 		return mode;
 	}
 	

@@ -17,9 +17,9 @@
  */
 package org.sintef.jarduino.examples.analog;
 
-import org.sintef.jarduino.AnalogPin;
+import org.sintef.jarduino.EAnalogPin;
 import org.sintef.jarduino.JArduino;
-import org.sintef.jarduino.PWMPin;
+import org.sintef.jarduino.EPWMPin;
 /*
 Analog input, analog output, serial output
 
@@ -46,8 +46,8 @@ public class AnalogInOutSerial extends JArduino {
 
 	// These constants won't change.  They're used to give names
 	// to the pins used:
-	final AnalogPin analogInPin = AnalogPin.A_1;  // Analog input pin that the potentiometer is attached to
-	final PWMPin analogOutPin = PWMPin.PWM_PIN_9; // Analog output pin that the LED is attached to
+	final EAnalogPin analogInPin = EAnalogPin.A_1;  // Analog input pin that the potentiometer is attached to
+	final EPWMPin analogOutPin = EPWMPin.PWM_PIN_9; // Analog output pin that the LED is attached to
 
 	int sensorValue = 0;        // value read from the pot
 	int outputValue = 0;        // value output to the PWM (analog out)

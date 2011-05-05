@@ -19,23 +19,21 @@ package org.sintef.jarduino.msg;
 
 import org.sintef.jarduino.*;
 
-import java.nio.ByteBuffer;
-
-public class pong extends JArduinoProtocolPacket {
+public class Pong extends JArduinoProtocolPacket {
 
 	
-	public pong() {
+	public Pong() {
 		setCommandID(JArduinoProtocol.PONG);
 	}
 	
-	public pong(byte[] packet) {
+	public Pong(byte[] packet) {
 		setPacketData(packet);
 		
 	}
 	
 	@Override
 	public void acceptHandler(JArduinoMessageHandler v) {
-		v.handlepong(this);
+		v.handlePong(this);
 	}
 
 	@Override

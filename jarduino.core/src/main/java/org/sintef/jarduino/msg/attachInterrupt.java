@@ -19,14 +19,12 @@ package org.sintef.jarduino.msg;
 
 import org.sintef.jarduino.*;
 
-import java.nio.ByteBuffer;
+public class AttachInterrupt extends JArduinoProtocolPacket {
 
-public class attachInterrupt extends JArduinoProtocolPacket {
-
-	private InterruptPin interrupt;
-	private InterruptTrigger mode;
+	private EInterruptPin interrupt;
+	private EInterruptTrigger mode;
 	
-	public attachInterrupt(InterruptPin interrupt, InterruptTrigger mode) {
+	public AttachInterrupt(EInterruptPin interrupt, EInterruptTrigger mode) {
 		setCommandID(JArduinoProtocol.ATTACH_INTERRUPT);
 		setByteValue(interrupt.getValue());
 		this.interrupt = interrupt;
@@ -34,16 +32,16 @@ public class attachInterrupt extends JArduinoProtocolPacket {
 		this.mode = mode;
 	}
 	
-	public attachInterrupt(byte[] packet) {
+	public AttachInterrupt(byte[] packet) {
 		setPacketData(packet);
-		interrupt = InterruptPin.fromValue(buffer.get());		
-		mode = InterruptTrigger.fromValue(buffer.get());		
+		interrupt = EInterruptPin.fromValue(buffer.get());		
+		mode = EInterruptTrigger.fromValue(buffer.get());		
 		
 	}
 	
 	@Override
 	public void acceptHandler(JArduinoMessageHandler v) {
-		v.handleattachInterrupt(this);
+		v.handleAttachInterrupt(this);
 	}
 
 	@Override
@@ -54,11 +52,11 @@ public class attachInterrupt extends JArduinoProtocolPacket {
 		return myString;
 	}
 
-	public InterruptPin getInterrupt() {
+	public EInterruptPin getInterrupt() {
 		return interrupt;
 	}
 	
-	public InterruptTrigger getMode() {
+	public EInterruptTrigger getMode() {
 		return mode;
 	}
 	

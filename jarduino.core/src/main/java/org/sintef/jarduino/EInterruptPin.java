@@ -15,40 +15,35 @@
  * Company: SINTEF IKT, Oslo, Norway
  * Date: 2011
  */
-package org.sintef.jarduino.msg;
+package org.sintef.jarduino;
 
-import org.sintef.jarduino.*;
+import java.util.HashMap;
+import java.util.Map;
 
-public class NoTone extends JArduinoProtocolPacket {
+public enum EInterruptPin {
+	PIN_2_INT0((byte)0),
+	PIN_3_INT1((byte)1);
 
-	private EDigitalPin pin;
+	private final byte value;
 	
-	public NoTone(EDigitalPin pin) {
-		setCommandID(JArduinoProtocol.NO_TONE);
-		setByteValue(pin.getValue());
-		this.pin = pin;
-	}
-	
-	public NoTone(byte[] packet) {
-		setPacketData(packet);
-		pin = EDigitalPin.fromValue(buffer.get());		
-		
+	private EInterruptPin(byte value){
+		this.value = value;
 	}
 	
-	@Override
-	public void acceptHandler(JArduinoMessageHandler v) {
-		v.handleNoTone(this);
+	public byte getValue(){
+		return value;
 	}
-
-	@Override
-	public String toString(){
-		String myString = "noTone:";
-		myString += " [pin: "+pin+"]";
-		return myString;
+	
+	private static final Map<Byte, EInterruptPin> map;
+	
+	static {
+		map = new HashMap<Byte, EInterruptPin>();
+		map.put((byte)0, EInterruptPin.PIN_2_INT0);
+		map.put((byte)1, EInterruptPin.PIN_3_INT1);
 	}
-
-	public EDigitalPin getPin() {
-		return pin;
+	
+	public static EInterruptPin fromValue(byte b) {
+		return map.get(b);
 	}
 	
 }

@@ -19,27 +19,25 @@ package org.sintef.jarduino.msg;
 
 import org.sintef.jarduino.*;
 
-import java.nio.ByteBuffer;
+public class DigitalReadResult extends JArduinoProtocolPacket {
 
-public class digitalReadResult extends JArduinoProtocolPacket {
-
-	private DigitalState value;
+	private EDigitalState value;
 	
-	public digitalReadResult(DigitalState value) {
+	public DigitalReadResult(EDigitalState value) {
 		setCommandID(JArduinoProtocol.DIGITAL_READ_RESULT);
 		setByteValue(value.getValue());
 		this.value = value;
 	}
 	
-	public digitalReadResult(byte[] packet) {
+	public DigitalReadResult(byte[] packet) {
 		setPacketData(packet);
-		value = DigitalState.fromValue(buffer.get());		
+		value = EDigitalState.fromValue(buffer.get());		
 		
 	}
 	
 	@Override
 	public void acceptHandler(JArduinoMessageHandler v) {
-		v.handledigitalReadResult(this);
+		v.handleDigitalReadResult(this);
 	}
 
 	@Override
@@ -49,7 +47,7 @@ public class digitalReadResult extends JArduinoProtocolPacket {
 		return myString;
 	}
 
-	public DigitalState getValue() {
+	public EDigitalState getValue() {
 		return value;
 	}
 	

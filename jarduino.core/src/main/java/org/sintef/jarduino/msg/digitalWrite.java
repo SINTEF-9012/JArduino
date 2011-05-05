@@ -19,14 +19,12 @@ package org.sintef.jarduino.msg;
 
 import org.sintef.jarduino.*;
 
-import java.nio.ByteBuffer;
+public class DigitalWrite extends JArduinoProtocolPacket {
 
-public class digitalWrite extends JArduinoProtocolPacket {
-
-	private DigitalPin pin;
-	private DigitalState value;
+	private EDigitalPin pin;
+	private EDigitalState value;
 	
-	public digitalWrite(DigitalPin pin, DigitalState value) {
+	public DigitalWrite(EDigitalPin pin, EDigitalState value) {
 		setCommandID(JArduinoProtocol.DIGITAL_WRITE);
 		setByteValue(pin.getValue());
 		this.pin = pin;
@@ -34,16 +32,16 @@ public class digitalWrite extends JArduinoProtocolPacket {
 		this.value = value;
 	}
 	
-	public digitalWrite(byte[] packet) {
+	public DigitalWrite(byte[] packet) {
 		setPacketData(packet);
-		pin = DigitalPin.fromValue(buffer.get());		
-		value = DigitalState.fromValue(buffer.get());		
+		pin = EDigitalPin.fromValue(buffer.get());		
+		value = EDigitalState.fromValue(buffer.get());		
 		
 	}
 	
 	@Override
 	public void acceptHandler(JArduinoMessageHandler v) {
-		v.handledigitalWrite(this);
+		v.handleDigitalWrite(this);
 	}
 
 	@Override
@@ -54,11 +52,11 @@ public class digitalWrite extends JArduinoProtocolPacket {
 		return myString;
 	}
 
-	public DigitalPin getPin() {
+	public EDigitalPin getPin() {
 		return pin;
 	}
 	
-	public DigitalState getValue() {
+	public EDigitalState getValue() {
 		return value;
 	}
 	

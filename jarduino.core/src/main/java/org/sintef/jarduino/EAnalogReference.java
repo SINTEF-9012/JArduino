@@ -15,40 +15,37 @@
  * Company: SINTEF IKT, Oslo, Norway
  * Date: 2011
  */
-package org.sintef.jarduino.msg;
+package org.sintef.jarduino;
 
-import org.sintef.jarduino.*;
+import java.util.HashMap;
+import java.util.Map;
 
-public class NoTone extends JArduinoProtocolPacket {
+public enum EAnalogReference {
+	DEFAULT((byte)1),
+	INTERNAL((byte)3),
+	EXTERNAL((byte)0);
 
-	private EDigitalPin pin;
+	private final byte value;
 	
-	public NoTone(EDigitalPin pin) {
-		setCommandID(JArduinoProtocol.NO_TONE);
-		setByteValue(pin.getValue());
-		this.pin = pin;
-	}
-	
-	public NoTone(byte[] packet) {
-		setPacketData(packet);
-		pin = EDigitalPin.fromValue(buffer.get());		
-		
+	private EAnalogReference(byte value){
+		this.value = value;
 	}
 	
-	@Override
-	public void acceptHandler(JArduinoMessageHandler v) {
-		v.handleNoTone(this);
+	public byte getValue(){
+		return value;
 	}
-
-	@Override
-	public String toString(){
-		String myString = "noTone:";
-		myString += " [pin: "+pin+"]";
-		return myString;
+	
+	private static final Map<Byte, EAnalogReference> map;
+	
+	static {
+		map = new HashMap<Byte, EAnalogReference>();
+		map.put((byte)1, EAnalogReference.DEFAULT);
+		map.put((byte)3, EAnalogReference.INTERNAL);
+		map.put((byte)0, EAnalogReference.EXTERNAL);
 	}
-
-	public EDigitalPin getPin() {
-		return pin;
+	
+	public static EAnalogReference fromValue(byte b) {
+		return map.get(b);
 	}
 	
 }

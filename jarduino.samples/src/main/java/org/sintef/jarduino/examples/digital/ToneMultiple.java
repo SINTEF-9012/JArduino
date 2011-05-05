@@ -17,15 +17,15 @@
  */
 package org.sintef.jarduino.examples.digital;
 
-import org.sintef.jarduino.DigitalPin;
+import org.sintef.jarduino.EDigitalPin;
 import org.sintef.jarduino.JArduino;
 
 public class ToneMultiple extends JArduino implements Pitches{
 
 	
-	private DigitalPin speakerOne = DigitalPin.PIN_6;
-	private DigitalPin speakerTwo = DigitalPin.PIN_7;
-	private DigitalPin speakerThree = DigitalPin.PIN_8;
+	private EDigitalPin speakerOne = EDigitalPin.PIN_6;
+	private EDigitalPin speakerTwo = EDigitalPin.PIN_7;
+	private EDigitalPin speakerThree = EDigitalPin.PIN_8;
 	
 	public ToneMultiple(String port) {
 		super(port);

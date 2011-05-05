@@ -19,19 +19,17 @@ package org.sintef.jarduino.msg;
 
 import org.sintef.jarduino.*;
 
-import java.nio.ByteBuffer;
-
-public class eeprom_read extends JArduinoProtocolPacket {
+public class Eeprom_read extends JArduinoProtocolPacket {
 
 	private short address;
 	
-	public eeprom_read(short address) {
+	public Eeprom_read(short address) {
 		setCommandID(JArduinoProtocol.EEPROM__READ);
 		setShortValue(address);
 		this.address = address;
 	}
 	
-	public eeprom_read(byte[] packet) {
+	public Eeprom_read(byte[] packet) {
 		setPacketData(packet);
 		address = buffer.getShort();
 		
@@ -39,7 +37,7 @@ public class eeprom_read extends JArduinoProtocolPacket {
 	
 	@Override
 	public void acceptHandler(JArduinoMessageHandler v) {
-		v.handleeeprom_read(this);
+		v.handleEeprom_read(this);
 	}
 
 	@Override

@@ -19,27 +19,25 @@ package org.sintef.jarduino.msg;
 
 import org.sintef.jarduino.*;
 
-import java.nio.ByteBuffer;
+public class DetachInterrupt extends JArduinoProtocolPacket {
 
-public class detachInterrupt extends JArduinoProtocolPacket {
-
-	private InterruptPin interrupt;
+	private EInterruptPin interrupt;
 	
-	public detachInterrupt(InterruptPin interrupt) {
+	public DetachInterrupt(EInterruptPin interrupt) {
 		setCommandID(JArduinoProtocol.DETACH_INTERRUPT);
 		setByteValue(interrupt.getValue());
 		this.interrupt = interrupt;
 	}
 	
-	public detachInterrupt(byte[] packet) {
+	public DetachInterrupt(byte[] packet) {
 		setPacketData(packet);
-		interrupt = InterruptPin.fromValue(buffer.get());		
+		interrupt = EInterruptPin.fromValue(buffer.get());		
 		
 	}
 	
 	@Override
 	public void acceptHandler(JArduinoMessageHandler v) {
-		v.handledetachInterrupt(this);
+		v.handleDetachInterrupt(this);
 	}
 
 	@Override
@@ -49,7 +47,7 @@ public class detachInterrupt extends JArduinoProtocolPacket {
 		return myString;
 	}
 
-	public InterruptPin getInterrupt() {
+	public EInterruptPin getInterrupt() {
 		return interrupt;
 	}
 	

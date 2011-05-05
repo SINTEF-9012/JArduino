@@ -20,10 +20,10 @@ package org.sintef.jarduino;
 import org.sintef.jarduino.msg.*;
 
 public abstract class JArduinoClientMessageHandler implements IJArduinoMessageHandler{
-	public void handledigitalReadResult(digitalReadResult msg){ /* Nothing */ }
-	public void handleanalogReadResult(analogReadResult msg){ /* Nothing */ }
-	public void handlepong(pong msg){ /* Nothing */ }
-	public void handleinterruptNotification(interruptNotification msg){ /* Nothing */ }
-	public void handleeeprom_value(eeprom_value msg){ /* Nothing */ }
-	public void handleeeprom_write_ack(eeprom_write_ack msg){ /* Nothing */ }
+	@Override public void handleDigitalReadResult(DigitalReadResult msg){ /* Nothing */ }
+	@Override public void handleAnalogReadResult(AnalogReadResult msg){ /* Nothing */ }
+	@Override public void handlePong(Pong msg){ /* Nothing */ }
+	@Override public void handleInterruptNotification(InterruptNotification msg){ /* Nothing */ }
+	@Override public void handleEeprom_value(Eeprom_value msg){ /* Nothing */ }
+	@Override public void handleEeprom_write_ack(Eeprom_write_ack msg){ /* Nothing */ }
 }

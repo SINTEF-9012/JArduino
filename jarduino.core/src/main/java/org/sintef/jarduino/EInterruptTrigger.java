@@ -15,40 +15,39 @@
  * Company: SINTEF IKT, Oslo, Norway
  * Date: 2011
  */
-package org.sintef.jarduino.msg;
+package org.sintef.jarduino;
 
-import org.sintef.jarduino.*;
+import java.util.HashMap;
+import java.util.Map;
 
-public class NoTone extends JArduinoProtocolPacket {
+public enum EInterruptTrigger {
+	CHANGE((byte)1),
+	RISING((byte)3),
+	FALLING((byte)2),
+	LOW((byte)0);
 
-	private EDigitalPin pin;
+	private final byte value;
 	
-	public NoTone(EDigitalPin pin) {
-		setCommandID(JArduinoProtocol.NO_TONE);
-		setByteValue(pin.getValue());
-		this.pin = pin;
-	}
-	
-	public NoTone(byte[] packet) {
-		setPacketData(packet);
-		pin = EDigitalPin.fromValue(buffer.get());		
-		
+	private EInterruptTrigger(byte value){
+		this.value = value;
 	}
 	
-	@Override
-	public void acceptHandler(JArduinoMessageHandler v) {
-		v.handleNoTone(this);
+	public byte getValue(){
+		return value;
 	}
-
-	@Override
-	public String toString(){
-		String myString = "noTone:";
-		myString += " [pin: "+pin+"]";
-		return myString;
+	
+	private static final Map<Byte, EInterruptTrigger> map;
+	
+	static {
+		map = new HashMap<Byte, EInterruptTrigger>();
+		map.put((byte)1, EInterruptTrigger.CHANGE);
+		map.put((byte)3, EInterruptTrigger.RISING);
+		map.put((byte)2, EInterruptTrigger.FALLING);
+		map.put((byte)0, EInterruptTrigger.LOW);
 	}
-
-	public EDigitalPin getPin() {
-		return pin;
+	
+	public static EInterruptTrigger fromValue(byte b) {
+		return map.get(b);
 	}
 	
 }

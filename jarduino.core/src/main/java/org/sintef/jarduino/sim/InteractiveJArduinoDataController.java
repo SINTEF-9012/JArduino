@@ -66,15 +66,15 @@ public class InteractiveJArduinoDataController implements ActionListener, JArdui
 	public final void senddigitalReadResult() {
 		FixedSizePacket fsp = null;
 		boolean valid = true;
-		DigitalState value = null;
+		EDigitalState value = null;
 		try{
-			value = (DigitalState)InteractiveJArduinoDataGUI.getFielddigitalReadResultValue().getSelectedItem();
+			value = (EDigitalState)InteractiveJArduinoDataGUI.getFielddigitalReadResultValue().getSelectedItem();
 		} catch (NumberFormatException nfe){
 			JOptionPane.showMessageDialog(new JFrame(), "Please check that all the inputs have the right type", "Error: Invalid input", JOptionPane.ERROR_MESSAGE);
 			valid = false;
 		}
 		if (valid){
-			fsp = JArduinoProtocol.createdigitalReadResult(value);
+			fsp = JArduinoProtocol.createDigitalReadResult(value);
 			doSend(fsp);
 		}
 	}
@@ -90,29 +90,29 @@ public class InteractiveJArduinoDataController implements ActionListener, JArdui
 			valid = false;
 		}
 		if (valid){
-			fsp = JArduinoProtocol.createanalogReadResult(value);
+			fsp = JArduinoProtocol.createAnalogReadResult(value);
 			doSend(fsp);
 		}
 	}
 
 	public final void sendpong() {
 		FixedSizePacket fsp = null;
-		fsp = JArduinoProtocol.createpong();	
+		fsp = JArduinoProtocol.createPong();	
 		doSend(fsp);
 	}
 
 	public final void sendinterruptNotification() {
 		FixedSizePacket fsp = null;
 		boolean valid = true;
-		InterruptPin interrupt = null;
+		EInterruptPin interrupt = null;
 		try{
-			interrupt = (InterruptPin)InteractiveJArduinoDataGUI.getFieldinterruptNotificationInterrupt().getSelectedItem();
+			interrupt = (EInterruptPin)InteractiveJArduinoDataGUI.getFieldinterruptNotificationInterrupt().getSelectedItem();
 		} catch (NumberFormatException nfe){
 			JOptionPane.showMessageDialog(new JFrame(), "Please check that all the inputs have the right type", "Error: Invalid input", JOptionPane.ERROR_MESSAGE);
 			valid = false;
 		}
 		if (valid){
-			fsp = JArduinoProtocol.createinterruptNotification(interrupt);
+			fsp = JArduinoProtocol.createInterruptNotification(interrupt);
 			doSend(fsp);
 		}
 	}
@@ -128,14 +128,14 @@ public class InteractiveJArduinoDataController implements ActionListener, JArdui
 			valid = false;
 		}
 		if (valid){
-			fsp = JArduinoProtocol.createeeprom_value(value);
+			fsp = JArduinoProtocol.createEeprom_value(value);
 			doSend(fsp);
 		}
 	}
 
 	public final void sendeeprom_write_ack() {
 		FixedSizePacket fsp = null;
-		fsp = JArduinoProtocol.createeeprom_write_ack();	
+		fsp = JArduinoProtocol.createEeprom_write_ack();	
 		doSend(fsp);
 	}
 

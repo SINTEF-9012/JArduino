@@ -29,7 +29,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import org.sintef.jarduino.DigitalPin;
+import org.sintef.jarduino.EDigitalPin;
 import org.sintef.jarduino.JArduino;
 
 public class ToneKeyKeyboard extends JArduino{
@@ -37,7 +37,7 @@ public class ToneKeyKeyboard extends JArduino{
 	private JPanel contentPane;
 	private JTextField textField;
 	//Connect your pieze element to digital pin 8
-	private DigitalPin pin = DigitalPin.A_0;
+	private EDigitalPin pin = EDigitalPin.A_0;
 	private Timer timer;
         private Timeout timeout;
 	private JFrame frame;
@@ -110,7 +110,7 @@ public class ToneKeyKeyboard extends JArduino{
 			//map the value to a tone
 			tone = map(tone, 65, 229, 30, 5000);
 			System.out.println(tone);
-			//play the newly acquired tone on the ordain board
+			//play the newly acquired tone on the Arduino board
 			tone(pin, (short) tone, (short)0);
 			//create a new timeout that will end the tone after 1,3 seconds
                         if (timeout != null)

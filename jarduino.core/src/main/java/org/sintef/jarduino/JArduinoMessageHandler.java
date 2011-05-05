@@ -20,18 +20,18 @@ package org.sintef.jarduino;
 import org.sintef.jarduino.msg.*;
 
 public abstract class JArduinoMessageHandler implements IJArduinoMessageHandler{
-	public void handlepinMode(pinMode msg){ /* Nothing */ }
-	public void handledigitalRead(digitalRead msg){ /* Nothing */ }
-	public void handledigitalWrite(digitalWrite msg){ /* Nothing */ }
-	public void handleanalogReference(analogReference msg){ /* Nothing */ }
-	public void handleanalogRead(analogRead msg){ /* Nothing */ }
-	public void handleanalogWrite(analogWrite msg){ /* Nothing */ }
-	public void handletone(tone msg){ /* Nothing */ }
-	public void handlenoTone(noTone msg){ /* Nothing */ }
-	public void handleping(ping msg){ /* Nothing */ }
-	public void handleattachInterrupt(attachInterrupt msg){ /* Nothing */ }
-	public void handledetachInterrupt(detachInterrupt msg){ /* Nothing */ }
-	public void handleeeprom_read(eeprom_read msg){ /* Nothing */ }
-	public void handleeeprom_sync_write(eeprom_sync_write msg){ /* Nothing */ }
-	public void handleeeprom_write(eeprom_write msg){ /* Nothing */ }
+	@Override public void handlePinMode(PinMode msg){ /* Nothing */ }
+	@Override public void handleDigitalRead(DigitalRead msg){ /* Nothing */ }
+	@Override public void handleDigitalWrite(DigitalWrite msg){ /* Nothing */ }
+	@Override public void handleAnalogReference(AnalogReference msg){ /* Nothing */ }
+	@Override public void handleAnalogRead(AnalogRead msg){ /* Nothing */ }
+	@Override public void handleAnalogWrite(AnalogWrite msg){ /* Nothing */ }
+	@Override public void handleTone(Tone msg){ /* Nothing */ }
+	@Override public void handleNoTone(NoTone msg){ /* Nothing */ }
+	@Override public void handlePing(Ping msg){ /* Nothing */ }
+	@Override public void handleAttachInterrupt(AttachInterrupt msg){ /* Nothing */ }
+	@Override public void handleDetachInterrupt(DetachInterrupt msg){ /* Nothing */ }
+	@Override public void handleEeprom_read(Eeprom_read msg){ /* Nothing */ }
+	@Override public void handleEeprom_sync_write(Eeprom_sync_write msg){ /* Nothing */ }
+	@Override public void handleEeprom_write(Eeprom_write msg){ /* Nothing */ }
 }

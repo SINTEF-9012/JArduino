@@ -19,27 +19,25 @@ package org.sintef.jarduino.msg;
 
 import org.sintef.jarduino.*;
 
-import java.nio.ByteBuffer;
+public class AnalogRead extends JArduinoProtocolPacket {
 
-public class analogRead extends JArduinoProtocolPacket {
-
-	private AnalogPin pin;
+	private EAnalogPin pin;
 	
-	public analogRead(AnalogPin pin) {
+	public AnalogRead(EAnalogPin pin) {
 		setCommandID(JArduinoProtocol.ANALOG_READ);
 		setByteValue(pin.getValue());
 		this.pin = pin;
 	}
 	
-	public analogRead(byte[] packet) {
+	public AnalogRead(byte[] packet) {
 		setPacketData(packet);
-		pin = AnalogPin.fromValue(buffer.get());		
+		pin = EAnalogPin.fromValue(buffer.get());		
 		
 	}
 	
 	@Override
 	public void acceptHandler(JArduinoMessageHandler v) {
-		v.handleanalogRead(this);
+		v.handleAnalogRead(this);
 	}
 
 	@Override
@@ -49,7 +47,7 @@ public class analogRead extends JArduinoProtocolPacket {
 		return myString;
 	}
 
-	public AnalogPin getPin() {
+	public EAnalogPin getPin() {
 		return pin;
 	}
 	

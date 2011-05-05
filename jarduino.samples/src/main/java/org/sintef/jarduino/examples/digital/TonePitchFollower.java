@@ -17,8 +17,8 @@
  */
 package org.sintef.jarduino.examples.digital;
 
-import org.sintef.jarduino.AnalogPin;
-import org.sintef.jarduino.DigitalPin;
+import org.sintef.jarduino.EAnalogPin;
+import org.sintef.jarduino.EDigitalPin;
 import org.sintef.jarduino.JArduino;
 
 public class TonePitchFollower extends JArduino{
@@ -34,7 +34,7 @@ public class TonePitchFollower extends JArduino{
 	@Override
 	protected void loop() {
 			// read the sensor:
-		  int sensorReading = analogRead(AnalogPin.A_0);
+		  int sensorReading = analogRead(EAnalogPin.A_0);
 		  // print the sensor reading so you know its range
 		  System.out.println(sensorReading);
 		  // map the pitch to the range of the analog input.
@@ -43,7 +43,7 @@ public class TonePitchFollower extends JArduino{
 		  int thisPitch = map(sensorReading, 400, 1000, 100, 1000);
 
 		  // play the pitch:
-		  tone(DigitalPin.PIN_8, (short)thisPitch, (short)10);
+		  tone(EDigitalPin.PIN_8, (short)thisPitch, (short)10);
 	}
 	
 	public static void main(String[] args){

@@ -19,14 +19,12 @@ package org.sintef.jarduino.msg;
 
 import org.sintef.jarduino.*;
 
-import java.nio.ByteBuffer;
+public class AnalogWrite extends JArduinoProtocolPacket {
 
-public class analogWrite extends JArduinoProtocolPacket {
-
-	private PWMPin pin;
+	private EPWMPin pin;
 	private byte value;
 	
-	public analogWrite(PWMPin pin, byte value) {
+	public AnalogWrite(EPWMPin pin, byte value) {
 		setCommandID(JArduinoProtocol.ANALOG_WRITE);
 		setByteValue(pin.getValue());
 		this.pin = pin;
@@ -34,16 +32,16 @@ public class analogWrite extends JArduinoProtocolPacket {
 		this.value = value;
 	}
 	
-	public analogWrite(byte[] packet) {
+	public AnalogWrite(byte[] packet) {
 		setPacketData(packet);
-		pin = PWMPin.fromValue(buffer.get());		
+		pin = EPWMPin.fromValue(buffer.get());		
 		value = buffer.get();
 		
 	}
 	
 	@Override
 	public void acceptHandler(JArduinoMessageHandler v) {
-		v.handleanalogWrite(this);
+		v.handleAnalogWrite(this);
 	}
 
 	@Override
@@ -54,7 +52,7 @@ public class analogWrite extends JArduinoProtocolPacket {
 		return myString;
 	}
 
-	public PWMPin getPin() {
+	public EPWMPin getPin() {
 		return pin;
 	}
 	

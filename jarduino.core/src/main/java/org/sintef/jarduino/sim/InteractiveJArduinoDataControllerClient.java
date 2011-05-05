@@ -66,17 +66,17 @@ public class InteractiveJArduinoDataControllerClient implements ActionListener, 
 	public final void sendpinMode() {
 		FixedSizePacket fsp = null;
 		boolean valid = true;
-		DigitalPin pin = null;
-		PinMode mode = null;
+		EDigitalPin pin = null;
+		EPinMode mode = null;
 		try{
-			pin = (DigitalPin)InteractiveJArduinoDataGUIClient.getFieldpinModePin().getSelectedItem();
-			mode = (PinMode)InteractiveJArduinoDataGUIClient.getFieldpinModeMode().getSelectedItem();
+			pin = (EDigitalPin)InteractiveJArduinoDataGUIClient.getFieldpinModePin().getSelectedItem();
+			mode = (EPinMode)InteractiveJArduinoDataGUIClient.getFieldpinModeMode().getSelectedItem();
 		} catch (NumberFormatException nfe){
 			JOptionPane.showMessageDialog(new JFrame(), "Please check that all the inputs have the right type", "Error: Invalid input", JOptionPane.ERROR_MESSAGE);
 			valid = false;
 		}
 		if (valid){
-			fsp = JArduinoProtocol.createpinMode(pin, mode);
+			fsp = JArduinoProtocol.createPinMode(pin, mode);
 			doSend(fsp);
 		}
 	}
@@ -84,15 +84,15 @@ public class InteractiveJArduinoDataControllerClient implements ActionListener, 
 	public final void senddigitalRead() {
 		FixedSizePacket fsp = null;
 		boolean valid = true;
-		DigitalPin pin = null;
+		EDigitalPin pin = null;
 		try{
-			pin = (DigitalPin)InteractiveJArduinoDataGUIClient.getFielddigitalReadPin().getSelectedItem();
+			pin = (EDigitalPin)InteractiveJArduinoDataGUIClient.getFielddigitalReadPin().getSelectedItem();
 		} catch (NumberFormatException nfe){
 			JOptionPane.showMessageDialog(new JFrame(), "Please check that all the inputs have the right type", "Error: Invalid input", JOptionPane.ERROR_MESSAGE);
 			valid = false;
 		}
 		if (valid){
-			fsp = JArduinoProtocol.createdigitalRead(pin);
+			fsp = JArduinoProtocol.createDigitalRead(pin);
 			doSend(fsp);
 		}
 	}
@@ -100,17 +100,17 @@ public class InteractiveJArduinoDataControllerClient implements ActionListener, 
 	public final void senddigitalWrite() {
 		FixedSizePacket fsp = null;
 		boolean valid = true;
-		DigitalPin pin = null;
-		DigitalState value = null;
+		EDigitalPin pin = null;
+		EDigitalState value = null;
 		try{
-			pin = (DigitalPin)InteractiveJArduinoDataGUIClient.getFielddigitalWritePin().getSelectedItem();
-			value = (DigitalState)InteractiveJArduinoDataGUIClient.getFielddigitalWriteValue().getSelectedItem();
+			pin = (EDigitalPin)InteractiveJArduinoDataGUIClient.getFielddigitalWritePin().getSelectedItem();
+			value = (EDigitalState)InteractiveJArduinoDataGUIClient.getFielddigitalWriteValue().getSelectedItem();
 		} catch (NumberFormatException nfe){
 			JOptionPane.showMessageDialog(new JFrame(), "Please check that all the inputs have the right type", "Error: Invalid input", JOptionPane.ERROR_MESSAGE);
 			valid = false;
 		}
 		if (valid){
-			fsp = JArduinoProtocol.createdigitalWrite(pin, value);
+			fsp = JArduinoProtocol.createDigitalWrite(pin, value);
 			doSend(fsp);
 		}
 	}
@@ -118,15 +118,15 @@ public class InteractiveJArduinoDataControllerClient implements ActionListener, 
 	public final void sendanalogReference() {
 		FixedSizePacket fsp = null;
 		boolean valid = true;
-		AnalogReference type = null;
+		EAnalogReference type = null;
 		try{
-			type = (AnalogReference)InteractiveJArduinoDataGUIClient.getFieldanalogReferenceType().getSelectedItem();
+			type = (EAnalogReference)InteractiveJArduinoDataGUIClient.getFieldanalogReferenceType().getSelectedItem();
 		} catch (NumberFormatException nfe){
 			JOptionPane.showMessageDialog(new JFrame(), "Please check that all the inputs have the right type", "Error: Invalid input", JOptionPane.ERROR_MESSAGE);
 			valid = false;
 		}
 		if (valid){
-			fsp = JArduinoProtocol.createanalogReference(type);
+			fsp = JArduinoProtocol.createAnalogReference(type);
 			doSend(fsp);
 		}
 	}
@@ -134,15 +134,15 @@ public class InteractiveJArduinoDataControllerClient implements ActionListener, 
 	public final void sendanalogRead() {
 		FixedSizePacket fsp = null;
 		boolean valid = true;
-		AnalogPin pin = null;
+		EAnalogPin pin = null;
 		try{
-			pin = (AnalogPin)InteractiveJArduinoDataGUIClient.getFieldanalogReadPin().getSelectedItem();
+			pin = (EAnalogPin)InteractiveJArduinoDataGUIClient.getFieldanalogReadPin().getSelectedItem();
 		} catch (NumberFormatException nfe){
 			JOptionPane.showMessageDialog(new JFrame(), "Please check that all the inputs have the right type", "Error: Invalid input", JOptionPane.ERROR_MESSAGE);
 			valid = false;
 		}
 		if (valid){
-			fsp = JArduinoProtocol.createanalogRead(pin);
+			fsp = JArduinoProtocol.createAnalogRead(pin);
 			doSend(fsp);
 		}
 	}
@@ -150,17 +150,17 @@ public class InteractiveJArduinoDataControllerClient implements ActionListener, 
 	public final void sendanalogWrite() {
 		FixedSizePacket fsp = null;
 		boolean valid = true;
-		PWMPin pin = null;
+		EPWMPin pin = null;
 		Byte value = null;
 		try{
-			pin = (PWMPin)InteractiveJArduinoDataGUIClient.getFieldanalogWritePin().getSelectedItem();
+			pin = (EPWMPin)InteractiveJArduinoDataGUIClient.getFieldanalogWritePin().getSelectedItem();
 			value = Byte.parseByte(InteractiveJArduinoDataGUIClient.getFieldanalogWriteValue().getText());
 		} catch (NumberFormatException nfe){
 			JOptionPane.showMessageDialog(new JFrame(), "Please check that all the inputs have the right type", "Error: Invalid input", JOptionPane.ERROR_MESSAGE);
 			valid = false;
 		}
 		if (valid){
-			fsp = JArduinoProtocol.createanalogWrite(pin, value);
+			fsp = JArduinoProtocol.createAnalogWrite(pin, value);
 			doSend(fsp);
 		}
 	}
@@ -168,11 +168,11 @@ public class InteractiveJArduinoDataControllerClient implements ActionListener, 
 	public final void sendtone() {
 		FixedSizePacket fsp = null;
 		boolean valid = true;
-		DigitalPin pin = null;
+		EDigitalPin pin = null;
 		Short frequency = null;
 		Short duration = null;
 		try{
-			pin = (DigitalPin)InteractiveJArduinoDataGUIClient.getFieldtonePin().getSelectedItem();
+			pin = (EDigitalPin)InteractiveJArduinoDataGUIClient.getFieldtonePin().getSelectedItem();
 			frequency = Short.parseShort(InteractiveJArduinoDataGUIClient.getFieldtoneFrequency().getText());
 			duration = Short.parseShort(InteractiveJArduinoDataGUIClient.getFieldtoneDuration().getText());
 		} catch (NumberFormatException nfe){
@@ -180,7 +180,7 @@ public class InteractiveJArduinoDataControllerClient implements ActionListener, 
 			valid = false;
 		}
 		if (valid){
-			fsp = JArduinoProtocol.createtone(pin, frequency, duration);
+			fsp = JArduinoProtocol.createTone(pin, frequency, duration);
 			doSend(fsp);
 		}
 	}
@@ -188,39 +188,39 @@ public class InteractiveJArduinoDataControllerClient implements ActionListener, 
 	public final void sendnoTone() {
 		FixedSizePacket fsp = null;
 		boolean valid = true;
-		DigitalPin pin = null;
+		EDigitalPin pin = null;
 		try{
-			pin = (DigitalPin)InteractiveJArduinoDataGUIClient.getFieldnoTonePin().getSelectedItem();
+			pin = (EDigitalPin)InteractiveJArduinoDataGUIClient.getFieldnoTonePin().getSelectedItem();
 		} catch (NumberFormatException nfe){
 			JOptionPane.showMessageDialog(new JFrame(), "Please check that all the inputs have the right type", "Error: Invalid input", JOptionPane.ERROR_MESSAGE);
 			valid = false;
 		}
 		if (valid){
-			fsp = JArduinoProtocol.createnoTone(pin);
+			fsp = JArduinoProtocol.createNoTone(pin);
 			doSend(fsp);
 		}
 	}
 
 	public final void sendping() {
 		FixedSizePacket fsp = null;
-		fsp = JArduinoProtocol.createping();	
+		fsp = JArduinoProtocol.createPing();	
 		doSend(fsp);
 	}
 
 	public final void sendattachInterrupt() {
 		FixedSizePacket fsp = null;
 		boolean valid = true;
-		InterruptPin interrupt = null;
-		InterruptTrigger mode = null;
+		EInterruptPin interrupt = null;
+		EInterruptTrigger mode = null;
 		try{
-			interrupt = (InterruptPin)InteractiveJArduinoDataGUIClient.getFieldattachInterruptInterrupt().getSelectedItem();
-			mode = (InterruptTrigger)InteractiveJArduinoDataGUIClient.getFieldattachInterruptMode().getSelectedItem();
+			interrupt = (EInterruptPin)InteractiveJArduinoDataGUIClient.getFieldattachInterruptInterrupt().getSelectedItem();
+			mode = (EInterruptTrigger)InteractiveJArduinoDataGUIClient.getFieldattachInterruptMode().getSelectedItem();
 		} catch (NumberFormatException nfe){
 			JOptionPane.showMessageDialog(new JFrame(), "Please check that all the inputs have the right type", "Error: Invalid input", JOptionPane.ERROR_MESSAGE);
 			valid = false;
 		}
 		if (valid){
-			fsp = JArduinoProtocol.createattachInterrupt(interrupt, mode);
+			fsp = JArduinoProtocol.createAttachInterrupt(interrupt, mode);
 			doSend(fsp);
 		}
 	}
@@ -228,15 +228,15 @@ public class InteractiveJArduinoDataControllerClient implements ActionListener, 
 	public final void senddetachInterrupt() {
 		FixedSizePacket fsp = null;
 		boolean valid = true;
-		InterruptPin interrupt = null;
+		EInterruptPin interrupt = null;
 		try{
-			interrupt = (InterruptPin)InteractiveJArduinoDataGUIClient.getFielddetachInterruptInterrupt().getSelectedItem();
+			interrupt = (EInterruptPin)InteractiveJArduinoDataGUIClient.getFielddetachInterruptInterrupt().getSelectedItem();
 		} catch (NumberFormatException nfe){
 			JOptionPane.showMessageDialog(new JFrame(), "Please check that all the inputs have the right type", "Error: Invalid input", JOptionPane.ERROR_MESSAGE);
 			valid = false;
 		}
 		if (valid){
-			fsp = JArduinoProtocol.createdetachInterrupt(interrupt);
+			fsp = JArduinoProtocol.createDetachInterrupt(interrupt);
 			doSend(fsp);
 		}
 	}
@@ -252,7 +252,7 @@ public class InteractiveJArduinoDataControllerClient implements ActionListener, 
 			valid = false;
 		}
 		if (valid){
-			fsp = JArduinoProtocol.createeeprom_read(address);
+			fsp = JArduinoProtocol.createEeprom_read(address);
 			doSend(fsp);
 		}
 	}
@@ -270,7 +270,7 @@ public class InteractiveJArduinoDataControllerClient implements ActionListener, 
 			valid = false;
 		}
 		if (valid){
-			fsp = JArduinoProtocol.createeeprom_sync_write(address, value);
+			fsp = JArduinoProtocol.createEeprom_sync_write(address, value);
 			doSend(fsp);
 		}
 	}
@@ -288,7 +288,7 @@ public class InteractiveJArduinoDataControllerClient implements ActionListener, 
 			valid = false;
 		}
 		if (valid){
-			fsp = JArduinoProtocol.createeeprom_write(address, value);
+			fsp = JArduinoProtocol.createEeprom_write(address, value);
 			doSend(fsp);
 		}
 	}

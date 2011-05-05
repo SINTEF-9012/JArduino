@@ -18,7 +18,7 @@
 
 package org.sintef.jarduino.examples.digital;
 
-import org.sintef.jarduino.DigitalPin;
+import org.sintef.jarduino.EDigitalPin;
 import org.sintef.jarduino.JArduino;
 
 public class ToneMelody extends JArduino implements Pitches{
@@ -45,7 +45,7 @@ public class ToneMelody extends JArduino implements Pitches{
 		    // divided by the note type.
 		    //e.g. quarter note = 1000 / 4, eighth note = 1000/8, etc.
 		    short noteDuration = (short) (1000/noteDurations[thisNote]);
-		    tone(DigitalPin.A_0, melody[thisNote],noteDuration);
+		    tone(EDigitalPin.A_0, melody[thisNote],noteDuration);
 		    
 		    // to distinguish the notes, set a minimum time between them.
 		    // the note's duration + 30% seems to work well:

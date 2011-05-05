@@ -17,19 +17,19 @@
  */
 package org.sintef.jarduino.examples.basic;
 
-import org.sintef.jarduino.DigitalPin;
-import org.sintef.jarduino.DigitalState;
-import org.sintef.jarduino.InterruptPin;
-import org.sintef.jarduino.InterruptTrigger;
+import org.sintef.jarduino.EDigitalPin;
+import org.sintef.jarduino.EDigitalState;
+import org.sintef.jarduino.EInterruptPin;
+import org.sintef.jarduino.EInterruptTrigger;
 import org.sintef.jarduino.JArduino;
-import org.sintef.jarduino.PinMode;
+import org.sintef.jarduino.EPinMode;
 /*
 This example shows how to use external interrupt of the
 arduino board.
 */
 public class SimpleInterrupt extends JArduino {
 
-	final DigitalPin ledPin = DigitalPin.PIN_9; // Analog output pin that the LED is attached to
+	final EDigitalPin ledPin = EDigitalPin.PIN_9; // Analog output pin that the LED is attached to
 	
 	public SimpleInterrupt(String port) {
 		super(port);
@@ -39,10 +39,10 @@ public class SimpleInterrupt extends JArduino {
 	protected void setup() {
 		// initialize the digital pin as an output.
 		// Pin 13 has an LED connected on most Arduino boards:
-		pinMode(ledPin, PinMode.OUTPUT);
+		pinMode(ledPin, EPinMode.OUTPUT);
 		// with a button connected on pin2, this will generate an
 		// interrupt when the button is pressed
-		attachInterrupt(InterruptPin.PIN_2_INT0, InterruptTrigger.RISING);
+		attachInterrupt(EInterruptPin.PIN_2_INT0, EInterruptTrigger.RISING);
 	}
 
 	@Override
@@ -51,14 +51,14 @@ public class SimpleInterrupt extends JArduino {
 		delay(1000); // wait for a second
 	}
 
-	DigitalState state = DigitalState.LOW;
+	EDigitalState state = EDigitalState.LOW;
 	
 	@Override
 	protected void interrupt0() {
 		// This operation gets invoked when an INT0 is generated
 		System.out.println("INT0: Button pressed!");
-		if (state == DigitalState.LOW) state = DigitalState.HIGH;
-		else state = DigitalState.LOW;
+		if (state == EDigitalState.LOW) state = EDigitalState.HIGH;
+		else state = EDigitalState.LOW;
 		digitalWrite(ledPin, state);
 	}
 

@@ -274,7 +274,7 @@ public class InteractiveJArduinoDataGUIClient implements ActionListener {
 			logOwnEventsButton = new JButton("Log Own Events (Click to Activate)");
 			frame = new JFrame("Interactive JArduino Data Simulator");
 			frame.setLayout(new GridBagLayout());
-                        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			
 			GridBagConstraints c = new GridBagConstraints();
 			c.gridwidth = 1;
@@ -517,7 +517,7 @@ public class InteractiveJArduinoDataGUIClient implements ActionListener {
  		c.gridx = 0;
 		c.gridy = 0;
  		panel.add(labelpin, c);
-		DigitalPin[] valuespinModePin = {DigitalPin.PIN_0, DigitalPin.PIN_1, DigitalPin.PIN_2, DigitalPin.PIN_3, DigitalPin.PIN_4, DigitalPin.PIN_5, DigitalPin.PIN_6, DigitalPin.PIN_7, DigitalPin.PIN_8, DigitalPin.PIN_9, DigitalPin.PIN_10, DigitalPin.PIN_11, DigitalPin.PIN_12, DigitalPin.PIN_13, DigitalPin.A_0, DigitalPin.A_1, DigitalPin.A_2, DigitalPin.A_3, DigitalPin.A_4, DigitalPin.A_5};
+		EDigitalPin[] valuespinModePin = {EDigitalPin.PIN_0, EDigitalPin.PIN_1, EDigitalPin.PIN_2, EDigitalPin.PIN_3, EDigitalPin.PIN_4, EDigitalPin.PIN_5, EDigitalPin.PIN_6, EDigitalPin.PIN_7, EDigitalPin.PIN_8, EDigitalPin.PIN_9, EDigitalPin.PIN_10, EDigitalPin.PIN_11, EDigitalPin.PIN_12, EDigitalPin.PIN_13, EDigitalPin.A_0, EDigitalPin.A_1, EDigitalPin.A_2, EDigitalPin.A_3, EDigitalPin.A_4, EDigitalPin.A_5};
 		fieldpinModePin = new JComboBox(valuespinModePin);		
  		c.gridx = 1;
 		c.gridy = 0;
@@ -527,7 +527,7 @@ public class InteractiveJArduinoDataGUIClient implements ActionListener {
  		c.gridx = 0;
 		c.gridy = 1;
  		panel.add(labelmode, c);
-		PinMode[] valuespinModeMode = {PinMode.INPUT, PinMode.OUTPUT};
+		EPinMode[] valuespinModeMode = {EPinMode.INPUT, EPinMode.OUTPUT};
 		fieldpinModeMode = new JComboBox(valuespinModeMode);		
  		c.gridx = 1;
 		c.gridy = 1;
@@ -549,7 +549,7 @@ public class InteractiveJArduinoDataGUIClient implements ActionListener {
  		c.gridx = 0;
 		c.gridy = 0;
  		panel.add(labelpin, c);
-		DigitalPin[] valuesdigitalReadPin = {DigitalPin.PIN_0, DigitalPin.PIN_1, DigitalPin.PIN_2, DigitalPin.PIN_3, DigitalPin.PIN_4, DigitalPin.PIN_5, DigitalPin.PIN_6, DigitalPin.PIN_7, DigitalPin.PIN_8, DigitalPin.PIN_9, DigitalPin.PIN_10, DigitalPin.PIN_11, DigitalPin.PIN_12, DigitalPin.PIN_13, DigitalPin.A_0, DigitalPin.A_1, DigitalPin.A_2, DigitalPin.A_3, DigitalPin.A_4, DigitalPin.A_5};
+		EDigitalPin[] valuesdigitalReadPin = {EDigitalPin.PIN_0, EDigitalPin.PIN_1, EDigitalPin.PIN_2, EDigitalPin.PIN_3, EDigitalPin.PIN_4, EDigitalPin.PIN_5, EDigitalPin.PIN_6, EDigitalPin.PIN_7, EDigitalPin.PIN_8, EDigitalPin.PIN_9, EDigitalPin.PIN_10, EDigitalPin.PIN_11, EDigitalPin.PIN_12, EDigitalPin.PIN_13, EDigitalPin.A_0, EDigitalPin.A_1, EDigitalPin.A_2, EDigitalPin.A_3, EDigitalPin.A_4, EDigitalPin.A_5};
 		fielddigitalReadPin = new JComboBox(valuesdigitalReadPin);		
  		c.gridx = 1;
 		c.gridy = 0;
@@ -571,7 +571,7 @@ public class InteractiveJArduinoDataGUIClient implements ActionListener {
  		c.gridx = 0;
 		c.gridy = 0;
  		panel.add(labelpin, c);
-		DigitalPin[] valuesdigitalWritePin = {DigitalPin.PIN_0, DigitalPin.PIN_1, DigitalPin.PIN_2, DigitalPin.PIN_3, DigitalPin.PIN_4, DigitalPin.PIN_5, DigitalPin.PIN_6, DigitalPin.PIN_7, DigitalPin.PIN_8, DigitalPin.PIN_9, DigitalPin.PIN_10, DigitalPin.PIN_11, DigitalPin.PIN_12, DigitalPin.PIN_13, DigitalPin.A_0, DigitalPin.A_1, DigitalPin.A_2, DigitalPin.A_3, DigitalPin.A_4, DigitalPin.A_5};
+		EDigitalPin[] valuesdigitalWritePin = {EDigitalPin.PIN_0, EDigitalPin.PIN_1, EDigitalPin.PIN_2, EDigitalPin.PIN_3, EDigitalPin.PIN_4, EDigitalPin.PIN_5, EDigitalPin.PIN_6, EDigitalPin.PIN_7, EDigitalPin.PIN_8, EDigitalPin.PIN_9, EDigitalPin.PIN_10, EDigitalPin.PIN_11, EDigitalPin.PIN_12, EDigitalPin.PIN_13, EDigitalPin.A_0, EDigitalPin.A_1, EDigitalPin.A_2, EDigitalPin.A_3, EDigitalPin.A_4, EDigitalPin.A_5};
 		fielddigitalWritePin = new JComboBox(valuesdigitalWritePin);		
  		c.gridx = 1;
 		c.gridy = 0;
@@ -581,7 +581,7 @@ public class InteractiveJArduinoDataGUIClient implements ActionListener {
  		c.gridx = 0;
 		c.gridy = 1;
  		panel.add(labelvalue, c);
-		DigitalState[] valuesdigitalWriteValue = {DigitalState.LOW, DigitalState.HIGH};
+		EDigitalState[] valuesdigitalWriteValue = {EDigitalState.LOW, EDigitalState.HIGH};
 		fielddigitalWriteValue = new JComboBox(valuesdigitalWriteValue);		
  		c.gridx = 1;
 		c.gridy = 1;
@@ -603,7 +603,7 @@ public class InteractiveJArduinoDataGUIClient implements ActionListener {
  		c.gridx = 0;
 		c.gridy = 0;
  		panel.add(labeltype, c);
-		AnalogReference[] valuesanalogReferenceType = {AnalogReference.DEFAULT, AnalogReference.INTERNAL, AnalogReference.EXTERNAL};
+		EAnalogReference[] valuesanalogReferenceType = {EAnalogReference.DEFAULT, EAnalogReference.INTERNAL, EAnalogReference.EXTERNAL};
 		fieldanalogReferenceType = new JComboBox(valuesanalogReferenceType);		
  		c.gridx = 1;
 		c.gridy = 0;
@@ -625,7 +625,7 @@ public class InteractiveJArduinoDataGUIClient implements ActionListener {
  		c.gridx = 0;
 		c.gridy = 0;
  		panel.add(labelpin, c);
-		AnalogPin[] valuesanalogReadPin = {AnalogPin.A_0, AnalogPin.A_1, AnalogPin.A_2, AnalogPin.A_3, AnalogPin.A_4, AnalogPin.A_5};
+		EAnalogPin[] valuesanalogReadPin = {EAnalogPin.A_0, EAnalogPin.A_1, EAnalogPin.A_2, EAnalogPin.A_3, EAnalogPin.A_4, EAnalogPin.A_5};
 		fieldanalogReadPin = new JComboBox(valuesanalogReadPin);		
  		c.gridx = 1;
 		c.gridy = 0;
@@ -647,7 +647,7 @@ public class InteractiveJArduinoDataGUIClient implements ActionListener {
  		c.gridx = 0;
 		c.gridy = 0;
  		panel.add(labelpin, c);
-		PWMPin[] valuesanalogWritePin = {PWMPin.PWM_PIN_3, PWMPin.PWM_PIN_5, PWMPin.PWM_PIN_6, PWMPin.PWM_PIN_9, PWMPin.PWM_PIN_10, PWMPin.PWM_PIN_11};
+		EPWMPin[] valuesanalogWritePin = {EPWMPin.PWM_PIN_3, EPWMPin.PWM_PIN_5, EPWMPin.PWM_PIN_6, EPWMPin.PWM_PIN_9, EPWMPin.PWM_PIN_10, EPWMPin.PWM_PIN_11};
 		fieldanalogWritePin = new JComboBox(valuesanalogWritePin);		
  		c.gridx = 1;
 		c.gridy = 0;
@@ -679,7 +679,7 @@ public class InteractiveJArduinoDataGUIClient implements ActionListener {
  		c.gridx = 0;
 		c.gridy = 0;
  		panel.add(labelpin, c);
-		DigitalPin[] valuestonePin = {DigitalPin.PIN_0, DigitalPin.PIN_1, DigitalPin.PIN_2, DigitalPin.PIN_3, DigitalPin.PIN_4, DigitalPin.PIN_5, DigitalPin.PIN_6, DigitalPin.PIN_7, DigitalPin.PIN_8, DigitalPin.PIN_9, DigitalPin.PIN_10, DigitalPin.PIN_11, DigitalPin.PIN_12, DigitalPin.PIN_13, DigitalPin.A_0, DigitalPin.A_1, DigitalPin.A_2, DigitalPin.A_3, DigitalPin.A_4, DigitalPin.A_5};
+		EDigitalPin[] valuestonePin = {EDigitalPin.PIN_0, EDigitalPin.PIN_1, EDigitalPin.PIN_2, EDigitalPin.PIN_3, EDigitalPin.PIN_4, EDigitalPin.PIN_5, EDigitalPin.PIN_6, EDigitalPin.PIN_7, EDigitalPin.PIN_8, EDigitalPin.PIN_9, EDigitalPin.PIN_10, EDigitalPin.PIN_11, EDigitalPin.PIN_12, EDigitalPin.PIN_13, EDigitalPin.A_0, EDigitalPin.A_1, EDigitalPin.A_2, EDigitalPin.A_3, EDigitalPin.A_4, EDigitalPin.A_5};
 		fieldtonePin = new JComboBox(valuestonePin);		
  		c.gridx = 1;
 		c.gridy = 0;
@@ -721,7 +721,7 @@ public class InteractiveJArduinoDataGUIClient implements ActionListener {
  		c.gridx = 0;
 		c.gridy = 0;
  		panel.add(labelpin, c);
-		DigitalPin[] valuesnoTonePin = {DigitalPin.PIN_0, DigitalPin.PIN_1, DigitalPin.PIN_2, DigitalPin.PIN_3, DigitalPin.PIN_4, DigitalPin.PIN_5, DigitalPin.PIN_6, DigitalPin.PIN_7, DigitalPin.PIN_8, DigitalPin.PIN_9, DigitalPin.PIN_10, DigitalPin.PIN_11, DigitalPin.PIN_12, DigitalPin.PIN_13, DigitalPin.A_0, DigitalPin.A_1, DigitalPin.A_2, DigitalPin.A_3, DigitalPin.A_4, DigitalPin.A_5};
+		EDigitalPin[] valuesnoTonePin = {EDigitalPin.PIN_0, EDigitalPin.PIN_1, EDigitalPin.PIN_2, EDigitalPin.PIN_3, EDigitalPin.PIN_4, EDigitalPin.PIN_5, EDigitalPin.PIN_6, EDigitalPin.PIN_7, EDigitalPin.PIN_8, EDigitalPin.PIN_9, EDigitalPin.PIN_10, EDigitalPin.PIN_11, EDigitalPin.PIN_12, EDigitalPin.PIN_13, EDigitalPin.A_0, EDigitalPin.A_1, EDigitalPin.A_2, EDigitalPin.A_3, EDigitalPin.A_4, EDigitalPin.A_5};
 		fieldnoTonePin = new JComboBox(valuesnoTonePin);		
  		c.gridx = 1;
 		c.gridy = 0;
@@ -755,7 +755,7 @@ public class InteractiveJArduinoDataGUIClient implements ActionListener {
  		c.gridx = 0;
 		c.gridy = 0;
  		panel.add(labelinterrupt, c);
-		InterruptPin[] valuesattachInterruptInterrupt = {InterruptPin.PIN_2_INT0, InterruptPin.PIN_3_INT1};
+		EInterruptPin[] valuesattachInterruptInterrupt = {EInterruptPin.PIN_2_INT0, EInterruptPin.PIN_3_INT1};
 		fieldattachInterruptInterrupt = new JComboBox(valuesattachInterruptInterrupt);		
  		c.gridx = 1;
 		c.gridy = 0;
@@ -765,7 +765,7 @@ public class InteractiveJArduinoDataGUIClient implements ActionListener {
  		c.gridx = 0;
 		c.gridy = 1;
  		panel.add(labelmode, c);
-		InterruptTrigger[] valuesattachInterruptMode = {InterruptTrigger.CHANGE, InterruptTrigger.RISING, InterruptTrigger.FALLING, InterruptTrigger.LOW};
+		EInterruptTrigger[] valuesattachInterruptMode = {EInterruptTrigger.CHANGE, EInterruptTrigger.RISING, EInterruptTrigger.FALLING, EInterruptTrigger.LOW};
 		fieldattachInterruptMode = new JComboBox(valuesattachInterruptMode);		
  		c.gridx = 1;
 		c.gridy = 1;
@@ -787,7 +787,7 @@ public class InteractiveJArduinoDataGUIClient implements ActionListener {
  		c.gridx = 0;
 		c.gridy = 0;
  		panel.add(labelinterrupt, c);
-		InterruptPin[] valuesdetachInterruptInterrupt = {InterruptPin.PIN_2_INT0, InterruptPin.PIN_3_INT1};
+		EInterruptPin[] valuesdetachInterruptInterrupt = {EInterruptPin.PIN_2_INT0, EInterruptPin.PIN_3_INT1};
 		fielddetachInterruptInterrupt = new JComboBox(valuesdetachInterruptInterrupt);		
  		c.gridx = 1;
 		c.gridy = 0;

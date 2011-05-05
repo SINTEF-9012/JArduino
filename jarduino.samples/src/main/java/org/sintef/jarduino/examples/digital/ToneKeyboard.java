@@ -17,8 +17,8 @@
  */
 package org.sintef.jarduino.examples.digital;
 
-import org.sintef.jarduino.AnalogPin;
-import org.sintef.jarduino.DigitalPin;
+import org.sintef.jarduino.EAnalogPin;
+import org.sintef.jarduino.EDigitalPin;
 import org.sintef.jarduino.JArduino;
 
 
@@ -42,13 +42,13 @@ public class ToneKeyboard extends JArduino implements Pitches{
 		//This is an easy "hack" to iterate through the AnalogPin enums
 		for(byte b = 14; b < 17; b++){
 			// get a sensor reading:
-			int sensorReading = analogRead(AnalogPin.fromValue(b));//get the AnalogPin from the byte
+			int sensorReading = analogRead(EAnalogPin.fromValue(b));//get the AnalogPin from the byte
 			// if the sensor is pressed hard enough:
 			if (sensorReading > threshold) {
 				// play the note corresponding to this sensor:
 				//subtract b with 14 to get the right place in
 				//the notes array
-				tone(DigitalPin.PIN_8, notes[b-14], (short)20);
+				tone(EDigitalPin.PIN_8, notes[b-14], (short)20);
 			} 
 		}
 	}

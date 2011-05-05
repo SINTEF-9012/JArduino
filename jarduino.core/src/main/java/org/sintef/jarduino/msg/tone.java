@@ -19,15 +19,13 @@ package org.sintef.jarduino.msg;
 
 import org.sintef.jarduino.*;
 
-import java.nio.ByteBuffer;
+public class Tone extends JArduinoProtocolPacket {
 
-public class tone extends JArduinoProtocolPacket {
-
-	private DigitalPin pin;
+	private EDigitalPin pin;
 	private short frequency;
 	private short duration;
 	
-	public tone(DigitalPin pin, short frequency, short duration) {
+	public Tone(EDigitalPin pin, short frequency, short duration) {
 		setCommandID(JArduinoProtocol.TONE);
 		setByteValue(pin.getValue());
 		this.pin = pin;
@@ -37,9 +35,9 @@ public class tone extends JArduinoProtocolPacket {
 		this.duration = duration;
 	}
 	
-	public tone(byte[] packet) {
+	public Tone(byte[] packet) {
 		setPacketData(packet);
-		pin = DigitalPin.fromValue(buffer.get());		
+		pin = EDigitalPin.fromValue(buffer.get());		
 		frequency = buffer.getShort();
 		duration = buffer.getShort();
 		
@@ -47,7 +45,7 @@ public class tone extends JArduinoProtocolPacket {
 	
 	@Override
 	public void acceptHandler(JArduinoMessageHandler v) {
-		v.handletone(this);
+		v.handleTone(this);
 	}
 
 	@Override
@@ -59,7 +57,7 @@ public class tone extends JArduinoProtocolPacket {
 		return myString;
 	}
 
-	public DigitalPin getPin() {
+	public EDigitalPin getPin() {
 		return pin;
 	}
 	

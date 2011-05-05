@@ -19,27 +19,25 @@ package org.sintef.jarduino.msg;
 
 import org.sintef.jarduino.*;
 
-import java.nio.ByteBuffer;
+public class InterruptNotification extends JArduinoProtocolPacket {
 
-public class interruptNotification extends JArduinoProtocolPacket {
-
-	private InterruptPin interrupt;
+	private EInterruptPin interrupt;
 	
-	public interruptNotification(InterruptPin interrupt) {
+	public InterruptNotification(EInterruptPin interrupt) {
 		setCommandID(JArduinoProtocol.INTERRUPT_NOTIFICATION);
 		setByteValue(interrupt.getValue());
 		this.interrupt = interrupt;
 	}
 	
-	public interruptNotification(byte[] packet) {
+	public InterruptNotification(byte[] packet) {
 		setPacketData(packet);
-		interrupt = InterruptPin.fromValue(buffer.get());		
+		interrupt = EInterruptPin.fromValue(buffer.get());		
 		
 	}
 	
 	@Override
 	public void acceptHandler(JArduinoMessageHandler v) {
-		v.handleinterruptNotification(this);
+		v.handleInterruptNotification(this);
 	}
 
 	@Override
@@ -49,7 +47,7 @@ public class interruptNotification extends JArduinoProtocolPacket {
 		return myString;
 	}
 
-	public InterruptPin getInterrupt() {
+	public EInterruptPin getInterrupt() {
 		return interrupt;
 	}
 	
