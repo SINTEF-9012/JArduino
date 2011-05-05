@@ -50,7 +50,7 @@ public class Serial4JArduino implements JArduinoClientObserver, JArduinoSubject 
             if (osName.equals("Win32")) {
                 NativeLibUtil.copyFile(Serial4JArduino.class.getClassLoader().getResourceAsStream("nativelib/Windows/win32/rxtxSerial.dll"), "rxtxSerial.dll");
             }
-            if (osName.equals("Win64")) {
+            if (osName.equals("Win64") || osName.equals("Windows 7")) {
                 NativeLibUtil.copyFile(Serial4JArduino.class.getClassLoader().getResourceAsStream("nativelib/Windows/win64/rxtxSerial.dll"), "rxtxSerial.dll");
             }
             if (osName.equals("Linux") && osProc.equals("x86-64")) {
