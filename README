@@ -3,3 +3,17 @@ Welcome to the JArduino project!
 Browse the dist folder to get the latest JArduino distribution.
 
 The JArduino team.
+
+
+Maven usage:
+
+	In project root directory
+	
+	$ mvn clean install
+	
+	To run some examples without IDE
+	
+	$ cd jarduino.samples
+	$ mvn exec:java -Dexec.mainClass="org.sintef.jarduino.gui.JArduinoGUI"
+	
+	Replace "org.sintef.jarduino.gui.JArduinoGUI" with your own main class
