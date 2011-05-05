@@ -21,25 +21,25 @@ import org.sintef.jarduino.msg.*;
 
 public interface IJArduinoMessageHandler {
 
-	void handlePinMode(PinMode msg);
-	void handleDigitalRead(DigitalRead msg);
-	void handleDigitalWrite(DigitalWrite msg);
-	void handleAnalogReference(AnalogReference msg);
-	void handleAnalogRead(AnalogRead msg);
-	void handleAnalogWrite(AnalogWrite msg);
-	void handleTone(Tone msg);
-	void handleNoTone(NoTone msg);
-	void handlePing(Ping msg);
-	void handleAttachInterrupt(AttachInterrupt msg);
-	void handleDetachInterrupt(DetachInterrupt msg);
-	void handleEeprom_read(Eeprom_read msg);
-	void handleEeprom_sync_write(Eeprom_sync_write msg);
-	void handleEeprom_write(Eeprom_write msg);
+	void handlePinMode(PinModeMsg msg);
+	void handleDigitalRead(DigitalReadMsg msg);
+	void handleDigitalWrite(DigitalWriteMsg msg);
+	void handleAnalogReference(AnalogReferenceMsg msg);
+	void handleAnalogRead(AnalogReadMsg msg);
+	void handleAnalogWrite(AnalogWriteMsg msg);
+	void handleTone(ToneMsg msg);
+	void handleNoTone(NoToneMsg msg);
+	void handlePing(PingMsg msg);
+	void handleAttachInterrupt(AttachInterruptMsg msg);
+	void handleDetachInterrupt(DetachInterruptMsg msg);
+	void handleEeprom_read(Eeprom_readMsg msg);
+	void handleEeprom_sync_write(Eeprom_sync_writeMsg msg);
+	void handleEeprom_write(Eeprom_writeMsg msg);
 	
-	void handleDigitalReadResult(DigitalReadResult msg);
-	void handleAnalogReadResult(AnalogReadResult msg);
-	void handlePong(Pong msg);
-	void handleInterruptNotification(InterruptNotification msg);
-	void handleEeprom_value(Eeprom_value msg);
-	void handleEeprom_write_ack(Eeprom_write_ack msg);
+	void handleDigitalReadResult(DigitalReadResultMsg msg);
+	void handleAnalogReadResult(AnalogReadResultMsg msg);
+	void handlePong(PongMsg msg);
+	void handleInterruptNotification(InterruptNotificationMsg msg);
+	void handleEeprom_value(Eeprom_valueMsg msg);
+	void handleEeprom_write_ack(Eeprom_write_ackMsg msg);
 }

@@ -17,13 +17,33 @@
  */
 package org.sintef.jarduino;
 
-import org.sintef.jarduino.msg.*;
+import java.util.HashMap;
+import java.util.Map;
 
-public abstract class JArduinoClientMessageHandler implements IJArduinoMessageHandler{
-	@Override public void handleDigitalReadResult(DigitalReadResultMsg msg){ /* Nothing */ }
-	@Override public void handleAnalogReadResult(AnalogReadResultMsg msg){ /* Nothing */ }
-	@Override public void handlePong(PongMsg msg){ /* Nothing */ }
-	@Override public void handleInterruptNotification(InterruptNotificationMsg msg){ /* Nothing */ }
-	@Override public void handleEeprom_value(Eeprom_valueMsg msg){ /* Nothing */ }
-	@Override public void handleEeprom_write_ack(Eeprom_write_ackMsg msg){ /* Nothing */ }
+public enum DigitalState {
+	LOW((byte)0),
+	HIGH((byte)1);
+
+	private final byte value;
+	
+	private DigitalState(byte value){
+		this.value = value;
+	}
+	
+	public byte getValue(){
+		return value;
+	}
+	
+	private static final Map<Byte, DigitalState> map;
+	
+	static {
+		map = new HashMap<Byte, DigitalState>();
+		map.put((byte)0, DigitalState.LOW);
+		map.put((byte)1, DigitalState.HIGH);
+	}
+	
+	public static DigitalState fromValue(byte b) {
+		return map.get(b);
+	}
+	
 }

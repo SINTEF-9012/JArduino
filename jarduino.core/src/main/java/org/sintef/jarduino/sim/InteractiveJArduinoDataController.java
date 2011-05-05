@@ -66,9 +66,9 @@ public class InteractiveJArduinoDataController implements ActionListener, JArdui
 	public final void senddigitalReadResult() {
 		FixedSizePacket fsp = null;
 		boolean valid = true;
-		EDigitalState value = null;
+		DigitalState value = null;
 		try{
-			value = (EDigitalState)InteractiveJArduinoDataGUI.getFielddigitalReadResultValue().getSelectedItem();
+			value = (DigitalState)InteractiveJArduinoDataGUI.getFielddigitalReadResultValue().getSelectedItem();
 		} catch (NumberFormatException nfe){
 			JOptionPane.showMessageDialog(new JFrame(), "Please check that all the inputs have the right type", "Error: Invalid input", JOptionPane.ERROR_MESSAGE);
 			valid = false;
@@ -104,9 +104,9 @@ public class InteractiveJArduinoDataController implements ActionListener, JArdui
 	public final void sendinterruptNotification() {
 		FixedSizePacket fsp = null;
 		boolean valid = true;
-		EInterruptPin interrupt = null;
+		InterruptPin interrupt = null;
 		try{
-			interrupt = (EInterruptPin)InteractiveJArduinoDataGUI.getFieldinterruptNotificationInterrupt().getSelectedItem();
+			interrupt = (InterruptPin)InteractiveJArduinoDataGUI.getFieldinterruptNotificationInterrupt().getSelectedItem();
 		} catch (NumberFormatException nfe){
 			JOptionPane.showMessageDialog(new JFrame(), "Please check that all the inputs have the right type", "Error: Invalid input", JOptionPane.ERROR_MESSAGE);
 			valid = false;

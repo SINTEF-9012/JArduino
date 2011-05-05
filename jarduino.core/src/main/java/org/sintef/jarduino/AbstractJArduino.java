@@ -35,49 +35,49 @@ public abstract class AbstractJArduino {
 	//*************************************************************************
 	// Asynchronous remote calls. No expected result or ack. "Send and forget" 
 	//*************************************************************************
-	public void pinMode(EDigitalPin pin, EPinMode mode) {
+	public void pinMode(DigitalPin pin, PinMode mode) {
 		// Create message using the factory
 		FixedSizePacket p = JArduinoProtocol.createPinMode(pin, mode);
 		// Send the message on the serial line
 		serial.receiveMsg(p.getPacket());
 	}
-	public void digitalWrite(EDigitalPin pin, EDigitalState value) {
+	public void digitalWrite(DigitalPin pin, DigitalState value) {
 		// Create message using the factory
 		FixedSizePacket p = JArduinoProtocol.createDigitalWrite(pin, value);
 		// Send the message on the serial line
 		serial.receiveMsg(p.getPacket());
 	}
-	public void analogReference(EAnalogReference type) {
+	public void analogReference(AnalogReference type) {
 		// Create message using the factory
 		FixedSizePacket p = JArduinoProtocol.createAnalogReference(type);
 		// Send the message on the serial line
 		serial.receiveMsg(p.getPacket());
 	}
-	public void analogWrite(EPWMPin pin, byte value) {
+	public void analogWrite(PWMPin pin, byte value) {
 		// Create message using the factory
 		FixedSizePacket p = JArduinoProtocol.createAnalogWrite(pin, value);
 		// Send the message on the serial line
 		serial.receiveMsg(p.getPacket());
 	}
-	public void tone(EDigitalPin pin, short frequency, short duration) {
+	public void tone(DigitalPin pin, short frequency, short duration) {
 		// Create message using the factory
 		FixedSizePacket p = JArduinoProtocol.createTone(pin, frequency, duration);
 		// Send the message on the serial line
 		serial.receiveMsg(p.getPacket());
 	}
-	public void noTone(EDigitalPin pin) {
+	public void noTone(DigitalPin pin) {
 		// Create message using the factory
 		FixedSizePacket p = JArduinoProtocol.createNoTone(pin);
 		// Send the message on the serial line
 		serial.receiveMsg(p.getPacket());
 	}
-	public void attachInterrupt(EInterruptPin interrupt, EInterruptTrigger mode) {
+	public void attachInterrupt(InterruptPin interrupt, InterruptTrigger mode) {
 		// Create message using the factory
 		FixedSizePacket p = JArduinoProtocol.createAttachInterrupt(interrupt, mode);
 		// Send the message on the serial line
 		serial.receiveMsg(p.getPacket());
 	}
-	public void detachInterrupt(EInterruptPin interrupt) {
+	public void detachInterrupt(InterruptPin interrupt) {
 		// Create message using the factory
 		FixedSizePacket p = JArduinoProtocol.createDetachInterrupt(interrupt);
 		// Send the message on the serial line
@@ -133,10 +133,10 @@ public abstract class AbstractJArduino {
 	//*************************************************************************
 	// Synchronous remote calls with result
 	//*************************************************************************
-	private EDigitalState digitalRead_result;
+	private DigitalState digitalRead_result;
 	private boolean digitalRead_result_available;
 	private final Object digitalReadMonitor = "digitalReadMonitor";
-	public EDigitalState digitalRead(EDigitalPin pin) {
+	public DigitalState digitalRead(DigitalPin pin) {
 		try {
 			synchronized(digitalReadMonitor) {
 				digitalRead_result_available = false;
@@ -160,7 +160,7 @@ public abstract class AbstractJArduino {
 	private short analogRead_result;
 	private boolean analogRead_result_available;
 	private final Object analogReadMonitor = "analogReadMonitor";
-	public short analogRead(EAnalogPin pin) {
+	public short analogRead(AnalogPin pin) {
 		try {
 			synchronized(analogReadMonitor) {
 				analogRead_result_available = false;
@@ -212,7 +212,7 @@ public abstract class AbstractJArduino {
 	/**
 	 * Implement this method to handle the incoming message interruptNotification
 	 */
-	protected abstract void receiveInterruptNotification(EInterruptPin interrupt);
+	protected abstract void receiveInterruptNotification(InterruptPin interrupt);
 	
 	private class JArduinoDriverMessageHandler extends JArduinoMessageHandler implements JArduinoObserver {
 		
@@ -227,7 +227,7 @@ public abstract class AbstractJArduino {
 		// Results of Synchronous remote calls with results
 		//*************************************************************************
 		@Override
-		public void handleDigitalReadResult(DigitalReadResult msg) {
+		public void handleDigitalReadResult(DigitalReadResultMsg msg) {
 			digitalRead_result = msg.getValue();
 			digitalRead_result_available = true;
 			synchronized(digitalReadMonitor) {
@@ -235,7 +235,7 @@ public abstract class AbstractJArduino {
 			}
 		}
 		@Override
-		public void handleAnalogReadResult(AnalogReadResult msg) {
+		public void handleAnalogReadResult(AnalogReadResultMsg msg) {
 			analogRead_result = msg.getValue();
 			analogRead_result_available = true;
 			synchronized(analogReadMonitor) {
@@ -243,7 +243,7 @@ public abstract class AbstractJArduino {
 			}
 		}
 		@Override
-		public void handleEeprom_value(Eeprom_value msg) {
+		public void handleEeprom_value(Eeprom_valueMsg msg) {
 			eeprom_read_result = msg.getValue();
 			eeprom_read_result_available = true;
 			synchronized(eeprom_readMonitor) {
@@ -255,14 +255,14 @@ public abstract class AbstractJArduino {
 		// Results of Synchronous remote calls with acks
 		//*************************************************************************
 		@Override
-		public void handlePong(Pong msg) {
+		public void handlePong(PongMsg msg) {
 			synchronized(pingMonitor) {
 				ping_ack_available = true;
 				pingMonitor.notify();
 			}
 		}
 		@Override
-		public void handleEeprom_write_ack(Eeprom_write_ack msg) {
+		public void handleEeprom_write_ack(Eeprom_write_ackMsg msg) {
 			synchronized(eeprom_sync_writeMonitor) {
 				eeprom_sync_write_ack_available = true;
 				eeprom_sync_writeMonitor.notify();
@@ -273,7 +273,7 @@ public abstract class AbstractJArduino {
 		// Asynchonous incoming messages
 		//*************************************************************************
 		@Override
-		public void handleInterruptNotification(InterruptNotification msg) {
+		public void handleInterruptNotification(InterruptNotificationMsg msg) {
 			receiveInterruptNotification(msg.getInterrupt());
 		}
 	}

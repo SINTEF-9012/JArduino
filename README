@@ -4,8 +4,6 @@ Browse the dist folder to get the latest JArduino distribution.
 
 The JArduino team.
 
-Important: After a refactoring, all the enumerations (to manage pins, modes, etc) starts with E. All samples have been updated. Please update your own samples using this convention.
-
 Maven usage:
 
 	In project root directory

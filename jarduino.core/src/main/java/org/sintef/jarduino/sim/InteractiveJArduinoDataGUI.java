@@ -273,7 +273,7 @@ public class InteractiveJArduinoDataGUI implements ActionListener {
  		c.gridx = 0;
 		c.gridy = 0;
  		panel.add(labelvalue, c);
-		EDigitalState[] valuesdigitalReadResultValue = {EDigitalState.LOW, EDigitalState.HIGH};
+		DigitalState[] valuesdigitalReadResultValue = {DigitalState.LOW, DigitalState.HIGH};
 		fielddigitalReadResultValue = new JComboBox(valuesdigitalReadResultValue);		
  		c.gridx = 1;
 		c.gridy = 0;
@@ -329,7 +329,7 @@ public class InteractiveJArduinoDataGUI implements ActionListener {
  		c.gridx = 0;
 		c.gridy = 0;
  		panel.add(labelinterrupt, c);
-		EInterruptPin[] valuesinterruptNotificationInterrupt = {EInterruptPin.PIN_2_INT0, EInterruptPin.PIN_3_INT1};
+		InterruptPin[] valuesinterruptNotificationInterrupt = {InterruptPin.PIN_2_INT0, InterruptPin.PIN_3_INT1};
 		fieldinterruptNotificationInterrupt = new JComboBox(valuesinterruptNotificationInterrupt);		
  		c.gridx = 1;
 		c.gridy = 0;

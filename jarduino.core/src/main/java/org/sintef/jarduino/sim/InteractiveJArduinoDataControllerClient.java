@@ -66,11 +66,11 @@ public class InteractiveJArduinoDataControllerClient implements ActionListener, 
 	public final void sendpinMode() {
 		FixedSizePacket fsp = null;
 		boolean valid = true;
-		EDigitalPin pin = null;
-		EPinMode mode = null;
+		DigitalPin pin = null;
+		PinMode mode = null;
 		try{
-			pin = (EDigitalPin)InteractiveJArduinoDataGUIClient.getFieldpinModePin().getSelectedItem();
-			mode = (EPinMode)InteractiveJArduinoDataGUIClient.getFieldpinModeMode().getSelectedItem();
+			pin = (DigitalPin)InteractiveJArduinoDataGUIClient.getFieldpinModePin().getSelectedItem();
+			mode = (PinMode)InteractiveJArduinoDataGUIClient.getFieldpinModeMode().getSelectedItem();
 		} catch (NumberFormatException nfe){
 			JOptionPane.showMessageDialog(new JFrame(), "Please check that all the inputs have the right type", "Error: Invalid input", JOptionPane.ERROR_MESSAGE);
 			valid = false;
@@ -84,9 +84,9 @@ public class InteractiveJArduinoDataControllerClient implements ActionListener, 
 	public final void senddigitalRead() {
 		FixedSizePacket fsp = null;
 		boolean valid = true;
-		EDigitalPin pin = null;
+		DigitalPin pin = null;
 		try{
-			pin = (EDigitalPin)InteractiveJArduinoDataGUIClient.getFielddigitalReadPin().getSelectedItem();
+			pin = (DigitalPin)InteractiveJArduinoDataGUIClient.getFielddigitalReadPin().getSelectedItem();
 		} catch (NumberFormatException nfe){
 			JOptionPane.showMessageDialog(new JFrame(), "Please check that all the inputs have the right type", "Error: Invalid input", JOptionPane.ERROR_MESSAGE);
 			valid = false;
@@ -100,11 +100,11 @@ public class InteractiveJArduinoDataControllerClient implements ActionListener, 
 	public final void senddigitalWrite() {
 		FixedSizePacket fsp = null;
 		boolean valid = true;
-		EDigitalPin pin = null;
-		EDigitalState value = null;
+		DigitalPin pin = null;
+		DigitalState value = null;
 		try{
-			pin = (EDigitalPin)InteractiveJArduinoDataGUIClient.getFielddigitalWritePin().getSelectedItem();
-			value = (EDigitalState)InteractiveJArduinoDataGUIClient.getFielddigitalWriteValue().getSelectedItem();
+			pin = (DigitalPin)InteractiveJArduinoDataGUIClient.getFielddigitalWritePin().getSelectedItem();
+			value = (DigitalState)InteractiveJArduinoDataGUIClient.getFielddigitalWriteValue().getSelectedItem();
 		} catch (NumberFormatException nfe){
 			JOptionPane.showMessageDialog(new JFrame(), "Please check that all the inputs have the right type", "Error: Invalid input", JOptionPane.ERROR_MESSAGE);
 			valid = false;
@@ -118,9 +118,9 @@ public class InteractiveJArduinoDataControllerClient implements ActionListener, 
 	public final void sendanalogReference() {
 		FixedSizePacket fsp = null;
 		boolean valid = true;
-		EAnalogReference type = null;
+		AnalogReference type = null;
 		try{
-			type = (EAnalogReference)InteractiveJArduinoDataGUIClient.getFieldanalogReferenceType().getSelectedItem();
+			type = (AnalogReference)InteractiveJArduinoDataGUIClient.getFieldanalogReferenceType().getSelectedItem();
 		} catch (NumberFormatException nfe){
 			JOptionPane.showMessageDialog(new JFrame(), "Please check that all the inputs have the right type", "Error: Invalid input", JOptionPane.ERROR_MESSAGE);
 			valid = false;
@@ -134,9 +134,9 @@ public class InteractiveJArduinoDataControllerClient implements ActionListener, 
 	public final void sendanalogRead() {
 		FixedSizePacket fsp = null;
 		boolean valid = true;
-		EAnalogPin pin = null;
+		AnalogPin pin = null;
 		try{
-			pin = (EAnalogPin)InteractiveJArduinoDataGUIClient.getFieldanalogReadPin().getSelectedItem();
+			pin = (AnalogPin)InteractiveJArduinoDataGUIClient.getFieldanalogReadPin().getSelectedItem();
 		} catch (NumberFormatException nfe){
 			JOptionPane.showMessageDialog(new JFrame(), "Please check that all the inputs have the right type", "Error: Invalid input", JOptionPane.ERROR_MESSAGE);
 			valid = false;
@@ -150,10 +150,10 @@ public class InteractiveJArduinoDataControllerClient implements ActionListener, 
 	public final void sendanalogWrite() {
 		FixedSizePacket fsp = null;
 		boolean valid = true;
-		EPWMPin pin = null;
+		PWMPin pin = null;
 		Byte value = null;
 		try{
-			pin = (EPWMPin)InteractiveJArduinoDataGUIClient.getFieldanalogWritePin().getSelectedItem();
+			pin = (PWMPin)InteractiveJArduinoDataGUIClient.getFieldanalogWritePin().getSelectedItem();
 			value = Byte.parseByte(InteractiveJArduinoDataGUIClient.getFieldanalogWriteValue().getText());
 		} catch (NumberFormatException nfe){
 			JOptionPane.showMessageDialog(new JFrame(), "Please check that all the inputs have the right type", "Error: Invalid input", JOptionPane.ERROR_MESSAGE);
@@ -168,11 +168,11 @@ public class InteractiveJArduinoDataControllerClient implements ActionListener, 
 	public final void sendtone() {
 		FixedSizePacket fsp = null;
 		boolean valid = true;
-		EDigitalPin pin = null;
+		DigitalPin pin = null;
 		Short frequency = null;
 		Short duration = null;
 		try{
-			pin = (EDigitalPin)InteractiveJArduinoDataGUIClient.getFieldtonePin().getSelectedItem();
+			pin = (DigitalPin)InteractiveJArduinoDataGUIClient.getFieldtonePin().getSelectedItem();
 			frequency = Short.parseShort(InteractiveJArduinoDataGUIClient.getFieldtoneFrequency().getText());
 			duration = Short.parseShort(InteractiveJArduinoDataGUIClient.getFieldtoneDuration().getText());
 		} catch (NumberFormatException nfe){
@@ -188,9 +188,9 @@ public class InteractiveJArduinoDataControllerClient implements ActionListener, 
 	public final void sendnoTone() {
 		FixedSizePacket fsp = null;
 		boolean valid = true;
-		EDigitalPin pin = null;
+		DigitalPin pin = null;
 		try{
-			pin = (EDigitalPin)InteractiveJArduinoDataGUIClient.getFieldnoTonePin().getSelectedItem();
+			pin = (DigitalPin)InteractiveJArduinoDataGUIClient.getFieldnoTonePin().getSelectedItem();
 		} catch (NumberFormatException nfe){
 			JOptionPane.showMessageDialog(new JFrame(), "Please check that all the inputs have the right type", "Error: Invalid input", JOptionPane.ERROR_MESSAGE);
 			valid = false;
@@ -210,11 +210,11 @@ public class InteractiveJArduinoDataControllerClient implements ActionListener, 
 	public final void sendattachInterrupt() {
 		FixedSizePacket fsp = null;
 		boolean valid = true;
-		EInterruptPin interrupt = null;
-		EInterruptTrigger mode = null;
+		InterruptPin interrupt = null;
+		InterruptTrigger mode = null;
 		try{
-			interrupt = (EInterruptPin)InteractiveJArduinoDataGUIClient.getFieldattachInterruptInterrupt().getSelectedItem();
-			mode = (EInterruptTrigger)InteractiveJArduinoDataGUIClient.getFieldattachInterruptMode().getSelectedItem();
+			interrupt = (InterruptPin)InteractiveJArduinoDataGUIClient.getFieldattachInterruptInterrupt().getSelectedItem();
+			mode = (InterruptTrigger)InteractiveJArduinoDataGUIClient.getFieldattachInterruptMode().getSelectedItem();
 		} catch (NumberFormatException nfe){
 			JOptionPane.showMessageDialog(new JFrame(), "Please check that all the inputs have the right type", "Error: Invalid input", JOptionPane.ERROR_MESSAGE);
 			valid = false;
@@ -228,9 +228,9 @@ public class InteractiveJArduinoDataControllerClient implements ActionListener, 
 	public final void senddetachInterrupt() {
 		FixedSizePacket fsp = null;
 		boolean valid = true;
-		EInterruptPin interrupt = null;
+		InterruptPin interrupt = null;
 		try{
-			interrupt = (EInterruptPin)InteractiveJArduinoDataGUIClient.getFielddetachInterruptInterrupt().getSelectedItem();
+			interrupt = (InterruptPin)InteractiveJArduinoDataGUIClient.getFielddetachInterruptInterrupt().getSelectedItem();
 		} catch (NumberFormatException nfe){
 			JOptionPane.showMessageDialog(new JFrame(), "Please check that all the inputs have the right type", "Error: Invalid input", JOptionPane.ERROR_MESSAGE);
 			valid = false;

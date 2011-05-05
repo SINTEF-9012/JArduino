@@ -17,13 +17,37 @@
  */
 package org.sintef.jarduino;
 
-import org.sintef.jarduino.msg.*;
+import java.util.HashMap;
+import java.util.Map;
 
-public abstract class JArduinoClientMessageHandler implements IJArduinoMessageHandler{
-	@Override public void handleDigitalReadResult(DigitalReadResultMsg msg){ /* Nothing */ }
-	@Override public void handleAnalogReadResult(AnalogReadResultMsg msg){ /* Nothing */ }
-	@Override public void handlePong(PongMsg msg){ /* Nothing */ }
-	@Override public void handleInterruptNotification(InterruptNotificationMsg msg){ /* Nothing */ }
-	@Override public void handleEeprom_value(Eeprom_valueMsg msg){ /* Nothing */ }
-	@Override public void handleEeprom_write_ack(Eeprom_write_ackMsg msg){ /* Nothing */ }
+public enum InterruptTrigger {
+	CHANGE((byte)1),
+	RISING((byte)3),
+	FALLING((byte)2),
+	LOW((byte)0);
+
+	private final byte value;
+	
+	private InterruptTrigger(byte value){
+		this.value = value;
+	}
+	
+	public byte getValue(){
+		return value;
+	}
+	
+	private static final Map<Byte, InterruptTrigger> map;
+	
+	static {
+		map = new HashMap<Byte, InterruptTrigger>();
+		map.put((byte)1, InterruptTrigger.CHANGE);
+		map.put((byte)3, InterruptTrigger.RISING);
+		map.put((byte)2, InterruptTrigger.FALLING);
+		map.put((byte)0, InterruptTrigger.LOW);
+	}
+	
+	public static InterruptTrigger fromValue(byte b) {
+		return map.get(b);
+	}
+	
 }

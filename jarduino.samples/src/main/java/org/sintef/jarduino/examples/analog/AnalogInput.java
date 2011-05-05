@@ -17,18 +17,18 @@
  */
 package org.sintef.jarduino.examples.analog;
 
-import org.sintef.jarduino.EAnalogPin;
-import org.sintef.jarduino.EDigitalPin;
-import org.sintef.jarduino.EDigitalState;
+import org.sintef.jarduino.AnalogPin;
+import org.sintef.jarduino.DigitalPin;
+import org.sintef.jarduino.DigitalState;
 import org.sintef.jarduino.JArduino;
-import org.sintef.jarduino.EPinMode;
+import org.sintef.jarduino.PinMode;
 
 public class AnalogInput extends JArduino {
 
 	// These constants won't change.  They're used to give names
 	// to the pins used:
-	final EAnalogPin sensorPin = EAnalogPin.A_1;  // Analog input pin that the potentiometer is attached to
-	final EDigitalPin ledPin = EDigitalPin.PIN_9; // Analog output pin that the LED is attached to
+	final AnalogPin sensorPin = AnalogPin.A_1;  // Analog input pin that the potentiometer is attached to
+	final DigitalPin ledPin = DigitalPin.PIN_9; // Analog output pin that the LED is attached to
 
 	int sensorValue = 0;        // value read from the pot
 	
@@ -38,7 +38,7 @@ public class AnalogInput extends JArduino {
 
 	@Override
 	protected void setup() {
-		pinMode(ledPin, EPinMode.OUTPUT);  
+		pinMode(ledPin, PinMode.OUTPUT);  
 	}
 
 	@Override
@@ -46,11 +46,11 @@ public class AnalogInput extends JArduino {
 		 // read the value from the sensor:
 		  sensorValue = analogRead(sensorPin);    
 		  // turn the ledPin on
-		  digitalWrite(ledPin, EDigitalState.HIGH);  
+		  digitalWrite(ledPin, DigitalState.HIGH);  
 		  // stop the program for <sensorValue> milliseconds:
 		  delay(sensorValue);          
 		  // turn the ledPin off:        
-		  digitalWrite(ledPin, EDigitalState.LOW);   
+		  digitalWrite(ledPin, DigitalState.LOW);   
 		  // stop the program for for <sensorValue> milliseconds:
 		  delay(sensorValue);   
 	}

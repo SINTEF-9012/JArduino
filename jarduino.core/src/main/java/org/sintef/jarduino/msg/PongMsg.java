@@ -15,15 +15,31 @@
  * Company: SINTEF IKT, Oslo, Norway
  * Date: 2011
  */
-package org.sintef.jarduino;
+package org.sintef.jarduino.msg;
 
-import org.sintef.jarduino.msg.*;
+import org.sintef.jarduino.*;
 
-public abstract class JArduinoClientMessageHandler implements IJArduinoMessageHandler{
-	@Override public void handleDigitalReadResult(DigitalReadResultMsg msg){ /* Nothing */ }
-	@Override public void handleAnalogReadResult(AnalogReadResultMsg msg){ /* Nothing */ }
-	@Override public void handlePong(PongMsg msg){ /* Nothing */ }
-	@Override public void handleInterruptNotification(InterruptNotificationMsg msg){ /* Nothing */ }
-	@Override public void handleEeprom_value(Eeprom_valueMsg msg){ /* Nothing */ }
-	@Override public void handleEeprom_write_ack(Eeprom_write_ackMsg msg){ /* Nothing */ }
+public class PongMsg extends JArduinoProtocolPacket {
+
+	
+	public PongMsg() {
+		setCommandID(JArduinoProtocol.PONG);
+	}
+	
+	public PongMsg(byte[] packet) {
+		setPacketData(packet);
+		
+	}
+	
+	@Override
+	public void acceptHandler(JArduinoMessageHandler v) {
+		v.handlePong(this);
+	}
+
+	@Override
+	public String toString(){
+		String myString = "pong:";
+		return myString;
+	}
+
 }

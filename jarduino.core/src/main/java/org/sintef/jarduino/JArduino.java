@@ -29,13 +29,13 @@ public abstract class JArduino extends AbstractJArduino{
 	ExecutorService interruptRoutineExecutor = Executors.newSingleThreadExecutor();
 	
 	@Override
-	protected void receiveInterruptNotification(EInterruptPin interrupt) {
+	protected void receiveInterruptNotification(InterruptPin interrupt) {
 		
-		if (interrupt == EInterruptPin.PIN_2_INT0) {
+		if (interrupt == InterruptPin.PIN_2_INT0) {
 			interruptRoutineExecutor.submit(new Runnable() {
 				public void run() { interrupt0(); }});
 		}
-		else if(interrupt == EInterruptPin.PIN_3_INT1) {
+		else if(interrupt == InterruptPin.PIN_3_INT1) {
 			interruptRoutineExecutor.submit(new Runnable() {
 				public void run() { interrupt0(); }});
 		}

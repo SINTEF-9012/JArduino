@@ -15,15 +15,40 @@
  * Company: SINTEF IKT, Oslo, Norway
  * Date: 2011
  */
-package org.sintef.jarduino;
+package org.sintef.jarduino.msg;
 
-import org.sintef.jarduino.msg.*;
+import org.sintef.jarduino.*;
 
-public abstract class JArduinoClientMessageHandler implements IJArduinoMessageHandler{
-	@Override public void handleDigitalReadResult(DigitalReadResultMsg msg){ /* Nothing */ }
-	@Override public void handleAnalogReadResult(AnalogReadResultMsg msg){ /* Nothing */ }
-	@Override public void handlePong(PongMsg msg){ /* Nothing */ }
-	@Override public void handleInterruptNotification(InterruptNotificationMsg msg){ /* Nothing */ }
-	@Override public void handleEeprom_value(Eeprom_valueMsg msg){ /* Nothing */ }
-	@Override public void handleEeprom_write_ack(Eeprom_write_ackMsg msg){ /* Nothing */ }
+public class Eeprom_valueMsg extends JArduinoProtocolPacket {
+
+	private byte value;
+	
+	public Eeprom_valueMsg(byte value) {
+		setCommandID(JArduinoProtocol.EEPROM__VALUE);
+		setByteValue(value);
+		this.value = value;
+	}
+	
+	public Eeprom_valueMsg(byte[] packet) {
+		setPacketData(packet);
+		value = buffer.get();
+		
+	}
+	
+	@Override
+	public void acceptHandler(JArduinoMessageHandler v) {
+		v.handleEeprom_value(this);
+	}
+
+	@Override
+	public String toString(){
+		String myString = "eeprom_value:";
+		myString += " [value: "+value+"]";
+		return myString;
+	}
+
+	public byte getValue() {
+		return value;
+	}
+	
 }

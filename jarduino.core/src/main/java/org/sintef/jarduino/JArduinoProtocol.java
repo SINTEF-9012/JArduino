@@ -48,110 +48,110 @@ public abstract class JArduinoProtocol {
 		byte packetType = packet[4];
 		FixedSizePacket result = null;
 		switch(packetType){
-			case PIN_MODE: result = new PinMode(packet); break; 
-			case DIGITAL_READ: result = new DigitalRead(packet); break; 
-			case DIGITAL_WRITE: result = new DigitalWrite(packet); break; 
-			case ANALOG_REFERENCE: result = new AnalogReference(packet); break; 
-			case ANALOG_READ: result = new AnalogRead(packet); break; 
-			case ANALOG_WRITE: result = new AnalogWrite(packet); break; 
-			case TONE: result = new Tone(packet); break; 
-			case NO_TONE: result = new NoTone(packet); break; 
-			case PING: result = new Ping(packet); break; 
-			case ATTACH_INTERRUPT: result = new AttachInterrupt(packet); break; 
-			case DETACH_INTERRUPT: result = new DetachInterrupt(packet); break; 
-			case EEPROM__READ: result = new Eeprom_read(packet); break; 
-			case EEPROM__SYNC__WRITE: result = new Eeprom_sync_write(packet); break; 
-			case EEPROM__WRITE: result = new Eeprom_write(packet); break; 
-			case DIGITAL_READ_RESULT: result = new DigitalReadResult(packet); break; 
-			case ANALOG_READ_RESULT: result = new AnalogReadResult(packet); break; 
-			case PONG: result = new Pong(packet); break; 
-			case INTERRUPT_NOTIFICATION: result = new InterruptNotification(packet); break; 
-			case EEPROM__VALUE: result = new Eeprom_value(packet); break; 
-			case EEPROM__WRITE__ACK: result = new Eeprom_write_ack(packet); break; 
+			case PIN_MODE: result = new PinModeMsg(packet); break; 
+			case DIGITAL_READ: result = new DigitalReadMsg(packet); break; 
+			case DIGITAL_WRITE: result = new DigitalWriteMsg(packet); break; 
+			case ANALOG_REFERENCE: result = new AnalogReferenceMsg(packet); break; 
+			case ANALOG_READ: result = new AnalogReadMsg(packet); break; 
+			case ANALOG_WRITE: result = new AnalogWriteMsg(packet); break; 
+			case TONE: result = new ToneMsg(packet); break; 
+			case NO_TONE: result = new NoToneMsg(packet); break; 
+			case PING: result = new PingMsg(packet); break; 
+			case ATTACH_INTERRUPT: result = new AttachInterruptMsg(packet); break; 
+			case DETACH_INTERRUPT: result = new DetachInterruptMsg(packet); break; 
+			case EEPROM__READ: result = new Eeprom_readMsg(packet); break; 
+			case EEPROM__SYNC__WRITE: result = new Eeprom_sync_writeMsg(packet); break; 
+			case EEPROM__WRITE: result = new Eeprom_writeMsg(packet); break; 
+			case DIGITAL_READ_RESULT: result = new DigitalReadResultMsg(packet); break; 
+			case ANALOG_READ_RESULT: result = new AnalogReadResultMsg(packet); break; 
+			case PONG: result = new PongMsg(packet); break; 
+			case INTERRUPT_NOTIFICATION: result = new InterruptNotificationMsg(packet); break; 
+			case EEPROM__VALUE: result = new Eeprom_valueMsg(packet); break; 
+			case EEPROM__WRITE__ACK: result = new Eeprom_write_ackMsg(packet); break; 
 			default: break;
 		}
 		return result;
 	}
 
-	public static FixedSizePacket createPinMode(EDigitalPin pin, EPinMode mode) {
-		return new PinMode(pin, mode);
+	public static FixedSizePacket createPinMode(DigitalPin pin, PinMode mode) {
+		return new PinModeMsg(pin, mode);
 	}
 	
-	public static FixedSizePacket createDigitalRead(EDigitalPin pin) {
-		return new DigitalRead(pin);
+	public static FixedSizePacket createDigitalRead(DigitalPin pin) {
+		return new DigitalReadMsg(pin);
 	}
 	
-	public static FixedSizePacket createDigitalWrite(EDigitalPin pin, EDigitalState value) {
-		return new DigitalWrite(pin, value);
+	public static FixedSizePacket createDigitalWrite(DigitalPin pin, DigitalState value) {
+		return new DigitalWriteMsg(pin, value);
 	}
 	
-	public static FixedSizePacket createAnalogReference(EAnalogReference type) {
-		return new AnalogReference(type);
+	public static FixedSizePacket createAnalogReference(AnalogReference type) {
+		return new AnalogReferenceMsg(type);
 	}
 	
-	public static FixedSizePacket createAnalogRead(EAnalogPin pin) {
-		return new AnalogRead(pin);
+	public static FixedSizePacket createAnalogRead(AnalogPin pin) {
+		return new AnalogReadMsg(pin);
 	}
 	
-	public static FixedSizePacket createAnalogWrite(EPWMPin pin, byte value) {
-		return new AnalogWrite(pin, value);
+	public static FixedSizePacket createAnalogWrite(PWMPin pin, byte value) {
+		return new AnalogWriteMsg(pin, value);
 	}
 	
-	public static FixedSizePacket createTone(EDigitalPin pin, short frequency, short duration) {
-		return new Tone(pin, frequency, duration);
+	public static FixedSizePacket createTone(DigitalPin pin, short frequency, short duration) {
+		return new ToneMsg(pin, frequency, duration);
 	}
 	
-	public static FixedSizePacket createNoTone(EDigitalPin pin) {
-		return new NoTone(pin);
+	public static FixedSizePacket createNoTone(DigitalPin pin) {
+		return new NoToneMsg(pin);
 	}
 	
 	public static FixedSizePacket createPing() {
-		return new Ping();
+		return new PingMsg();
 	}
 	
-	public static FixedSizePacket createAttachInterrupt(EInterruptPin interrupt, EInterruptTrigger mode) {
-		return new AttachInterrupt(interrupt, mode);
+	public static FixedSizePacket createAttachInterrupt(InterruptPin interrupt, InterruptTrigger mode) {
+		return new AttachInterruptMsg(interrupt, mode);
 	}
 	
-	public static FixedSizePacket createDetachInterrupt(EInterruptPin interrupt) {
-		return new DetachInterrupt(interrupt);
+	public static FixedSizePacket createDetachInterrupt(InterruptPin interrupt) {
+		return new DetachInterruptMsg(interrupt);
 	}
 	
 	public static FixedSizePacket createEeprom_read(short address) {
-		return new Eeprom_read(address);
+		return new Eeprom_readMsg(address);
 	}
 	
 	public static FixedSizePacket createEeprom_sync_write(short address, byte value) {
-		return new Eeprom_sync_write(address, value);
+		return new Eeprom_sync_writeMsg(address, value);
 	}
 	
 	public static FixedSizePacket createEeprom_write(short address, byte value) {
-		return new Eeprom_write(address, value);
+		return new Eeprom_writeMsg(address, value);
 	}
 	
 	
-	public static FixedSizePacket createDigitalReadResult(EDigitalState value) {
-		return new DigitalReadResult(value);
+	public static FixedSizePacket createDigitalReadResult(DigitalState value) {
+		return new DigitalReadResultMsg(value);
 	}
 	
 	public static FixedSizePacket createAnalogReadResult(short value) {
-		return new AnalogReadResult(value);
+		return new AnalogReadResultMsg(value);
 	}
 	
 	public static FixedSizePacket createPong() {
-		return new Pong();
+		return new PongMsg();
 	}
 	
-	public static FixedSizePacket createInterruptNotification(EInterruptPin interrupt) {
-		return new InterruptNotification(interrupt);
+	public static FixedSizePacket createInterruptNotification(InterruptPin interrupt) {
+		return new InterruptNotificationMsg(interrupt);
 	}
 	
 	public static FixedSizePacket createEeprom_value(byte value) {
-		return new Eeprom_value(value);
+		return new Eeprom_valueMsg(value);
 	}
 	
 	public static FixedSizePacket createEeprom_write_ack() {
-		return new Eeprom_write_ack();
+		return new Eeprom_write_ackMsg();
 	}
 	
 }

@@ -17,10 +17,10 @@
  */
 package org.sintef.jarduino.examples.basic;
 
-import org.sintef.jarduino.EDigitalPin;
-import org.sintef.jarduino.EDigitalState;
+import org.sintef.jarduino.DigitalPin;
+import org.sintef.jarduino.DigitalState;
 import org.sintef.jarduino.JArduino;
-import org.sintef.jarduino.EPinMode;
+import org.sintef.jarduino.PinMode;
 /*
 Blink
 Turns on an LED on for one second, then off for one second, repeatedly.
@@ -37,16 +37,16 @@ public class Blink extends JArduino {
 	protected void setup() {
 		// initialize the digital pin as an output.
 		// Pin 13 has an LED connected on most Arduino boards:
-		pinMode(EDigitalPin.PIN_12, EPinMode.OUTPUT);
+		pinMode(DigitalPin.PIN_12, PinMode.OUTPUT);
 	}
 
 	@Override
 	protected void loop() {
 		// set the LED on
-		digitalWrite(EDigitalPin.PIN_12, EDigitalState.HIGH); 
+		digitalWrite(DigitalPin.PIN_12, DigitalState.HIGH); 
 		delay(1000); // wait for a second
 		 // set the LED off
-		digitalWrite(EDigitalPin.PIN_12, EDigitalState.LOW);
+		digitalWrite(DigitalPin.PIN_12, DigitalState.LOW);
 		delay(1000); // wait for a second
 	}
 

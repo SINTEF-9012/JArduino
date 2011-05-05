@@ -17,25 +17,25 @@
  */
 package org.sintef.jarduino.examples.digital;
 
-import org.sintef.jarduino.EDigitalPin;
-import org.sintef.jarduino.EDigitalState;
+import org.sintef.jarduino.DigitalPin;
+import org.sintef.jarduino.DigitalState;
 import org.sintef.jarduino.JArduino;
-import org.sintef.jarduino.EPinMode;
+import org.sintef.jarduino.PinMode;
 
 
 public class StateChangeDetection extends JArduino {
 
 	// the number of the pushbutton pin
-	final EDigitalPin buttonPin = EDigitalPin.PIN_2;
+	final DigitalPin buttonPin = DigitalPin.PIN_2;
 	// the number of the LED pin
-	final EDigitalPin ledPin = EDigitalPin.PIN_9;
+	final DigitalPin ledPin = DigitalPin.PIN_9;
 
 	// counter for the number of button presses
 	int buttonPushCounter = 0;
 	// current state of the button
-	EDigitalState buttonState = EDigitalState.LOW;
+	DigitalState buttonState = DigitalState.LOW;
 	// previous state of the button
-	EDigitalState lastButtonState = EDigitalState.LOW;
+	DigitalState lastButtonState = DigitalState.LOW;
 
 	public StateChangeDetection(String port) {
 		super(port);
@@ -44,9 +44,9 @@ public class StateChangeDetection extends JArduino {
 	@Override
 	protected void setup() {
 		// initialize the LED pin as an output:
-		pinMode(ledPin, EPinMode.OUTPUT);
+		pinMode(ledPin, PinMode.OUTPUT);
 		// initialize the pushbutton pin as an input:
-		pinMode(buttonPin, EPinMode.INPUT);
+		pinMode(buttonPin, PinMode.INPUT);
 	}
 
 	@Override
@@ -58,7 +58,7 @@ public class StateChangeDetection extends JArduino {
 		// compare the buttonState to its previous state
 		if (buttonState != lastButtonState) {
 			// if the state has changed, increment the counter
-			if (buttonState == EDigitalState.HIGH) {
+			if (buttonState == DigitalState.HIGH) {
 				// if the current state is HIGH then the button
 				// wend from off to on:
 				buttonPushCounter++;
@@ -81,9 +81,9 @@ public class StateChangeDetection extends JArduino {
 		// the modulo function gives you the remainder of
 		// the division of two numbers:
 		if (buttonPushCounter % 4 == 0) {
-			digitalWrite(ledPin, EDigitalState.HIGH);
+			digitalWrite(ledPin, DigitalState.HIGH);
 		} else {
-			digitalWrite(ledPin, EDigitalState.LOW);
+			digitalWrite(ledPin, DigitalState.LOW);
 		}
 	}
 
