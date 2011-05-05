@@ -39,6 +39,7 @@ public class ToneKeyKeyboard extends JArduino{
 	//Connect your pieze element to digital pin 8
 	private DigitalPin pin = DigitalPin.A_0;
 	private Timer timer;
+        private Timeout timeout;
 	private JFrame frame;
 	
 	
@@ -112,8 +113,11 @@ public class ToneKeyKeyboard extends JArduino{
 			//play the newly acquired tone on the ordain board
 			tone(pin, (short) tone, (short)0);
 			//create a new timeout that will end the tone after 1,3 seconds
-                        timer.cancel();
-			timer.schedule(new Timeout(), 1300);
+                        if (timeout != null)
+                            timeout.cancel();
+                        timer.purge();
+                        timeout = new Timeout();
+			timer.schedule(timeout, 1300);
 		}
 	}
 	

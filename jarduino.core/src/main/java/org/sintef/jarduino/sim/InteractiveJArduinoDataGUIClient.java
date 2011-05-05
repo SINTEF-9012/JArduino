@@ -274,6 +274,7 @@ public class InteractiveJArduinoDataGUIClient implements ActionListener {
 			logOwnEventsButton = new JButton("Log Own Events (Click to Activate)");
 			frame = new JFrame("Interactive JArduino Data Simulator");
 			frame.setLayout(new GridBagLayout());
+                        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			
 			GridBagConstraints c = new GridBagConstraints();
 			c.gridwidth = 1;
