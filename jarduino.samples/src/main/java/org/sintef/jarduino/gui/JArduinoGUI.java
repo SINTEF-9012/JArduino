@@ -19,25 +19,31 @@ package org.sintef.jarduino.gui;
 
 import org.sintef.jarduino.comm.Serial4JArduino;
 import org.sintef.jarduino.sim.InteractiveJArduinoDataControllerClient;
+import org.sintef.jarduino.utils.SerialSelectorGUI;
 
 public class JArduinoGUI {
- 
-public static void main(String[] args) {
 
-	Serial4JArduino device = null;
-	try {
-		// TODO: Change this with the actual port of your arduino
-		device = new Serial4JArduino("COM8");
-		InteractiveJArduinoDataControllerClient controller2 = new InteractiveJArduinoDataControllerClient();
-		device.register(controller2);
-		controller2.register(device);
-	}
-	catch (Exception e) {
-		e.printStackTrace();
-	} 
-	finally {
-		device.close();
-	}	
-}
+    public static void main(String[] args) {
 
+        String serialPort;
+        if (args.length == 1) {
+            serialPort = args[0];
+        } else {
+            serialPort = SerialSelectorGUI.selectSerialPort();
+        }
+
+        Serial4JArduino device = null;
+
+        try {
+            // TODO: Change this with the actual port of your arduino
+            device = new Serial4JArduino(serialPort);
+            InteractiveJArduinoDataControllerClient controller2 = new InteractiveJArduinoDataControllerClient();
+            device.register(controller2);
+            controller2.register(device);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            device.close();
+        }
+    }
 }

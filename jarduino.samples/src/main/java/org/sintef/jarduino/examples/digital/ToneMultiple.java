@@ -19,45 +19,52 @@ package org.sintef.jarduino.examples.digital;
 
 import org.sintef.jarduino.DigitalPin;
 import org.sintef.jarduino.JArduino;
+import org.sintef.jarduino.utils.SerialSelectorGUI;
 
-public class ToneMultiple extends JArduino implements Pitches{
+public class ToneMultiple extends JArduino implements Pitches {
 
-	
-	private DigitalPin speakerOne = DigitalPin.PIN_6;
-	private DigitalPin speakerTwo = DigitalPin.PIN_7;
-	private DigitalPin speakerThree = DigitalPin.PIN_8;
-	
-	public ToneMultiple(String port) {
-		super(port);
-	}
+    private DigitalPin speakerOne = DigitalPin.PIN_6;
+    private DigitalPin speakerTwo = DigitalPin.PIN_7;
+    private DigitalPin speakerThree = DigitalPin.PIN_8;
 
-	@Override
-	protected void setup() {
-	}
+    public ToneMultiple(String port) {
+        super(port);
+    }
 
-	@Override
-	protected void loop() {
-		  // turn off tone function for pin 8:
-		  noTone(speakerThree);			
-		  // play a note on pin 6 for 200 ms:
-		  tone(speakerOne, (short)440, (short)200);
-		  delay(200);
+    @Override
+    protected void setup() {
+    }
 
-		  // turn off tone function for pin 6:
-		  noTone(speakerOne);
-		  // play a note on pin 7 for 500 ms:
-		  tone(speakerTwo, (short)494, (short)500);
-		  delay(500);
-		  
-		  // turn off tone function for pin 7:
-		  noTone(speakerTwo);  
-		  // play a note on pin 8 for 500 ms:
-		  tone(speakerThree, (short)523, (short)300);
-		  delay(300);
-	}
-	
-	public static void main(String[] args){
-		JArduino arduino = new ToneMultiple("COM7");
-		arduino.runArduinoProcess();
-	}
+    @Override
+    protected void loop() {
+        // turn off tone function for pin 8:
+        noTone(speakerThree);
+        // play a note on pin 6 for 200 ms:
+        tone(speakerOne, (short) 440, (short) 200);
+        delay(200);
+
+        // turn off tone function for pin 6:
+        noTone(speakerOne);
+        // play a note on pin 7 for 500 ms:
+        tone(speakerTwo, (short) 494, (short) 500);
+        delay(500);
+
+        // turn off tone function for pin 7:
+        noTone(speakerTwo);
+        // play a note on pin 8 for 500 ms:
+        tone(speakerThree, (short) 523, (short) 300);
+        delay(300);
+    }
+
+    public static void main(String[] args) {
+        String serialPort;
+        if (args.length == 1) {
+            serialPort = args[0];
+        } else {
+            serialPort = SerialSelectorGUI.selectSerialPort();
+        }
+
+        JArduino arduino = new ToneMultiple(serialPort);
+        arduino.runArduinoProcess();
+    }
 }

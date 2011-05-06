@@ -23,48 +23,57 @@ import org.sintef.jarduino.InterruptPin;
 import org.sintef.jarduino.InterruptTrigger;
 import org.sintef.jarduino.JArduino;
 import org.sintef.jarduino.PinMode;
+import org.sintef.jarduino.utils.SerialSelectorGUI;
 /*
 This example shows how to use external interrupt of the
 arduino board.
-*/
+ */
+
 public class SimpleInterrupt extends JArduino {
 
-	final DigitalPin ledPin = DigitalPin.PIN_9; // Analog output pin that the LED is attached to
-	
-	public SimpleInterrupt(String port) {
-		super(port);
-	}
+    final DigitalPin ledPin = DigitalPin.PIN_9; // Analog output pin that the LED is attached to
 
-	@Override
-	protected void setup() {
-		// initialize the digital pin as an output.
-		// Pin 13 has an LED connected on most Arduino boards:
-		pinMode(ledPin, PinMode.OUTPUT);
-		// with a button connected on pin2, this will generate an
-		// interrupt when the button is pressed
-		attachInterrupt(InterruptPin.PIN_2_INT0, InterruptTrigger.RISING);
-	}
+    public SimpleInterrupt(String port) {
+        super(port);
+    }
 
-	@Override
-	protected void loop() {
-		// Do Nothing
-		delay(1000); // wait for a second
-	}
+    @Override
+    protected void setup() {
+        // initialize the digital pin as an output.
+        // Pin 13 has an LED connected on most Arduino boards:
+        pinMode(ledPin, PinMode.OUTPUT);
+        // with a button connected on pin2, this will generate an
+        // interrupt when the button is pressed
+        attachInterrupt(InterruptPin.PIN_2_INT0, InterruptTrigger.RISING);
+    }
 
-	DigitalState state = DigitalState.LOW;
-	
-	@Override
-	protected void interrupt0() {
-		// This operation gets invoked when an INT0 is generated
-		System.out.println("INT0: Button pressed!");
-		if (state == DigitalState.LOW) state = DigitalState.HIGH;
-		else state = DigitalState.LOW;
-		digitalWrite(ledPin, state);
-	}
+    @Override
+    protected void loop() {
+        // Do Nothing
+        delay(1000); // wait for a second
+    }
+    DigitalState state = DigitalState.LOW;
 
-	public static void main(String[] args) {
-		JArduino arduino = new SimpleInterrupt("COM21");
-		arduino.runArduinoProcess();
-	}
+    @Override
+    protected void interrupt0() {
+        // This operation gets invoked when an INT0 is generated
+        System.out.println("INT0: Button pressed!");
+        if (state == DigitalState.LOW) {
+            state = DigitalState.HIGH;
+        } else {
+            state = DigitalState.LOW;
+        }
+        digitalWrite(ledPin, state);
+    }
 
+    public static void main(String[] args) {
+        String serialPort;
+        if (args.length == 1) {
+            serialPort = args[0];
+        } else {
+            serialPort = SerialSelectorGUI.selectSerialPort();
+        }
+        JArduino arduino = new SimpleInterrupt(serialPort);
+        arduino.runArduinoProcess();
+    }
 }

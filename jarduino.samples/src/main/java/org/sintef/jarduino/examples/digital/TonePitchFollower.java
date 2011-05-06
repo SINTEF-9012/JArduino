@@ -20,34 +20,42 @@ package org.sintef.jarduino.examples.digital;
 import org.sintef.jarduino.AnalogPin;
 import org.sintef.jarduino.DigitalPin;
 import org.sintef.jarduino.JArduino;
+import org.sintef.jarduino.utils.SerialSelectorGUI;
 
-public class TonePitchFollower extends JArduino{
+public class TonePitchFollower extends JArduino {
 
-	public TonePitchFollower(String port) {
-		super(port);
-	}
+    public TonePitchFollower(String port) {
+        super(port);
+    }
 
-	@Override
-	protected void setup() {
-	}
+    @Override
+    protected void setup() {
+    }
 
-	@Override
-	protected void loop() {
-			// read the sensor:
-		  int sensorReading = analogRead(AnalogPin.A_0);
-		  // print the sensor reading so you know its range
-		  System.out.println(sensorReading);
-		  // map the pitch to the range of the analog input.
-		  // change the minimum and maximum input numbers below
-		  // depending on the range your sensor's giving:
-		  int thisPitch = map(sensorReading, 400, 1000, 100, 1000);
+    @Override
+    protected void loop() {
+        // read the sensor:
+        int sensorReading = analogRead(AnalogPin.A_0);
+        // print the sensor reading so you know its range
+        System.out.println(sensorReading);
+        // map the pitch to the range of the analog input.
+        // change the minimum and maximum input numbers below
+        // depending on the range your sensor's giving:
+        int thisPitch = map(sensorReading, 400, 1000, 100, 1000);
 
-		  // play the pitch:
-		  tone(DigitalPin.PIN_8, (short)thisPitch, (short)10);
-	}
-	
-	public static void main(String[] args){
-		JArduino arduino = new TonePitchFollower("COM7");
-		arduino.runArduinoProcess();
-	}
+        // play the pitch:
+        tone(DigitalPin.PIN_8, (short) thisPitch, (short) 10);
+    }
+
+    public static void main(String[] args) {
+        String serialPort;
+        if (args.length == 1) {
+            serialPort = args[0];
+        } else {
+            serialPort = SerialSelectorGUI.selectSerialPort();
+        }
+
+        JArduino arduino = new TonePitchFollower(serialPort);
+        arduino.runArduinoProcess();
+    }
 }

@@ -20,41 +20,48 @@ package org.sintef.jarduino.examples.digital;
 import org.sintef.jarduino.AnalogPin;
 import org.sintef.jarduino.DigitalPin;
 import org.sintef.jarduino.JArduino;
+import org.sintef.jarduino.utils.SerialSelectorGUI;
 
+public class ToneKeyboard extends JArduino implements Pitches {
 
-public class ToneKeyboard extends JArduino implements Pitches{
-	int threshold = 10;    // minimum reading of the sensors that generates a note
+    int threshold = 10;    // minimum reading of the sensors that generates a note
+    // notes to play, corresponding to the 3 sensors:
+    short notes[] = {NOTE_A4, NOTE_B4, NOTE_C3};
 
-	// notes to play, corresponding to the 3 sensors:
-	short notes[] = {NOTE_A4, NOTE_B4,NOTE_C3 };
+    public ToneKeyboard(String port) {
+        super(port);
+    }
 
+    @Override
+    protected void setup() {
+    }
 
-	public ToneKeyboard(String port) {
-		super(port);
-	}
+    @Override
+    protected void loop() {
+        //This is an easy "hack" to iterate through the AnalogPin enums
+        for (byte b = 14; b < 17; b++) {
+            // get a sensor reading:
+            int sensorReading = analogRead(AnalogPin.fromValue(b));//get the AnalogPin from the byte
+            // if the sensor is pressed hard enough:
+            if (sensorReading > threshold) {
+                // play the note corresponding to this sensor:
+                //subtract b with 14 to get the right place in
+                //the notes array
+                tone(DigitalPin.PIN_8, notes[b - 14], (short) 20);
+            }
+        }
+    }
 
-	@Override
-	protected void setup() {
-	}
+    public static void main(String[] args) {
 
-	@Override
-	protected void loop() {
-		//This is an easy "hack" to iterate through the AnalogPin enums
-		for(byte b = 14; b < 17; b++){
-			// get a sensor reading:
-			int sensorReading = analogRead(AnalogPin.fromValue(b));//get the AnalogPin from the byte
-			// if the sensor is pressed hard enough:
-			if (sensorReading > threshold) {
-				// play the note corresponding to this sensor:
-				//subtract b with 14 to get the right place in
-				//the notes array
-				tone(DigitalPin.PIN_8, notes[b-14], (short)20);
-			} 
-		}
-	}
-	public static void main(String[] args){
-		JArduino arduino = new ToneKeyboard("COM6");
-		arduino.runArduinoProcess();
-	}
-
+        String serialPort;
+        if (args.length == 1) {
+            serialPort = args[0];
+        } else {
+            serialPort = SerialSelectorGUI.selectSerialPort();
+        }
+        
+        JArduino arduino = new ToneKeyboard(serialPort);
+        arduino.runArduinoProcess();
+    }
 }
