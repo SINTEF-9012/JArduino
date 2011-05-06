@@ -4,15 +4,18 @@ Browse the dist folder to get the latest JArduino distribution.
 
 The JArduino team.
 
-Maven usage:
+To test samples using the current version of JArduino (requires Maven):
 
-	In project root directory
+        $ git clone git@github.com:ffleurey/JArduino.git
+
+	$ cd JArduino
 	
 	$ mvn clean install
 	
 	To run some examples without IDE
 	
 	$ cd jarduino.samples
+
 	$ mvn exec:java -Dexec.mainClass="org.sintef.jarduino.gui.JArduinoGUI"
 	
 	Replace "org.sintef.jarduino.gui.JArduinoGUI" with your own main class
