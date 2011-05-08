@@ -1,8 +1,10 @@
 Welcome to the JArduino project!
 
-Browse the dist folder to get the latest JArduino distribution.
+Browse the dist folder to get the latest JArduino distribution, which you can import as an Eclipse project.
 
 The JArduino team.
+
+
 
 To test samples using the current version of JArduino (requires Maven):
 
