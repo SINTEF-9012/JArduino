@@ -21,38 +21,45 @@ import org.sintef.jarduino.DigitalPin;
 import org.sintef.jarduino.DigitalState;
 import org.sintef.jarduino.JArduino;
 import org.sintef.jarduino.PinMode;
+import org.sintef.jarduino.utils.SerialSelectorGUI;
 /*
 Blink
 Turns on an LED on for one second, then off for one second, repeatedly.
 
 This example code is in the public domain.
-*/
+ */
+
 public class Blink extends JArduino {
 
-	public Blink(String port) {
-		super(port);
-	}
+    public Blink(String port) {
+        super(port);
+    }
 
-	@Override
-	protected void setup() {
-		// initialize the digital pin as an output.
-		// Pin 13 has an LED connected on most Arduino boards:
-		pinMode(DigitalPin.PIN_12, PinMode.OUTPUT);
-	}
+    @Override
+    protected void setup() {
+        // initialize the digital pin as an output.
+        // Pin 13 has an LED connected on most Arduino boards:
+        pinMode(DigitalPin.PIN_12, PinMode.OUTPUT);
+    }
 
-	@Override
-	protected void loop() {
-		// set the LED on
-		digitalWrite(DigitalPin.PIN_12, DigitalState.HIGH); 
-		delay(1000); // wait for a second
-		 // set the LED off
-		digitalWrite(DigitalPin.PIN_12, DigitalState.LOW);
-		delay(1000); // wait for a second
-	}
+    @Override
+    protected void loop() {
+        // set the LED on
+        digitalWrite(DigitalPin.PIN_12, DigitalState.HIGH);
+        delay(1000); // wait for a second
+        // set the LED off
+        digitalWrite(DigitalPin.PIN_12, DigitalState.LOW);
+        delay(1000); // wait for a second
+    }
 
-	public static void main(String[] args) {
-		JArduino arduino = new Blink("COM8");
-		arduino.runArduinoProcess();
-	}
-
+    public static void main(String[] args) {
+        String serialPort;
+        if (args.length == 1) {
+            serialPort = args[0];
+        } else {
+            serialPort = SerialSelectorGUI.selectSerialPort();
+        }
+        JArduino arduino = new Blink(serialPort);
+        arduino.runArduinoProcess();
+    }
 }

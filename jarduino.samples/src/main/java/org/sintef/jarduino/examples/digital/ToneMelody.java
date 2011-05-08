@@ -15,48 +15,52 @@
  * Company: SINTEF IKT, Oslo, Norway
  * Date: 2011
  */
-
 package org.sintef.jarduino.examples.digital;
 
 import org.sintef.jarduino.DigitalPin;
 import org.sintef.jarduino.JArduino;
+import org.sintef.jarduino.utils.SerialSelectorGUI;
 
-public class ToneMelody extends JArduino implements Pitches{
+public class ToneMelody extends JArduino implements Pitches {
 
-	public ToneMelody(String port) {
-		super(port);
-	}
+    public ToneMelody(String port) {
+        super(port);
+    }
+    short melody[] = {NOTE_C4, NOTE_G3, NOTE_G3, NOTE_A3, NOTE_G3, 0, NOTE_B3, NOTE_C4};
+    // note durations: 4 = quarter note, 8 = eighth note, etc.:
+    int noteDurations[] = {4, 8, 8, 4, 4, 4, 4, 4};
 
-	short melody[] = {NOTE_C4, NOTE_G3,NOTE_G3, NOTE_A3, NOTE_G3,0, NOTE_B3, NOTE_C4};
+    @Override
+    protected void setup() {
+        // TODO Auto-generated method stub
+    }
 
-	// note durations: 4 = quarter note, 8 = eighth note, etc.:
-	int noteDurations[] = {4, 8, 8, 4,4,4,4,4 };
+    @Override
+    protected void loop() {
+        for (int thisNote = 0; thisNote < 8; thisNote++) {
+            // to calculate the note duration, take one second 
+            // divided by the note type.
+            //e.g. quarter note = 1000 / 4, eighth note = 1000/8, etc.
+            short noteDuration = (short) (1000 / noteDurations[thisNote]);
+            tone(DigitalPin.A_0, melody[thisNote], noteDuration);
 
-	@Override
-	protected void setup() {
-		// TODO Auto-generated method stub
-		
-	}
+            // to distinguish the notes, set a minimum time between them.
+            // the note's duration + 30% seems to work well:
+            int pauseBetweenNotes = (int) (noteDuration * 1.30);
+            delay(pauseBetweenNotes);
+        }
+    }
 
-	@Override
-	protected void loop() {
-		for (int thisNote = 0; thisNote < 8; thisNote++) {
-		    // to calculate the note duration, take one second 
-		    // divided by the note type.
-		    //e.g. quarter note = 1000 / 4, eighth note = 1000/8, etc.
-		    short noteDuration = (short) (1000/noteDurations[thisNote]);
-		    tone(DigitalPin.A_0, melody[thisNote],noteDuration);
-		    
-		    // to distinguish the notes, set a minimum time between them.
-		    // the note's duration + 30% seems to work well:
-		    int pauseBetweenNotes = (int) (noteDuration * 1.30);
-		    delay(pauseBetweenNotes);
-	 	}
-	}	
-	
-	
-	public static void main(String[] args){
-		JArduino arduino = new ToneMelody("COM8");
-		arduino.runArduinoProcess();
-	}
+    public static void main(String[] args) {
+
+        String serialPort;
+        if (args.length == 1) {
+            serialPort = args[0];
+        } else {
+            serialPort = SerialSelectorGUI.selectSerialPort();
+        }
+
+        JArduino arduino = new ToneMelody(serialPort);
+        arduino.runArduinoProcess();
+    }
 }

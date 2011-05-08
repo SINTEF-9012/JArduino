@@ -18,41 +18,46 @@
 package org.sintef.jarduino.examples.basic;
 
 import org.sintef.jarduino.JArduino;
+import org.sintef.jarduino.utils.SerialSelectorGUI;
 /*
 This example pings the arduino and outputs its response time
-*/
+ */
+
 public class Ping extends JArduino {
 
-	public Ping(String port) {
-		super(port);
-	}
+    public Ping(String port) {
+        super(port);
+    }
 
-	@Override
-	protected void setup() {
+    @Override
+    protected void setup() {
+    }
 
-	}
+    @Override
+    protected void loop() {
 
-	@Override
-	protected void loop() {
+        // store the current time
+        long time = System.currentTimeMillis();
+        // send the ping message to the arduino and wait for the pong message
+        boolean alive = ping();
+        // compute the time interval
+        time = System.currentTimeMillis() - time;
+        if (alive) {
+            System.out.println("Reply from Arduino: time=" + time + "ms");
+        } else {
+            System.out.println("Request timed out (after " + time + "ms)");
+        }
+        delay(1000); // wait for a second
+    }
 
-		// store the current time
-		long time = System.currentTimeMillis();
-		// send the ping message to the arduino and wait for the pong message
-		boolean alive = ping();
-		// compute the time interval
-		time = System.currentTimeMillis() - time;
-		if (alive) {
-			System.out.println("Reply from Arduino: time=" + time + "ms");
-		}
-		else {
-			System.out.println("Request timed out (after " + time + "ms)");
-		}
-		delay(1000); // wait for a second
-	}
-
-	public static void main(String[] args) {
-		JArduino arduino = new Ping("COM6");
-		arduino.runArduinoProcess();
-	}
-
+    public static void main(String[] args) {
+        String serialPort;
+        if (args.length == 1) {
+            serialPort = args[0];
+        } else {
+            serialPort = SerialSelectorGUI.selectSerialPort();
+        }
+        JArduino arduino = new Ping(serialPort);
+        arduino.runArduinoProcess();
+    }
 }
