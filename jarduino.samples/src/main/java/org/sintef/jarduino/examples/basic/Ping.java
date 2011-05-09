@@ -18,7 +18,8 @@
 package org.sintef.jarduino.examples.basic;
 
 import org.sintef.jarduino.JArduino;
-import org.sintef.jarduino.utils.SerialSelectorGUI;
+import org.sintef.jarduino.comm.Serial4JArduino;
+
 /*
 This example pings the arduino and outputs its response time
  */
@@ -55,7 +56,7 @@ public class Ping extends JArduino {
         if (args.length == 1) {
             serialPort = args[0];
         } else {
-            serialPort = SerialSelectorGUI.selectSerialPort();
+            serialPort = Serial4JArduino.selectSerialPort();
         }
         JArduino arduino = new Ping(serialPort);
         arduino.runArduinoProcess();

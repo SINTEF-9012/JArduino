@@ -21,7 +21,7 @@ import org.sintef.jarduino.DigitalPin;
 import org.sintef.jarduino.DigitalState;
 import org.sintef.jarduino.JArduino;
 import org.sintef.jarduino.PinMode;
-import org.sintef.jarduino.utils.SerialSelectorGUI;
+import org.sintef.jarduino.comm.Serial4JArduino;
 /*
 Blink
 Turns on an LED on for one second, then off for one second, repeatedly.
@@ -57,7 +57,7 @@ public class Blink extends JArduino {
         if (args.length == 1) {
             serialPort = args[0];
         } else {
-            serialPort = SerialSelectorGUI.selectSerialPort();
+            serialPort = Serial4JArduino.selectSerialPort();
         }
         JArduino arduino = new Blink(serialPort);
         arduino.runArduinoProcess();

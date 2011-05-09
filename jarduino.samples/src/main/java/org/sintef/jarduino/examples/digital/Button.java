@@ -21,7 +21,7 @@ import org.sintef.jarduino.DigitalPin;
 import org.sintef.jarduino.DigitalState;
 import org.sintef.jarduino.JArduino;
 import org.sintef.jarduino.PinMode;
-import org.sintef.jarduino.utils.SerialSelectorGUI;
+import org.sintef.jarduino.comm.Serial4JArduino;
 
 public class Button extends JArduino {
 
@@ -65,7 +65,7 @@ public class Button extends JArduino {
         if (args.length == 1) {
             serialPort = args[0];
         } else {
-            serialPort = SerialSelectorGUI.selectSerialPort();
+            serialPort = Serial4JArduino.selectSerialPort();
         }
         
         JArduino arduino = new Button(serialPort);

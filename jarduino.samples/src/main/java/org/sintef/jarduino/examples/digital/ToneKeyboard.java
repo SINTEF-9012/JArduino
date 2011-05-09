@@ -20,7 +20,8 @@ package org.sintef.jarduino.examples.digital;
 import org.sintef.jarduino.AnalogPin;
 import org.sintef.jarduino.DigitalPin;
 import org.sintef.jarduino.JArduino;
-import org.sintef.jarduino.utils.SerialSelectorGUI;
+import org.sintef.jarduino.comm.Serial4JArduino;
+
 
 public class ToneKeyboard extends JArduino implements Pitches {
 
@@ -58,7 +59,7 @@ public class ToneKeyboard extends JArduino implements Pitches {
         if (args.length == 1) {
             serialPort = args[0];
         } else {
-            serialPort = SerialSelectorGUI.selectSerialPort();
+            serialPort = Serial4JArduino.selectSerialPort();
         }
         
         JArduino arduino = new ToneKeyboard(serialPort);

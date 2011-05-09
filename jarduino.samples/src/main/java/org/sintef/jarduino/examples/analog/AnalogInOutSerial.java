@@ -20,7 +20,8 @@ package org.sintef.jarduino.examples.analog;
 import org.sintef.jarduino.AnalogPin;
 import org.sintef.jarduino.JArduino;
 import org.sintef.jarduino.PWMPin;
-import org.sintef.jarduino.utils.SerialSelectorGUI;
+import org.sintef.jarduino.comm.Serial4JArduino;
+
 /*
 Analog input, analog output, serial output
 
@@ -88,7 +89,7 @@ public class AnalogInOutSerial extends JArduino {
         if (args.length == 1) {
             serialPort = args[0];
         } else {
-            serialPort = SerialSelectorGUI.selectSerialPort();
+            serialPort = Serial4JArduino.selectSerialPort();
         }
         
         JArduino arduino = new AnalogInOutSerial(serialPort);

@@ -23,7 +23,8 @@ import org.sintef.jarduino.InterruptPin;
 import org.sintef.jarduino.InterruptTrigger;
 import org.sintef.jarduino.JArduino;
 import org.sintef.jarduino.PinMode;
-import org.sintef.jarduino.utils.SerialSelectorGUI;
+import org.sintef.jarduino.comm.Serial4JArduino;
+
 /*
 This example shows how to use external interrupt of the
 arduino board.
@@ -71,7 +72,7 @@ public class SimpleInterrupt extends JArduino {
         if (args.length == 1) {
             serialPort = args[0];
         } else {
-            serialPort = SerialSelectorGUI.selectSerialPort();
+            serialPort = Serial4JArduino.selectSerialPort();
         }
         JArduino arduino = new SimpleInterrupt(serialPort);
         arduino.runArduinoProcess();

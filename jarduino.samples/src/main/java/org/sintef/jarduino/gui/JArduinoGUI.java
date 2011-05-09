@@ -19,7 +19,6 @@ package org.sintef.jarduino.gui;
 
 import org.sintef.jarduino.comm.Serial4JArduino;
 import org.sintef.jarduino.sim.InteractiveJArduinoDataControllerClient;
-import org.sintef.jarduino.utils.SerialSelectorGUI;
 
 public class JArduinoGUI {
 
@@ -29,7 +28,7 @@ public class JArduinoGUI {
         if (args.length == 1) {
             serialPort = args[0];
         } else {
-            serialPort = SerialSelectorGUI.selectSerialPort();
+            serialPort = Serial4JArduino.selectSerialPort();
         }
 
         Serial4JArduino device = null;

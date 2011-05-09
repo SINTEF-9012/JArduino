@@ -20,7 +20,7 @@ package org.sintef.jarduino.examples.digital;
 import org.sintef.jarduino.AnalogPin;
 import org.sintef.jarduino.DigitalPin;
 import org.sintef.jarduino.JArduino;
-import org.sintef.jarduino.utils.SerialSelectorGUI;
+import org.sintef.jarduino.comm.Serial4JArduino;
 
 public class TonePitchFollower extends JArduino {
 
@@ -52,7 +52,7 @@ public class TonePitchFollower extends JArduino {
         if (args.length == 1) {
             serialPort = args[0];
         } else {
-            serialPort = SerialSelectorGUI.selectSerialPort();
+            serialPort = Serial4JArduino.selectSerialPort();
         }
 
         JArduino arduino = new TonePitchFollower(serialPort);
