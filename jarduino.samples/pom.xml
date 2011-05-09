@@ -1,4 +1,3 @@
-
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
@@ -9,13 +8,10 @@
     <version>0.1.4</version>
     <name>org.sintef.jarduino.samples</name>
     
-    <parent>
-        <artifactId>org.sintef.jarduino</artifactId>
-        <groupId>org.sintef.jarduino</groupId>
-        <relativePath>../pom.xml</relativePath>
-        <version>0.1.4</version>
-    </parent>
-
+    <properties>
+        <jarduino.version>${project.version}</jarduino.version>
+    </properties>
+    
     <build>
         <plugins>
             <!-- Java compiler plugin -->
@@ -33,6 +29,14 @@
     </build>
 
     <repositories>
+        <repository>
+            <id>thingml</id>
+            <url>http://50.56.31.212:8081/artifactory/libs-release-local</url>
+        </repository>
+    	<repository>
+            <id>kevoree-libs-release-local</id>
+            <url>http://maven.kevoree.org/release</url>
+        </repository>
         <repository>
             <id>twitter4j.org</id>
             <name>twitter4j.org Repository</name>
