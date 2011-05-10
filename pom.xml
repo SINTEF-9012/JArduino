@@ -23,7 +23,7 @@
 
     <modules>
         <module>jarduino.core</module>
-        <module>jarduino.samples</module>
+        <!--<module>jarduino.samples</module>-->
     </modules>
     
     <properties>
