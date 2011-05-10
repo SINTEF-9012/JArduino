@@ -12,7 +12,7 @@
         <artifactId>org.sintef.jarduino</artifactId>
         <groupId>org.sintef.jarduino</groupId>
         <relativePath>../pom.xml</relativePath>
-        <version>0.1.4</version>
+        <version>0.1.5</version>
     </parent>
 
     <build>
