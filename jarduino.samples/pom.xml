@@ -5,7 +5,7 @@
     <groupId>org.sintef.jarduino</groupId>
     <artifactId>org.sintef.jarduino.samples</artifactId>
     <packaging>jar</packaging>
-    <version>0.1.4</version>
+    <version>0.1.5</version>
     <name>org.sintef.jarduino.samples</name>
     
     <properties>
