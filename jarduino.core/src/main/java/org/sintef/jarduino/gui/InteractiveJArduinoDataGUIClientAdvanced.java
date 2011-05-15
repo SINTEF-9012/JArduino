@@ -160,22 +160,13 @@ public class InteractiveJArduinoDataGUIClientAdvanced {
 				frame.getContentPane().repaint();
 			}
 			if(e.getSource() == changePort){
-				ijadcca.unregisterAll();
-				/*try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}*/
 				String serialPort = Serial4JArduino.selectSerialPort();
 				if(serialPort != null){
-					
-					
+					ijadcca.unregisterAll();
 					Serial4JArduino t = new Serial4JArduino(serialPort);
 					t.register(ijadcca);
 					ijadcca.register(t);
 				}
-				
 			}
 			if(e.getSource() == about){
 				JOptionPane.showMessageDialog(frame, "This application is developed and released under GNU LESSER\n" +

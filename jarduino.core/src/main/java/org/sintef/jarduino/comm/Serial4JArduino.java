@@ -74,6 +74,8 @@ public class Serial4JArduino implements JArduinoClientObserver, JArduinoSubject 
     public static final byte ESCAPE_BYTE = 0x7D;
     protected String port;
     protected SerialPort serialPort;
+    protected InputStream in;
+    protected OutputStream out;
 
     public Serial4JArduino(String port) {
         this.port = port;
@@ -93,12 +95,10 @@ public class Serial4JArduino implements JArduinoClientObserver, JArduinoSubject 
                     SerialPort serialPort = (SerialPort) commPort;
                     serialPort.setSerialPortParams(9600, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
 
-                    InputStream in = serialPort.getInputStream();
-                    OutputStream out = serialPort.getOutputStream();
+                    in = serialPort.getInputStream();
+                    out = serialPort.getOutputStream();
 
-                    this.out = out;
-
-                    serialPort.addEventListener(new SerialReader(in));
+                    serialPort.addEventListener(new SerialReader());
                     serialPort.notifyOnDataAvailable(true);
 
                 } else {
@@ -111,10 +111,19 @@ public class Serial4JArduino implements JArduinoClientObserver, JArduinoSubject 
     }
 
     public void close() {
-        if (serialPort != null) {
-            serialPort.notifyOnDataAvailable(false);
-            serialPort.removeEventListener();
-            serialPort.close();
+        try {
+            if (in != null) {
+                in.close();
+            }
+            if (out != null) {
+                out.close();
+            }
+            if (serialPort != null) {
+                serialPort.notifyOnDataAvailable(false);
+                serialPort.removeEventListener();
+                serialPort.close();
+            }
+        } catch (Exception e) {
         }
     }
 
@@ -145,8 +154,6 @@ public class Serial4JArduino implements JArduinoClientObserver, JArduinoSubject 
     /* ***********************************************************************
      * Serial Port data send operation
      *************************************************************************/
-    protected OutputStream out;
-
     protected void sendData(byte[] payload) {
         try {
             // send the start byte
@@ -176,14 +183,9 @@ public class Serial4JArduino implements JArduinoClientObserver, JArduinoSubject 
         public static final int RCV_WAIT = 0;
         public static final int RCV_MSG = 1;
         public static final int RCV_ESC = 2;
-        protected InputStream in;
         private byte[] buffer = new byte[256];
         protected int buffer_idx = 0;
         protected int state = RCV_WAIT;
-
-        public SerialReader(InputStream in) {
-            this.in = in;
-        }
 
         public void serialEvent(SerialPortEvent arg0) {
 
@@ -284,23 +286,23 @@ public class Serial4JArduino implements JArduinoClientObserver, JArduinoSubject 
     public static String selectSerialPort() {
 
         ArrayList<String> possibilities = new ArrayList<String>();
-        for (Enumeration enumeration = CommPortIdentifier.getPortIdentifiers(); enumeration.hasMoreElements();) {
-            CommPortIdentifier commportidentifier = (CommPortIdentifier) enumeration.nextElement();
+        for (CommPortIdentifier commportidentifier : getAvailableSerialPorts()) {
             possibilities.add(commportidentifier.getName());
-
         }
 
-
-        String s = (String) JOptionPane.showInputDialog(
-                null,
-                "JArduino",
-                "Select serial port",
-                JOptionPane.PLAIN_MESSAGE,
-                null,
-                possibilities.toArray(),
-                possibilities.toArray()[0]);
-
-        return s;
+        if (possibilities.size() > 0) {
+            return (String) JOptionPane.showInputDialog(
+                    null,
+                    "JArduino",
+                    "Select serial port",
+                    JOptionPane.PLAIN_MESSAGE,
+                    null,
+                    possibilities.toArray(),
+                    possibilities.toArray()[0]);
+        } else {
+            JOptionPane.showMessageDialog(null, "No available serial port", "JArduino", JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
     }
 
     /* ***********************************************************************
