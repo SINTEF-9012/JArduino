@@ -20,26 +20,30 @@ package org.sintef.jarduino.gui;
 import org.sintef.jarduino.comm.Serial4JArduino;
 
 public class JArduinoGUIAdvanced {
-	public static void main(String[] args) {
-		Serial4JArduino device = null;
-		try {
-			String serialPort = "";
-	        if (args.length == 1) {
-	            serialPort = args[0];
-	        } else {
-	            serialPort = Serial4JArduino.selectSerialPort();
-	        }
-			
-			device = new Serial4JArduino(serialPort);
-			InteractiveJArduinoDataControllerClientAdvanced controller = new InteractiveJArduinoDataControllerClientAdvanced();
-			device.register(controller);
-			controller.register(device);
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		} 
-		finally {
-			device.close();
-		}	
-	}
+
+    public static void main(String[] args) {
+        Serial4JArduino device = null;
+        String serialPort = null;
+        try {
+
+            if (args.length == 1) {
+                serialPort = args[0];
+            } else {
+                serialPort = Serial4JArduino.selectSerialPort();
+            }
+
+            InteractiveJArduinoDataControllerClientAdvanced controller = new InteractiveJArduinoDataControllerClientAdvanced();
+            if (serialPort != null) {
+                device = new Serial4JArduino(serialPort);
+                device.register(controller);
+                controller.register(device);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (device != null) {
+                device.close();
+            }
+        }
+    }
 }
