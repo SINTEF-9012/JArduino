@@ -62,6 +62,11 @@
             <version>${jarduino.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.sintef.jarduino</groupId>
+            <artifactId>org.sintef.jarduino.gui</artifactId>
+            <version>${jarduino.version}</version>
+        </dependency>
+        <dependency>
             <groupId>com.voiceclearly</groupId>
             <artifactId>com.voiceclearly</artifactId>
             <version>1.0.0</version>
