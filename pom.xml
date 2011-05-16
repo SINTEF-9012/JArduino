@@ -5,7 +5,7 @@
     <groupId>org.sintef.jarduino</groupId>
     <artifactId>org.sintef.jarduino</artifactId>
     <packaging>pom</packaging>
-    <version>0.1.5</version>
+    <version>0.1.6</version>
     <name>org.sintef.jarduino</name>
 
     <distributionManagement>
@@ -23,6 +23,7 @@
 
     <modules>
         <module>jarduino.core</module>
+		<module>jarduino.gui</module>
         <!--<module>jarduino.samples</module>-->
     </modules>
     
