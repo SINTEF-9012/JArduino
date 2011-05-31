@@ -22,6 +22,7 @@ import java.util.TimerTask;
 
 import org.sintef.jarduino.DigitalPin;
 import org.sintef.jarduino.DigitalState;
+import org.sintef.jarduino.InterruptTrigger;
 import org.sintef.jarduino.JArduino;
 import org.sintef.jarduino.PinMode;
 
@@ -65,6 +66,9 @@ public class GTalkAlert extends JArduino implements CallListener {
         this.gmailUser = user;
         this.gmailPassword = pwd;
         this.gmailOtherUser = otherUser;
+        
+        attachInterrupt(this.button, InterruptTrigger.CHANGE);
+        
         //Initialize the VoiceClearly Service with the listener
         service = new VoiceClearlyService(this);
 
@@ -74,6 +78,7 @@ public class GTalkAlert extends JArduino implements CallListener {
 
     @Override
     protected void receiveInterruptNotification(InterruptPin interrupt) {
+    	System.out.println("Interrupt "+interrupt);
         super.receiveInterruptNotification(interrupt);
         if (interrupt == button) {
             service.sendIM(gmailOtherUser, "Button pushed: "+new Date(System.currentTimeMillis()));
@@ -135,12 +140,12 @@ public class GTalkAlert extends JArduino implements CallListener {
      * VoiceClearly APIs: http://voiceclearly.com/googleTalkVoiceClearly.jsp
      */
     public static void main(String[] args) {
-        String otherName = "your.friend@gmail.com";
-        String userName = "first.last@gmail.com";
-        String password = "mySecretPassword";
-        String serialPort = "COM9";
+        String otherName = "yourfriend@gmail.com";
+        String userName = "first.last";
+        String password = "myNicePassword";
+        String serialPort = "COM8";
 
-        DigitalPin led = DigitalPin.PIN_12;
+        DigitalPin led = DigitalPin.PIN_7;
         InterruptPin button = InterruptPin.PIN_2_INT0;
 
         JArduino arduino = new GTalkAlert(serialPort, userName, password, otherName, led, button);

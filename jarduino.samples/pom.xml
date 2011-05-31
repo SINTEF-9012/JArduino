@@ -1,3 +1,4 @@
+
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
@@ -33,7 +34,7 @@
             <id>thingml</id>
             <url>http://50.56.31.212:8081/artifactory/libs-release-local</url>
         </repository>
-    	<repository>
+        <repository>
             <id>kevoree-libs-release-local</id>
             <url>http://maven.kevoree.org/release</url>
         </repository>
@@ -72,6 +73,20 @@
             <version>1.0.0</version>
             <scope>system</scope>
             <systemPath>${basedir}/lib/voiceclearly-1.0.0.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.voiceclearly</groupId>
+            <artifactId>jmf</artifactId>
+            <version>1.0.0</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/jmf.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.voiceclearly</groupId>
+            <artifactId>jstun</artifactId>
+            <version>1.0.0</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/jstun.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.twitter4j</groupId>

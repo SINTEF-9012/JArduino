@@ -39,7 +39,7 @@ public class ToneKeyKeyboard extends JArduino {
     private JPanel contentPane;
     private JTextField textField;
     //Connect your pieze element to digital pin 8
-    private DigitalPin pin = DigitalPin.A_0;
+    private DigitalPin pin = DigitalPin.PIN_10;
     private Timer timer;
     private Timeout timeout;
     private JFrame frame;
