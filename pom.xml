@@ -12,7 +12,7 @@
       <repository>
           <id>thingml</id>
           <name>thingml-releases</name>
-          <url>http://50.56.31.212:8081/artifactory/libs-release-local</url>
+          <url>http://thingml.org:8081/artifactory/libs-release-local</url>
       </repository>
         <!--<repository>
             <id>maven.kevoree.org-releases</id>
