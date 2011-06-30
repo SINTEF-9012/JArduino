@@ -19,6 +19,7 @@ package org.sintef.jarduino.gui;
 
 import org.sintef.jarduino.*;
 import org.sintef.jarduino.comm.Serial4JArduino;
+import org.sintef.jarduino.gui.dialogs.CardChooserDialog;
 import org.sintef.jarduino.observer.*;
 
 import java.util.LinkedList;
@@ -34,7 +35,7 @@ public class InteractiveJArduinoDataControllerClientAdvanced  implements JArduin
 	public InteractiveJArduinoDataControllerClientAdvanced(){
 		handlers = new LinkedList<JArduinoClientObserver>();
 		dateFormat = new SimpleDateFormat("dd MMM yyy 'at' HH:mm:ss.SSS");
-		String card = CardChooser.selectCard();
+		String card = CardChooserDialog.selectCard();
 		gui = new InteractiveJArduinoDataGUIClientAdvanced(this, card);
 	}
 
@@ -136,8 +137,10 @@ public class InteractiveJArduinoDataControllerClientAdvanced  implements JArduin
 
 	public final void receiveMessage(byte[] packet){
 		FixedSizePacket data = JArduinoProtocol.createMessageFromPacket(packet);
+		
 		if (data != null) {
 			gui.writeToLog( " ["+dateFormat.format(new Date(System.currentTimeMillis()))+"]: "+data.toString()+" --> "+FixedSizePacket.toString(packet));
+			//TODO Add 
 		}
 	}
 

@@ -19,18 +19,26 @@ package org.sintef.jarduino.gui;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 
 import org.sintef.jarduino.AnalogPin;
 import org.sintef.jarduino.DigitalPin;
 import org.sintef.jarduino.InterruptPin;
 import org.sintef.jarduino.PWMPin;
+import org.sintef.jarduino.gui.panels.APanel;
+import org.sintef.jarduino.gui.panels.AnalogPanel;
+import org.sintef.jarduino.gui.panels.DigitalPanel;
+import org.sintef.jarduino.gui.panels.InterruptPanel1;
+import org.sintef.jarduino.gui.panels.InterruptPanel2;
 
 public class MainPanelLilypad extends JComponent{
 
@@ -178,7 +186,17 @@ public class MainPanelLilypad extends JComponent{
 	    File f = new File(dirname);
 	    
 		arduinoImage = new ImageIcon(f.getPath());
-		}
+		
+		JButton btnLegend = new JButton("<html>Color<br />Legend</html>");
+		btnLegend.setBounds(10, 11, 77, 43);
+		btnLegend.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				new ColorLegend();
+			}
+		});
+		add(btnLegend);
+	}
 
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -202,6 +220,7 @@ public class MainPanelLilypad extends JComponent{
 		public void mouseEntered(MouseEvent arg0) {
 			label = (APanel) arg0.getSource();
 			label.setBackground(Color.YELLOW);
+			label.setOpaque();
 		}
 
 		@Override

@@ -19,8 +19,9 @@ package org.sintef.jarduino.gui;
 
 import org.sintef.jarduino.PWMPin;
 import org.sintef.jarduino.DigitalPin;
+import org.sintef.jarduino.gui.panels.DigitalPanel;
 
-class PWMPanel extends DigitalPanel{
+public class PWMPanel extends DigitalPanel{
 	private static final long serialVersionUID = 5238934750408244536L;
 	private PWMPin pin;
 	public PWMPanel(PWMPin pwmPin) {
@@ -35,5 +36,9 @@ class PWMPanel extends DigitalPanel{
 	@Override
 	public String toString(){
 		return "PWMPin " + pin.getValue();
+	}
+	
+	public String getPWMString(){
+		return "PWM_PIN_" + pin.getValue();
 	}
 }

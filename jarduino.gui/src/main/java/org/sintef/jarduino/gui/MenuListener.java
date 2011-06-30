@@ -25,6 +25,13 @@ import org.sintef.jarduino.DigitalState;
 import org.sintef.jarduino.InterruptPin;
 import org.sintef.jarduino.InterruptTrigger;
 import org.sintef.jarduino.PinMode;
+import org.sintef.jarduino.gui.dialogs.AnalogWriteDialog;
+import org.sintef.jarduino.gui.dialogs.ToneDialog;
+import org.sintef.jarduino.gui.panels.APanel;
+import org.sintef.jarduino.gui.panels.AnalogPanel;
+import org.sintef.jarduino.gui.panels.DigitalPanel;
+import org.sintef.jarduino.gui.panels.InterruptPanel1;
+import org.sintef.jarduino.gui.panels.InterruptPanel2;
 
 class MenuListener implements ActionListener{
 
@@ -55,6 +62,7 @@ class MenuListener implements ActionListener{
 		}
 		if(e.getSource() == PopUpMenu.high){
 			DigitalPanel p = (DigitalPanel) panel;
+			panel.setDigitalStatusHigh();
 			//ijadcca.sendpinMode(PinMode.OUTPUT, p.getPin());
 			ijadcca.senddigitalWrite(p.getPin(), DigitalState.HIGH);
 			System.out.println("Skal ha digital pin " + p);
@@ -62,6 +70,7 @@ class MenuListener implements ActionListener{
 		}
 		if(e.getSource() == PopUpMenu.low){
 			DigitalPanel p = (DigitalPanel) panel;
+			panel.setDigitalStatusLow();
 			//ijadcca.sendpinMode(PinMode.OUTPUT, p.getPin());
 			ijadcca.senddigitalWrite(p.getPin(), DigitalState.LOW);
 			gui.addToRepeat(panel, "low", (short) -1, (short)-1, (byte)-1);

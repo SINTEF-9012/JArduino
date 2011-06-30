@@ -23,6 +23,12 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
+import org.sintef.jarduino.gui.panels.APanel;
+import org.sintef.jarduino.gui.panels.AREFPanel;
+import org.sintef.jarduino.gui.panels.AnalogPanel;
+import org.sintef.jarduino.gui.panels.InterruptPanel1;
+import org.sintef.jarduino.gui.panels.InterruptPanel2;
+
 class PopUpMenu extends JPopupMenu {
 
 	private static final long serialVersionUID = -8914052043434078823L;

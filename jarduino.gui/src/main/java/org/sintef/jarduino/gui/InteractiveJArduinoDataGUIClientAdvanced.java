@@ -31,6 +31,11 @@ import javax.swing.JPanel;
 import javax.swing.JMenuBar;
 
 import org.sintef.jarduino.comm.Serial4JArduino;
+import org.sintef.jarduino.gui.dialogs.CardChooserDialog;
+import org.sintef.jarduino.gui.panels.APanel;
+import org.sintef.jarduino.gui.panels.EEPROMPanel;
+import org.sintef.jarduino.gui.panels.LogPanel;
+import org.sintef.jarduino.gui.panels.ReuseLogPanel;
 
 public class InteractiveJArduinoDataGUIClientAdvanced {
 
@@ -53,8 +58,8 @@ public class InteractiveJArduinoDataGUIClientAdvanced {
 		
 		comp = getCardPanel(card);
 		
-		reuseLogPanel = new ReuseLogPanel(ijadcca);
-		reuseLogPanel.setBounds(0, 0, 210, 417);
+		reuseLogPanel = new ReuseLogPanel(ijadcca, this);
+		reuseLogPanel.setBounds(0, 0, 210, 851);
 		frame.getContentPane().add(reuseLogPanel);
 		
 		comp.setBounds(210, 0, 652, 600);
@@ -65,7 +70,7 @@ public class InteractiveJArduinoDataGUIClientAdvanced {
 		frame.getContentPane().add(eepromPanel);
 		  
 		logPanel = new LogPanel();
-		logPanel.setBounds(0, 418, 970, 690);
+		logPanel.setBounds(211, 418, 759, 212);
 		frame.getContentPane().add(logPanel);
 		
 		buildMenu();
@@ -151,7 +156,7 @@ public class InteractiveJArduinoDataGUIClientAdvanced {
 				System.exit(0);
 			}
 			if(e.getSource() == changeCard){
-				String s = CardChooser.selectCard();
+				String s = CardChooserDialog.selectCard();
 				frame.getContentPane().remove(comp);
 				comp = null;
 				comp = getCardPanel(s);
@@ -188,4 +193,6 @@ public class InteractiveJArduinoDataGUIClientAdvanced {
 			}
 		}
 	}
+
+
 }

@@ -17,6 +17,8 @@
  */
 package org.sintef.jarduino.gui;
 
+import org.sintef.jarduino.gui.panels.APanel;
+
 public class LogObject {
 	private APanel p;
 	private String mode;
