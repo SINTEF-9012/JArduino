@@ -26,7 +26,7 @@
                 <configuration>
                     <instructions>
                         <Bundle-SymbolicName>org.rxtx</Bundle-SymbolicName>
-                        <Bundle-Version>${pom.version}</Bundle-Version>
+                        <Bundle-Version>${project.version}</Bundle-Version>
                         <Export-Package>org.sintef.jarduino.*</Export-Package>
                         <Import-Package>!org.sintef.jarduino.*,*</Import-Package>
                     </instructions>
