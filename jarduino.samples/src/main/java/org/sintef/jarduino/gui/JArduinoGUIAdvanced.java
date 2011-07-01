@@ -18,7 +18,14 @@
 package org.sintef.jarduino.gui;
 
 import org.sintef.jarduino.comm.Serial4JArduino;
-
+/**
+ * In order to run this application, your project must include two libraries
+ * org.kevoree.extra.osgi.rxtx-2.2.0.jar or newer and
+ * org.sintef.jarduino.core-0.1.6.jar or newer
+ * 
+ * @author Jan Ole
+ *
+ */
 public class JArduinoGUIAdvanced {
 
     public static void main(String[] args) {
