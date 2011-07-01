@@ -39,19 +39,19 @@
         <repository>
             <id>thingml-snapshot</id>
             <name>thingml-snapshot</name>
-            <url>http://maven.thingml.org/archiva/repository/thingml-snapshot/</url>
+            <url>http://maven.thingml.org/thingml-snapshot/</url>
         </repository>
         
         <repository>
             <id>thingml-release</id>
             <name>thingml-release</name>
-            <url>http://maven.thingml.org/archiva/repository/thingml-release/</url>
+            <url>http://maven.thingml.org/thingml-release/</url>
         </repository>
         
         <repository>
             <id>thirdparty</id>
             <name>thingml-snapshot</name>
-            <url>http://maven.thingml.org/archiva/repository/thirdparty/</url>
+            <url>http://maven.thingml.org/thirdparty/</url>
         </repository>
         
         <repository>
