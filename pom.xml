@@ -9,21 +9,16 @@
     <name>org.sintef.jarduino</name>
 
     <distributionManagement>
-      <repository>
-          <id>thingml</id>
-          <name>thingml-releases</name>
-          <url>http://thingml.org:8081/artifactory/libs-release-local</url>
-      </repository>
-        <!--<repository>
-            <id>maven.kevoree.org-releases</id>
-            <name>maven.kevoree.org-releases</name>
-            <url>http://maven.kevoree.org/libs-release-local</url>
-        </repository>-->
+        <repository>
+            <id>thingml-snapshot</id>
+            <name>thingml-snapshot</name>
+            <url>http://maven.thingml.org/archiva/repository/thingml-snapshot/</url>
+        </repository>
     </distributionManagement>
 
     <modules>
         <module>jarduino.core</module>
-		<module>jarduino.gui</module>
+        <module>jarduino.gui</module>
         <!--<module>jarduino.samples</module>-->
     </modules>
     
@@ -32,10 +27,30 @@
     </properties>
     
     <repositories>
+        
+        <repository>
+            <id>thingml-snapshot</id>
+            <name>thingml-snapshot</name>
+            <url>http://maven.thingml.org/archiva/repository/thingml-snapshot/</url>
+        </repository>
+        
+        <repository>
+            <id>thingml-release</id>
+            <name>thingml-release</name>
+            <url>http://maven.thingml.org/archiva/repository/thingml-release/</url>
+        </repository>
+        
+        <repository>
+            <id>thirdparty</id>
+            <name>thingml-snapshot</name>
+            <url>http://maven.thingml.org/archiva/repository/thirdparty/</url>
+        </repository>
+        
         <repository>
             <id>kevoree-libs-release-local</id>
             <url>http://maven.kevoree.org/release</url>
         </repository>
+    
     </repositories>
     
 </project>
