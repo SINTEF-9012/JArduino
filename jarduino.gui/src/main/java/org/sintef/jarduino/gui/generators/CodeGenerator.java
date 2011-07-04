@@ -232,15 +232,15 @@ public class CodeGenerator {
 			if(linkedList.get(i).getMode().startsWith("if")){
 				LogObject o = linkedList.get(i);
 				stackJava.add(intendation +  o.getMode());
-				intendation += "\t";
 				stackArduino.add(intendation.replaceFirst("\t", "") + o.getMode().replace("DigitalState.", ""));
+				intendation += "\t";
 				closedLoops++;
 			}
 			if(linkedList.get(i).getMode().startsWith("}else if")){
 				LogObject o = linkedList.get(i);
 				stackJava.add(intendation.replaceFirst("\t", "") +  o.getMode());
-				intendation += "\t";
 				stackArduino.add(intendation.replaceFirst("\t", "") + o.getMode().replace("DigitalState.", ""));
+				intendation += "\t";
 			}else if(linkedList.get(i).getMode().startsWith("}else")){ 
 				LogObject o = linkedList.get(i);
 				stackJava.add(intendation.replaceFirst("\t", "")  +  o.getMode());
