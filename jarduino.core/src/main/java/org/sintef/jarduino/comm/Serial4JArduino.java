@@ -286,11 +286,16 @@ public class Serial4JArduino implements JArduinoClientObserver, JArduinoSubject 
     public static String selectSerialPort() {
 
         ArrayList<String> possibilities = new ArrayList<String>();
+        possibilities.add("Emulator");
         for (CommPortIdentifier commportidentifier : getAvailableSerialPorts()) {
             possibilities.add(commportidentifier.getName());
         }
 
-        if (possibilities.size() > 0) {
+        int startPosition = 0;
+        if (possibilities.size() > 1) {
+            startPosition = 1;
+        
+        
             return (String) JOptionPane.showInputDialog(
                     null,
                     "JArduino",
@@ -298,10 +303,7 @@ public class Serial4JArduino implements JArduinoClientObserver, JArduinoSubject 
                     JOptionPane.PLAIN_MESSAGE,
                     null,
                     possibilities.toArray(),
-                    possibilities.toArray()[0]);
-        } else {
-            JOptionPane.showMessageDialog(null, "No available serial port", "JArduino", JOptionPane.ERROR_MESSAGE);
-            return null;
+                    possibilities.toArray()[startPosition]);
         }
     }
 
