@@ -36,6 +36,9 @@ public class InteractiveJArduinoDataControllerClientAdvanced  implements JArduin
 		handlers = new LinkedList<JArduinoClientObserver>();
 		dateFormat = new SimpleDateFormat("dd MMM yyy 'at' HH:mm:ss.SSS");
 		String card = CardChooserDialog.selectCard();
+		if(card == null){
+			System.exit(1);
+		}
 		gui = new InteractiveJArduinoDataGUIClientAdvanced(this, card);
 	}
 

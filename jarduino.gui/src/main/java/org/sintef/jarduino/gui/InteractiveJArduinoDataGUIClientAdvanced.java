@@ -157,12 +157,14 @@ public class InteractiveJArduinoDataGUIClientAdvanced {
 			}
 			if(e.getSource() == changeCard){
 				String s = CardChooserDialog.selectCard();
-				frame.getContentPane().remove(comp);
-				comp = null;
-				comp = getCardPanel(s);
-				comp.setBounds(210, 0, 652, 600);
-				frame.getContentPane().add(comp);
-				frame.getContentPane().repaint();
+				if(s != null){
+					frame.getContentPane().remove(comp);
+					comp = null;
+					comp = getCardPanel(s);
+					comp.setBounds(210, 0, 652, 600);
+					frame.getContentPane().add(comp);
+					frame.getContentPane().repaint();
+				}
 			}
 			if(e.getSource() == changePort){
 				String serialPort = Serial4JArduino.selectSerialPort();

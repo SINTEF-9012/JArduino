@@ -15,9 +15,10 @@
  * Company: SINTEF IKT, Oslo, Norway
  * Date: 2011
  */
-package org.sintef.jarduino.gui;
+package org.sintef.jarduino.sample.gui; //TODO REVRITE IF FILE GOES TO REPO
 
 import org.sintef.jarduino.comm.Serial4JArduino;
+import org.sintef.jarduino.gui.InteractiveJArduinoDataControllerClientAdvanced; //TODO REMOVE IF THIS FILE GOES TO REPO
 /**
  * In order to run this application, your project must include two libraries
  * org.kevoree.extra.osgi.rxtx-2.2.0.jar or newer and
@@ -37,6 +38,9 @@ public class JArduinoGUIAdvanced {
                 serialPort = args[0];
             } else {
                 serialPort = Serial4JArduino.selectSerialPort();
+                if(serialPort == null){
+                	System.exit(1);
+                }
             }
 
             InteractiveJArduinoDataControllerClientAdvanced controller = new InteractiveJArduinoDataControllerClientAdvanced();
