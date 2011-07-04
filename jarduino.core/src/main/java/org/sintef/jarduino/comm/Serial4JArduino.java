@@ -294,17 +294,17 @@ public class Serial4JArduino implements JArduinoClientObserver, JArduinoSubject 
         int startPosition = 0;
         if (possibilities.size() > 1) {
             startPosition = 1;
-        
-        
-            return (String) JOptionPane.showInputDialog(
-                    null,
-                    "JArduino",
-                    "Select serial port",
-                    JOptionPane.PLAIN_MESSAGE,
-                    null,
-                    possibilities.toArray(),
-                    possibilities.toArray()[startPosition]);
         }
+        
+       return (String) JOptionPane.showInputDialog(
+               null,
+               "JArduino",
+               "Select serial port",
+               JOptionPane.PLAIN_MESSAGE,
+               null,
+               possibilities.toArray(),
+               possibilities.toArray()[startPosition]);
+        
     }
 
     /* ***********************************************************************
