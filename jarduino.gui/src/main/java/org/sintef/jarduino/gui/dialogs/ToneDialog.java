@@ -60,20 +60,20 @@ public class ToneDialog extends JFrame {
 		getContentPane().setLayout(null);
 		
 		lblFreq = new JLabel("Frequency :");
-		lblFreq.setBounds(30, 26, 76, 14);
+		lblFreq.setBounds(30, 36, 76, 14);
 		getContentPane().add(lblFreq);
 		
 		lblDuration = new JLabel("Duration :");
-		lblDuration.setBounds(30, 51, 128, 14);
+		lblDuration.setBounds(30, 61, 128, 14);
 		getContentPane().add(lblDuration);
 		
 		frequency = new JTextField();
-		frequency.setBounds(132, 23, 86, 20);
+		frequency.setBounds(132, 33, 86, 20);
 		getContentPane().add(frequency);
 		frequency.setColumns(10);
 		
 		duration = new JTextField();
-		duration.setBounds(132, 48, 86, 20);
+		duration.setBounds(132, 58, 86, 20);
 		getContentPane().add(duration);
 		duration.setColumns(10);
 		duration.setToolTipText("Miliseconds");
@@ -92,7 +92,7 @@ public class ToneDialog extends JFrame {
 		btnCancel.addActionListener(l);
 		
 		label = new JLabel("");
-		label.setBounds(48, 3, 170, 14);
+		label.setBounds(48, 13, 170, 14);
 		getContentPane().add(label);
 		
 		label.setText("Send tone to Digital Pin #" + p.getPin().getValue());

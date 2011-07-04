@@ -59,15 +59,15 @@ public class AnalogWriteDialog extends JFrame {
 		contentPane.setLayout(null);
 		
 		JLabel label = new JLabel("Enter analog value to send to Pin #" + p.getPin().getValue());
-		label.setBounds(30, 11, 195, 14);
+		label.setBounds(24, 11, 230, 14);
 		contentPane.add(label);
 		
 		lblAnalogValue = new JLabel("Analog value (0 - 255)");
-		lblAnalogValue.setBounds(10, 41, 134, 14);
+		lblAnalogValue.setBounds(24, 41, 134, 14);
 		contentPane.add(lblAnalogValue);
 		
 		value = new JTextField();
-		value.setBounds(154, 38, 86, 20);
+		value.setBounds(157, 38, 76, 20);
 		contentPane.add(value);
 		value.setColumns(10);
 		
@@ -84,6 +84,7 @@ public class AnalogWriteDialog extends JFrame {
 		
 		gui.disable();
 		setVisible(true);
+		setTitle("Analog Write");
 	}
 	private class Listener implements ActionListener{
 		boolean ok;
