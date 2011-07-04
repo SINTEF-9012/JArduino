@@ -37,11 +37,10 @@ public class CardChooserDialog extends JFrame {
 				null,
 				"JArduino",
 				"Select your Arduino card",
-				JOptionPane.YES_OPTION,
+				JOptionPane.INFORMATION_MESSAGE,
 				null,
 				possibilities.toArray(),
 				possibilities.toArray()[0]);
-
 		return s;
 	}
 }
