@@ -1,9 +1,8 @@
-Welcome to the JArduino project!
+Welcome to the JArduino project, powered by ThingML (www.thingml.org)!
 
 Browse the dist folder to get the latest JArduino distribution, which you can import as an Eclipse project.
 
-The JArduino team.
-
+The ThingML/JArduino team.
 
 
 To test samples using the current version of JArduino (requires Maven):
