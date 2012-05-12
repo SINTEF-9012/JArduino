@@ -1,11 +1,21 @@
-Welcome to the JArduino project, powered by ThingML (www.thingml.org)!
+Welcome to the JArduino project, powered by ThingML (www.THingml.org)!
 
 Browse the dist folder to get the latest JArduino distribution, which you can import as an Eclipse project.
 
 The ThingML/JArduino team.
 
+Before using JArduino, please make sure your Arduino board contains the JArduino firmware:
 
-To test samples using the current version of JArduino (requires Maven):
+1- Copy the JArduino folder (located in the distribution in org.sintef.jarduino.samples/arduino) into /libraries/
+
+2- Launch your Arduino environment
+
+3- File -> Examples -> JArduino -> JArduino firmware. It should open an Arduino program that you should upload to your board using the normal Arduino procedure.
+
+4- Your Arduino board is now ready for Jarduino. You can exit the Arduino environment forever and launch Eclipse. Just run the Java/JArduino program.
+
+
+To test samples using the current version of JArduino (requires Maven + the Arduino board connect on the serial port of the PC):
 
         $ git clone git@github.com:ffleurey/JArduino.git
 
