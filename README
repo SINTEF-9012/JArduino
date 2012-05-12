@@ -1,4 +1,4 @@
-Welcome to the JArduino project, powered by ThingML (www.THingml.org)!
+Welcome to the JArduino project, powered by ThingML (www.Thingml.org)!
 
 Browse the dist folder to get the latest JArduino distribution, which you can import as an Eclipse project.
 
@@ -30,3 +30,5 @@ To test samples using the current version of JArduino (requires Maven + the Ardu
 	$ mvn exec:java -Dexec.mainClass="org.sintef.jarduino.gui.JArduinoGUI"
 	
 	Replace "org.sintef.jarduino.gui.JArduinoGUI" with your own main class
+
+Please read our 2-minute tutorial at https://github.com/ffleurey/JArduino/wiki/2-Minute-Tutorial
