@@ -83,26 +83,26 @@
             <version>${jarduino.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.voiceclearly</groupId>
-            <artifactId>com.voiceclearly</artifactId>
-            <version>1.0.0</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/lib/voiceclearly-1.0.0.jar</systemPath>
+            <groupId>org.jivesoftware</groupId>
+            <artifactId>org.jivesoftware.smack</artifactId>
+            <version>3.2.2</version>
         </dependency>
         <dependency>
-            <groupId>com.voiceclearly</groupId>
-            <artifactId>jmf</artifactId>
-            <version>1.0.0</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/lib/jmf.jar</systemPath>
+            <groupId>org.jivesoftware</groupId>
+            <artifactId>org.jivesoftware.smackx</artifactId>
+            <version>3.2.2</version>
         </dependency>
         <dependency>
-            <groupId>com.voiceclearly</groupId>
-            <artifactId>jstun</artifactId>
-            <version>1.0.0</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/lib/jstun.jar</systemPath>
+            <groupId>org.jivesoftware</groupId>
+            <artifactId>org.jivesoftware.smackx-jingle</artifactId>
+            <version>3.2.2</version>
         </dependency>
+        <dependency>
+            <groupId>org.jivesoftware</groupId>
+            <artifactId>org.jivesoftware.smackx-debug</artifactId>
+            <version>3.2.2</version>
+        </dependency>
+
         <dependency>
             <groupId>org.twitter4j</groupId>
             <artifactId>twitter4j-core</artifactId>
