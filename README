@@ -33,7 +33,7 @@ To test samples using the current version of JArduino (requires Maven + the Ardu
 	Replace "org.sintef.jarduino.gui.JArduinoGUI" with your own main class
 
 
-Please read our 2-minute tutorial at https://github.com/ffleurey/JArduino/wiki/2-Minute-Tutorial
+Please read our 2-minute tutorial at https://github.com/SINTEF-9012/JArduino/wiki/2-Minute-Tutorial
 
 
 The ThingML/JArduino team.
