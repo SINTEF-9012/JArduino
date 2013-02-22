@@ -3,9 +3,9 @@ Welcome to the JArduino project, powered by ThingML (www.Thingml.org)!
 Browse the dist folder to get the latest JArduino distribution, which you can import as an Eclipse project. 
 People interested in the concepts behind JArduino can read our paper "MDE to manage communications with and between resource-constrained systems" (http://www.fleurey.com/franck/uploads/Main/Models2011a.pdf). 
 If you are more into the code, just try it out for real!
-
+`
 	$ git clone git@github.com:ffleurey/JArduino.git
-
+`
 
 Before using JArduino, please make sure your Arduino board contains the JArduino firmware:
 
