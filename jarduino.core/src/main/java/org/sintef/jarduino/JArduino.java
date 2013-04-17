@@ -17,6 +17,8 @@
  */
 package org.sintef.jarduino;
 
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -41,9 +43,13 @@ public abstract class JArduino extends AbstractJArduino{
 		}
 	}
 
-	public JArduino(String port) {
-		super(port);
+	public JArduino(String ip,Integer port) throws SocketException, UnknownHostException {
+		super(ip,port);
 	}
+
+    public JArduino(String port) {
+        super(port);
+    }
 	
 	/* ******************************************************
 	 * JAVA Version of common Arduino operations

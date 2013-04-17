@@ -21,7 +21,7 @@
 #define JArduino_h
 
 // include types & constants of Wiring core API
-#include "WConstants.h"
+#include "Arduino.h"
 #undef abs
 #undef round
 
@@ -99,6 +99,11 @@ extern void receiveeeprom_read(uint16_t address);
 extern void receiveeeprom_sync_write(uint16_t address, uint8_t value);
 extern void receiveeeprom_write(uint16_t address, uint8_t value);
 
+extern void sendOutgoingMessage(uint8_t data[], uint8_t size);
+extern uint8_t udpRead();
+extern int udpAvailable();
+
+
 class JArduino
 {
   public:
@@ -123,7 +128,6 @@ class JArduino
 	// private operation which parses incomming message and calls
 	// the corresponding exten functions
     void parseIncommingMessage(uint8_t data[], uint8_t size);
-    void sendOutgoingMessage(uint8_t data[], uint8_t size);
 };
 
 #endif
