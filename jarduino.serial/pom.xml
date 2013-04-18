@@ -1,0 +1,67 @@
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.sintef.jarduino</groupId>
+    <artifactId>org.sintef.jarduino.serial</artifactId>
+    <packaging>jar</packaging>
+    <version>0.1.7-SNAPSHOT</version>
+    <name>org.sintef.jarduino.serial</name>
+    
+    <properties>
+        <jarduino.version>${project.version}</jarduino.version>
+    </properties>
+    
+    <build>
+        <plugins>
+            <!-- Java compiler plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <repositories>
+        <repository>
+            <id>thingml-snapshot</id>
+            <name>thingml-snapshot</name>
+            <url>http://maven.thingml.org/thingml-snapshot/</url>
+        </repository>
+        <repository>
+            <id>thingml-release</id>
+            <name>thingml-release</name>
+            <url>http://maven.thingml.org/thingml-release/</url>
+        </repository>
+        <repository>
+            <id>thirdparty</id>
+            <name>thingml-snapshot</name>
+            <url>http://maven.thingml.org/thirdparty/</url>
+        </repository>
+        <repository>
+            <id>kevoree-libs-release-local</id>
+            <url>http://maven.kevoree.org/release</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.kevoree.extra</groupId>
+            <artifactId>org.kevoree.extra.osgi.rxtx</artifactId>
+            <version>2.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.sintef.jarduino</groupId>
+            <artifactId>org.sintef.jarduino.core</artifactId>
+            <version>${jarduino.version}</version>
+        </dependency>
+    </dependencies>
+ 
+</project>
