@@ -17,11 +17,7 @@
  */
 package org.sintef.jarduino.examples.basic;
 
-import org.sintef.jarduino.DigitalPin;
-import org.sintef.jarduino.DigitalState;
-import org.sintef.jarduino.JArduino;
-import org.sintef.jarduino.PinMode;
-import org.sintef.jarduino.comm.Serial4JArduino;
+import org.sintef.jarduino.*;
 
 import java.net.SocketException;
 import java.net.UnknownHostException;
@@ -34,8 +30,8 @@ This example code is in the public domain.
 
 public class BlinkEthernet extends JArduino {
 
-    public BlinkEthernet(String ip,Integer port) throws SocketException, UnknownHostException {
-        super(ip,port);
+    public BlinkEthernet(String ip, JArduinoCom ethernet) {
+        super(ip, ethernet);
     }
 
     @Override
@@ -62,7 +58,7 @@ public class BlinkEthernet extends JArduino {
         } else {
             ip = "192.168.178.29";
         }
-        JArduino arduino = new BlinkEthernet(ip,4000);
+        JArduino arduino = new BlinkEthernet(ip, JArduinoCom.Ethernet);
         arduino.runArduinoProcess();
     }
 }

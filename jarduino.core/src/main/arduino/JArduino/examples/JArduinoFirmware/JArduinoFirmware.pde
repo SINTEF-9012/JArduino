@@ -17,9 +17,6 @@
  */
 #include <JArduino.h>
 #include <EEPROM.h>
-#include <SPI.h>
-#include <Ethernet.h>
-#include <EthernetUdp.h>
 
 JArduino _JArduino = JArduino();
 
@@ -80,13 +77,9 @@ void receiveeeprom_write(uint16_t address, uint8_t value) {
   EEPROM.write(address, value);
 }
 
-EthernetUDP Udp;
-byte mac[] = { 0x90, 0xA2, 0xDA, 0x0D, 0x94, 0x7A };
-
 void setup()
 {
-        Ethernet.begin(mac);
-        Udp.begin(4000);
+	// initialize the JArduino protocol
 	_JArduino.init_JArduino();
 }
 
@@ -95,46 +88,3 @@ void loop()
 	// check for incomming messages for the JArduino protocol
 	_JArduino.poll_JArduino();
 }
-
-void sendOutgoingMessage(uint8_t data[], uint8_t size) {
-  uint8_t i = 0;
-  // send the start byte
-  Udp.beginPacket(Udp.remoteIP(), Udp.remotePort());
-  Udp.write(START_BYTE);
-  // send data
-  for(i=0; i<size; i++) {
-    // escape special bytes
-    if(data[i] == START_BYTE || data[i] == STOP_BYTE || data[i] == ESCAPE_BYTE) {
-      Udp.write(ESCAPE_BYTE);
-    }
-    Udp.write(data[i]);
-  }
-  // send the stop byte
-  Udp.write(STOP_BYTE);
-  Udp.endPacket();
-}
-
-char packetBuffer[UDP_TX_PACKET_MAX_SIZE];
-int readIndice = 0;
-int readAvailable = 0;
-
-uint8_t udpRead(){
-    if(readAvailable > 0){
-      readAvailable--;
-      readIndice++;
-      return packetBuffer[readIndice-1];
-    }
-    return -1;
-}
-int udpAvailable(){
-  if(readAvailable == 0){
-    int packetSize = Udp.parsePacket();
-    if(packetSize){
-        Udp.read(packetBuffer,UDP_TX_PACKET_MAX_SIZE);
-        readAvailable = packetSize;
-        readIndice = 0;
-    }
-  }
-  return readAvailable;
-}
-

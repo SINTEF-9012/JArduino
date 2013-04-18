@@ -17,7 +17,7 @@
  */
 
 // include core Wiring API
-#include "Arduino.h"
+#include "WProgram.h"
 
 // include this library's description file
 #include "JArduino.h"
@@ -36,8 +36,8 @@ void JArduino::init_JArduino(void) {
 
 void JArduino::poll_JArduino(void) {	
   uint8_t data;
-  while (udpAvailable() > 0) {
-    data = udpRead();
+  while (Serial.available() > 0) {
+    data = Serial.read();
     // we got a byte from the serial port
     if (state == RCV_WAIT) {
       // it should be a start byte or we just ignore it
@@ -164,4 +164,18 @@ void JArduino::parseIncommingMessage(uint8_t data[], uint8_t size) {
   }
 }
 
-
+void JArduino::sendOutgoingMessage(uint8_t data[], uint8_t size) {
+  uint8_t i = 0;
+  // send the start byte
+  Serial.write(START_BYTE);
+  // send data
+  for(i=0; i<size; i++) {
+    // escape special bytes
+    if(data[i] == START_BYTE || data[i] == STOP_BYTE || data[i] == ESCAPE_BYTE) {
+      Serial.write(ESCAPE_BYTE);
+    }
+    Serial.write(data[i]);
+  }
+  // send the stop byte
+  Serial.write(STOP_BYTE);
+}

@@ -17,30 +17,34 @@
  */
 package org.sintef.jarduino;
 
-import org.sintef.jarduino.comm.Serial4JArduino;
 import org.sintef.jarduino.comm.Udp4JArduino;
 import org.sintef.jarduino.msg.*;
 import org.sintef.jarduino.observer.JArduinoClientObserver;
 import org.sintef.jarduino.observer.JArduinoObserver;
-
-import java.net.SocketException;
-import java.net.UnknownHostException;
+import org.sintef.jarduino.observer.JArduinoSubject;
 
 public abstract class AbstractJArduino {
 
-    private JArduinoDriverMessageHandler messageHandler;
-    private JArduinoClientObserver serial;
+    protected JArduinoDriverMessageHandler messageHandler;
+    protected JArduinoClientObserver serial;
 
-    public AbstractJArduino(String ip, Integer port) throws SocketException, UnknownHostException {
-        serial = new Udp4JArduino(ip, port);
-        messageHandler = new JArduinoDriverMessageHandler();
-        ((Udp4JArduino) serial).register(messageHandler);
-    }
+    public AbstractJArduino(String ID, JArduinoCom com) {
+        try {
+            if (com.equals(JArduinoCom.Ethernet)) {
+                serial = new Udp4JArduino(ID, 4000);
+                messageHandler = new JArduinoDriverMessageHandler();
+                ((JArduinoSubject) serial).register(messageHandler);
+            }
+            if (com.equals(JArduinoCom.Serial)) {
 
-    public AbstractJArduino(String port) {
-        serial = new Serial4JArduino(port);
-        messageHandler = new JArduinoDriverMessageHandler();
-        ((Serial4JArduino) serial).register(messageHandler);
+                Class clazz = this.getClass().getClassLoader().loadClass("org.sintef.jarduino.comm.Serial4JArduino");
+                serial = (JArduinoClientObserver) clazz.getConstructor(String.class).newInstance(ID);
+                messageHandler = new JArduinoDriverMessageHandler();
+                ((JArduinoSubject) serial).register(messageHandler);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     //*************************************************************************

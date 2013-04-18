@@ -57,6 +57,11 @@
             <artifactId>org.sintef.jarduino.core</artifactId>
             <version>${jarduino.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.sintef.jarduino</groupId>
+            <artifactId>org.sintef.jarduino.serial</artifactId>
+            <version>${jarduino.version}</version>
+        </dependency>
     </dependencies>
     
     <repositories>

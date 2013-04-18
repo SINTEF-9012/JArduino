@@ -79,6 +79,11 @@
         </dependency>
         <dependency>
             <groupId>org.sintef.jarduino</groupId>
+            <artifactId>org.sintef.jarduino.serial</artifactId>
+            <version>${jarduino.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.sintef.jarduino</groupId>
             <artifactId>org.sintef.jarduino.gui</artifactId>
             <version>${jarduino.version}</version>
         </dependency>

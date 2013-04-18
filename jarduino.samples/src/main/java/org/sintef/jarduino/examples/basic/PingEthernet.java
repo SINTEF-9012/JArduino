@@ -1,6 +1,8 @@
 package org.sintef.jarduino.examples.basic;
 
 import org.sintef.jarduino.JArduino;
+import org.sintef.jarduino.JArduinoCom;
+
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
@@ -12,8 +14,8 @@ import java.net.UnknownHostException;
  */
 public class PingEthernet extends JArduino {
 
-    public PingEthernet(String ip,Integer port) throws SocketException, UnknownHostException {
-        super(ip,port);
+    public PingEthernet(String ip, JArduinoCom comModel) throws SocketException, UnknownHostException {
+        super(ip, comModel);
     }
 
     @Override
@@ -44,7 +46,7 @@ public class PingEthernet extends JArduino {
         } else {
             ip = "192.168.178.29";
         }
-        JArduino arduino = new PingEthernet(ip,4000);
+        JArduino arduino = new PingEthernet(ip, JArduinoCom.Ethernet);
         arduino.runArduinoProcess();
     }
 

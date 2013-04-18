@@ -17,18 +17,13 @@
  */
 package org.sintef.jarduino.comm;
 
+import gnu.io.*;
 import org.sintef.jarduino.observer.JArduinoClientObserver;
 import org.sintef.jarduino.observer.JArduinoObserver;
 import org.sintef.jarduino.observer.JArduinoSubject;
 import org.sintef.jarduino.sim.InteractiveJArduinoDataControllerClient;
 
-import gnu.io.CommPort;
-import gnu.io.CommPortIdentifier;
-import gnu.io.PortInUseException;
-import gnu.io.SerialPort;
-import gnu.io.SerialPortEvent;
-import gnu.io.SerialPortEventListener;
-
+import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,7 +32,6 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
-import javax.swing.JOptionPane;
 
 public class Serial4JArduino implements JArduinoClientObserver, JArduinoSubject {
 
@@ -69,6 +63,7 @@ public class Serial4JArduino implements JArduinoClientObserver, JArduinoSubject 
             e.printStackTrace();
         }
     }
+
     public static final byte START_BYTE = 0x12;
     public static final byte STOP_BYTE = 0x13;
     public static final byte ESCAPE_BYTE = 0x7D;
@@ -79,6 +74,9 @@ public class Serial4JArduino implements JArduinoClientObserver, JArduinoSubject 
 
     public Serial4JArduino(String port) {
         this.port = port;
+        if (port == null) {
+            port = Serial4JArduino.selectSerialPort();
+        }
         connect(port);
     }
 
@@ -135,6 +133,7 @@ public class Serial4JArduino implements JArduinoClientObserver, JArduinoSubject 
     public void receiveMsg(byte[] msg) {
         sendData(msg);
     }
+
     /* ***********************************************************************
      * Implementation of the CoffeeSensorSubject interface. 
      * The CoffeeSensor Observers get notified for each incoming packet.
@@ -236,8 +235,9 @@ public class Serial4JArduino implements JArduinoClientObserver, JArduinoSubject 
     /* ***********************************************************************
      * Serial port utilities: listing
      *************************************************************************/
+
     /**
-     * @return    A HashSet containing the CommPortIdentifier for all serial ports that are not currently being used.
+     * @return A HashSet containing the CommPortIdentifier for all serial ports that are not currently being used.
      */
     public static HashSet<CommPortIdentifier> getAvailableSerialPorts() {
         HashSet<CommPortIdentifier> h = new HashSet<CommPortIdentifier>();
@@ -295,16 +295,16 @@ public class Serial4JArduino implements JArduinoClientObserver, JArduinoSubject 
         if (possibilities.size() > 1) {
             startPosition = 1;
         }
-        
-       return (String) JOptionPane.showInputDialog(
-               null,
-               "JArduino",
-               "Select serial port",
-               JOptionPane.PLAIN_MESSAGE,
-               null,
-               possibilities.toArray(),
-               possibilities.toArray()[startPosition]);
-        
+
+        return (String) JOptionPane.showInputDialog(
+                null,
+                "JArduino",
+                "Select serial port",
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                possibilities.toArray(),
+                possibilities.toArray()[startPosition]);
+
     }
 
     /* ***********************************************************************
