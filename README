@@ -35,5 +35,23 @@ To test samples using the current version of JArduino (requires Maven + the Ardu
 
 Please read our 2-minute tutorial at https://github.com/SINTEF-9012/JArduino/wiki/2-Minute-Tutorial
 
-
 The ThingML/JArduino team.
+
+
+Ethernet usage :
+
+    1 - Instead of JArduino folder, copy the JArduinoEthernet folder to Arduino IDE librairies folder
+
+    2 - Launch Arduino environment
+
+	3- File -> Examples -> JArduinoEthernet -> JArduino firmware. It should open an Arduino program that you should upload to your board using the normal Arduino procedure.
+
+	4- Your Arduino board is now ready for JarduinoEthernet. You can exit the Arduino environment forever and launch Eclipse. Just run the Java/JArduino program.
+
+	5 - JArduinoEthernet don't JArduino.serial maven dependency, don't forget to remove it if you want to use JArduino from an Android application for instance.
+
+	6 - Can can now Use JArduino constructor to configure the IP of your device and don't forget to set the communication module to ethernet like bellow
+
+	    JArduino arduino = new BlinkEthernet(ip, JArduinoCom.Ethernet)
+
+

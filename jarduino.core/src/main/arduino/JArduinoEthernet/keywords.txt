@@ -1,0 +1,62 @@
+#
+# Licensed under the GNU LESSER GENERAL PUBLIC LICENSE, Version 3, 29 June 2007;
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# 	http://www.gnu.org/licenses/lgpl-3.0.txt
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Authors: Franck Fleurey and Brice Morin
+# Company: SINTEF IKT, Oslo, Norway
+# Date: 2011
+#
+
+#######################################
+# Syntax Coloring For JArduino
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+JArduino	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+receivepinMode	KEYWORD2
+receivedigitalRead	KEYWORD2
+receivedigitalWrite	KEYWORD2
+receiveanalogReference	KEYWORD2
+receiveanalogRead	KEYWORD2
+receiveanalogWrite	KEYWORD2
+receivetone	KEYWORD2
+receivenoTone	KEYWORD2
+receiveping	KEYWORD2
+receiveattachInterrupt	KEYWORD2
+receivedetachInterrupt	KEYWORD2
+receiveeeprom_read	KEYWORD2
+receiveeeprom_sync_write	KEYWORD2
+receiveeeprom_write	KEYWORD2
+
+senddigitalReadResult	KEYWORD2
+sendanalogReadResult	KEYWORD2
+sendpong	KEYWORD2
+sendinterruptNotification	KEYWORD2
+sendeeprom_value	KEYWORD2
+sendeeprom_write_ack	KEYWORD2
+
+#######################################
+# Instances (KEYWORD2)
+#######################################
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+

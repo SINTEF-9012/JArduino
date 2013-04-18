@@ -27,7 +27,8 @@
     <modules>
         <module>jarduino.core</module>
         <module>jarduino.gui</module>
-        <!--<module>jarduino.samples</module>-->
+        <module>jarduino.serial</module>
+        <module>jarduino.samples</module>
     </modules>
     
     <properties>
