@@ -46,7 +46,7 @@ Ethernet usage :
 
 	3- File -> Examples -> JArduinoEthernet -> JArduino firmware. It should open an Arduino program that you should 
 		
-		4- if you have associated the MAC address to your shield to a static IP in your router, please update the MAC address in the firmware (line 84). Otherwise, DHCP should manage everything.
+		4- if you have associated the MAC address of your shield to a static IP in your router, please update the MAC address in the firmware (line 84). Otherwise, DHCP should manage everything.
 
 		5- upload to your board using the normal Arduino procedure.
 
