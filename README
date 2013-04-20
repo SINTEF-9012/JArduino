@@ -46,19 +46,19 @@ Ethernet usage :
 
 	3- File -> Examples -> JArduinoEthernet -> JArduino firmware. It should open an Arduino program that you should 
 		
-		3- update with the MAC address of your ethernet shield (line 84)
+		4- update with the MAC address of your ethernet shield (line 84)
 
-		4- upload to your board using the normal Arduino procedure.
+		5- upload to your board using the normal Arduino procedure.
 
-	5- Your Arduino board is now ready for JarduinoEthernet. You can exit the Arduino environment forever and launch Eclipse. Just run the Java/JArduino program.
+	6- Your Arduino board is now ready for JarduinoEthernet. You can exit the Arduino environment forever and launch Eclipse. Just run the Java/JArduino program.
 
-	6 - JArduinoEthernet does not need  JArduino.serial maven dependency, don't forget to remove it if you want to use JArduino from an Android application for instance.
+	7 - JArduinoEthernet does not need  JArduino.serial maven dependency, don't forget to remove it if you want to use JArduino from an Android application for instance.
 
-	7 - Can can now sse JArduino constructor to configure the IP of your device and don't forget to set the communication module to ethernet like bellow
+	8 - Can can now sse JArduino constructor to configure the IP of your device and don't forget to set the communication module to ethernet like bellow
 
 		JArduino arduino = new BlinkEthernet(ip, JArduinoCom.Ethernet)
 
-	8 - To run a sample, just:
+	9 - To run a sample, just:
 		mvn clean install exec:java -Dexec.mainClass="org.sintef.jarduino.examples.basic.BlinkEthernet" -Dexec.args="<IP-addredd-of-Arduino>"
 
 	    
