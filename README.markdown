@@ -1,4 +1,4 @@
-Welcome to the JArduino project, powered by [ThingML](www.Thingml.org)!
+Welcome to the JArduino project, powered by [ThingML](http://www.Thingml.org)!
 
 Browse the dist folder to get the latest JArduino distribution, which you can import as an Eclipse project. 
 People interested in the concepts behind JArduino can read our paper ["MDE to manage communications with and between resource-constrained systems"](http://www.fleurey.com/franck/uploads/Main/Models2011a.pdf). 
@@ -59,4 +59,4 @@ mvn clean install exec:java -Dexec.mainClass="org.sintef.jarduino.examples.basic
 	    
 
 
-The ThingML/JArduino team.
+_The ThingML/JArduino team._
