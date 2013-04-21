@@ -41,14 +41,16 @@ Please read our [2-minute tutorial] (https://github.com/SINTEF-9012/JArduino/wik
 	4. if you have associated the MAC address of your shield to a static IP in your router, please update the MAC address in the firmware (line 84). Otherwise, DHCP should manage everything.
 	5. upload to your board using the normal Arduino procedure.
 6. Your Arduino board is now ready for JarduinoEthernet. You can exit the Arduino environment forever and launch Eclipse. Just run the Java/JArduino program.
-7. JArduinoEthernet does not need  JArduino.serial maven dependency, don't forget to remove it if you want to use JArduino from an Android application for instance.
-8. Can can now sse JArduino constructor to configure the IP of your device and don't forget to set the communication module to ethernet like bellow
+
+> JArduinoEthernet does not need  JArduino.serial maven dependency, don't forget to remove it if you want to **use JArduino from an Android application** for instance.
+
+You Can can now use the JArduino constructor to configure the IP of your device. Don't forget to set the communication module to ethernet:
 
 ```java
 JArduino arduino = new BlinkEthernet(ip, JArduinoCom.Ethernet)
 ```
 
-9. To run a sample, just:
+To run a sample using Ethernet:
 
 ```bash
 mvn clean install exec:java -Dexec.mainClass="org.sintef.jarduino.examples.basic.BlinkEthernet" -Dexec.args="<IP-address-of-Arduino-board>"
