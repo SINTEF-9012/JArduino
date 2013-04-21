@@ -59,7 +59,7 @@ Ethernet usage :
 		JArduino arduino = new BlinkEthernet(ip, JArduinoCom.Ethernet)
 
 	9 - To run a sample, just:
-		mvn clean install exec:java -Dexec.mainClass="org.sintef.jarduino.examples.basic.BlinkEthernet" -Dexec.args="<IP-addredd-of-Arduino>"
+		mvn clean install exec:java -Dexec.mainClass="org.sintef.jarduino.examples.basic.BlinkEthernet" -Dexec.args="<IP-address-of-Arduino-board>"
 
 	    
 
