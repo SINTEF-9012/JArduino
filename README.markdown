@@ -1,7 +1,7 @@
-Welcome to the JArduino project, powered by ThingML (www.Thingml.org)!
+Welcome to the JArduino project, powered by [ThingML](www.Thingml.org)!
 
 Browse the dist folder to get the latest JArduino distribution, which you can import as an Eclipse project. 
-People interested in the concepts behind JArduino can read our paper "MDE to manage communications with and between resource-constrained systems" (http://www.fleurey.com/franck/uploads/Main/Models2011a.pdf). 
+People interested in the concepts behind JArduino can read our paper ["MDE to manage communications with and between resource-constrained systems"](http://www.fleurey.com/franck/uploads/Main/Models2011a.pdf). 
 If you are more into the code, just try it out for real!
 
 	$ git clone https://github.com/SINTEF-9012/JArduino.git
@@ -44,11 +44,15 @@ Please read our [2-minute tutorial] (https://github.com/SINTEF-9012/JArduino/wik
 7. JArduinoEthernet does not need  JArduino.serial maven dependency, don't forget to remove it if you want to use JArduino from an Android application for instance.
 8. Can can now sse JArduino constructor to configure the IP of your device and don't forget to set the communication module to ethernet like bellow
 
-	JArduino arduino = new BlinkEthernet(ip, JArduinoCom.Ethernet)
+```java
+JArduino arduino = new BlinkEthernet(ip, JArduinoCom.Ethernet)
+```
 
 9. To run a sample, just:
-	
-	mvn clean install exec:java -Dexec.mainClass="org.sintef.jarduino.examples.basic.BlinkEthernet" -Dexec.args="<IP-address-of-Arduino-board>"
+
+```bash
+mvn clean install exec:java -Dexec.mainClass="org.sintef.jarduino.examples.basic.BlinkEthernet" -Dexec.args="<IP-address-of-Arduino-board>"
+```
 
 	    
 
