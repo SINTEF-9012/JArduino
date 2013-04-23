@@ -38,7 +38,7 @@ Please read our [2-minute tutorial] (https://github.com/SINTEF-9012/JArduino/wik
 1. Instead of JArduino folder, copy the JArduinoEthernet folder to Arduino IDE librairies folder
 2. Launch Arduino environment
 3. File -> Examples -> JArduinoEthernet -> JArduino firmware. It should open an Arduino program that you should 
-	4. if you have associated the MAC address of your shield to a static IP in your router, please update the MAC address in the firmware (line 84). Otherwise, DHCP should manage everything.
+	4. if you have associated the MAC address of your shield to a static IP in your router, please update the MAC address in the firmware ([line 84](https://github.com/SINTEF-9012/JArduino/blob/master/jarduino.core/src/main/arduino/JArduinoEthernet/examples/JArduinoFirmware/JArduinoFirmware.ino#L84)). Otherwise, DHCP should manage everything.
 	5. upload to your board using the normal Arduino procedure.
 6. Your Arduino board is now ready for JarduinoEthernet. You can exit the Arduino environment forever and launch Eclipse. Just run the Java/JArduino program.
 
