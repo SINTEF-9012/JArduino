@@ -61,5 +61,6 @@ mvn clean install exec:java -Dexec.mainClass="org.sintef.jarduino.examples.basic
 
 _The ThingML/JArduino team._
 
+## Build status
 
 ![Build status](http://build.thingml.org/job/Build%20JArduino/lastBuild/buildStatus)
