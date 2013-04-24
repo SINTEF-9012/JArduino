@@ -60,6 +60,6 @@
             <url>http://maven.kevoree.org/release</url>
         </repository>
     
-    </repositories>
+    </repositories> 
     
 </project>
