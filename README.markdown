@@ -63,4 +63,4 @@ _The ThingML/JArduino team._
 
 ## Build status, by Travis CI
 
-<img src="https://api.travis-ci.org/SINTEF-9012/JArduino.png alt="Build status" width="40" height="40" border="10" />
+<img src="https://api.travis-ci.org/SINTEF-9012/JArduino.png" alt="Build status"/>
