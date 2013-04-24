@@ -61,7 +61,6 @@ mvn clean install exec:java -Dexec.mainClass="org.sintef.jarduino.examples.basic
 
 _The ThingML/JArduino team._
 
-## Build status
+## Build status, by Travis CI
 
-<a href="http://build.thingml.org/job/Build%20JArduino/lastBuild" target="_blank"><img src="http://build.thingml.org/job/Build%20JArduino/lastBuild/buildStatus" 
-alt="Build status" width="40" height="40" border="10" /></a>
+<img src="https://api.travis-ci.org/SINTEF-9012/JArduino.png alt="Build status" width="40" height="40" border="10" />
