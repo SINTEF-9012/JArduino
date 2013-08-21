@@ -38,11 +38,8 @@ public class AndroidBluetooth4JArduino implements JArduinoClientObserver, JArdui
     protected OutputStream out;
     Set<JArduinoObserver> observers = new HashSet<JArduinoObserver>();
 
-    public AndroidBluetooth4JArduino() {
-    }
-
-    public AndroidBluetooth4JArduino(BluetoothSocket socket) {
-        setAndroidBluetoothSocket(socket);
+    public AndroidBluetooth4JArduino(AndroidBluetoothConfiguration myConf) {
+        setAndroidBluetoothSocket(myConf.getmSocket());
     }
 
     public void setAndroidBluetoothSocket(BluetoothSocket socket){
