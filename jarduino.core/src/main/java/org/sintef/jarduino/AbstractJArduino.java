@@ -42,6 +42,13 @@ public abstract class AbstractJArduino {
                 messageHandler = new JArduinoDriverMessageHandler();
                 ((JArduinoSubject) serial).register(messageHandler);
             }
+            if (com.equals(JArduinoCom.AndroidBluetooth)) {
+
+                Class clazz = this.getClass().getClassLoader().loadClass("org.sintef.jarduino.comm.AndroidBluetooth4JArduino");
+                serial = (JArduinoClientObserver) clazz.getConstructor(String.class).newInstance();
+                messageHandler = new JArduinoDriverMessageHandler();
+                ((JArduinoSubject) serial).register(messageHandler);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
