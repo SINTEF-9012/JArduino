@@ -22,6 +22,10 @@ import java.util.UUID;
  */
 public class AndroidActivity extends Activity {
 
+   /*
+    * Before using this example, please paire your Bluetooth device to your Android device.
+    */
+
     private static String TAG = "arduino";
     private String mUUID = "00001101-0000-1000-8000-00805F9B34FB"; //Special code, do not
     //change unless you know what you're doing.
