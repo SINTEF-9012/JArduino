@@ -12,7 +12,7 @@ import org.sintef.jarduino.ProtocolConfiguration;
 public class AndroidBluetoothConfiguration extends ProtocolConfiguration {
     private BluetoothSocket mSocket;
 
-    AndroidBluetoothConfiguration(BluetoothSocket socket){
+    public AndroidBluetoothConfiguration(BluetoothSocket socket){
         mSocket = socket;
     }
 

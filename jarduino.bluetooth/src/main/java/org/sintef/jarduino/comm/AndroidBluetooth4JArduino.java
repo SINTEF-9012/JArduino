@@ -18,6 +18,7 @@
 package org.sintef.jarduino.comm;
 
 import android.bluetooth.BluetoothSocket;
+import org.sintef.jarduino.ProtocolConfiguration;
 import org.sintef.jarduino.observer.JArduinoClientObserver;
 import org.sintef.jarduino.observer.JArduinoObserver;
 import org.sintef.jarduino.observer.JArduinoSubject;
@@ -28,7 +29,7 @@ import java.io.OutputStream;
 import java.util.HashSet;
 import java.util.Set;
 
-public class AndroidBluetooth4JArduino implements JArduinoClientObserver, JArduinoSubject {
+public class AndroidBluetooth4JArduino implements JArduinoClientObserver, JArduinoSubject, Runnable {
 
     public static final byte START_BYTE = 0x12;
     public static final byte STOP_BYTE = 0x13;
@@ -36,10 +37,17 @@ public class AndroidBluetooth4JArduino implements JArduinoClientObserver, JArdui
     protected BluetoothSocket mSocket;
     protected InputStream in;
     protected OutputStream out;
+    private Thread reader = null;
     Set<JArduinoObserver> observers = new HashSet<JArduinoObserver>();
 
     public AndroidBluetooth4JArduino(AndroidBluetoothConfiguration myConf) {
         setAndroidBluetoothSocket(myConf.getmSocket());
+        reader = new Thread(this);
+        reader.start();
+    }
+
+    public AndroidBluetooth4JArduino(ProtocolConfiguration myConf) {
+        this(((AndroidBluetoothConfiguration)myConf));
     }
 
     public void setAndroidBluetoothSocket(BluetoothSocket socket){
@@ -70,8 +78,6 @@ public class AndroidBluetooth4JArduino implements JArduinoClientObserver, JArdui
         observers.remove(observer);
     }
 
-    public static final int RCV_WAIT = 0;
-
     protected void sendData(byte[] payload) {
         try {
             // send the start byte
@@ -89,6 +95,66 @@ public class AndroidBluetooth4JArduino implements JArduinoClientObserver, JArdui
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+        }
+    }
+
+    public static final int RCV_WAIT = 0;
+    public static final int RCV_MSG = 1;
+    public static final int RCV_ESC = 2;
+    private byte[] buffer = new byte[256];
+    protected int buffer_idx = 0;
+    protected int state = RCV_WAIT;
+
+    @Override
+    public void run() {
+        byte[] buffer = new byte[1024];
+        //DatagramPacket p = new DatagramPacket(buffer, buffer.length);
+        while (true) {
+            try {
+                in.read(buffer);
+                //ByteArrayInputStream in = new ByteArrayInputStream(p.getData());
+                int data;
+                while ((data = in.read()) > -1) {
+                    // we got a byte from the serial port
+                    if (state == RCV_WAIT) { // it should be a start byte or we just ignore it
+                        if (data == START_BYTE) {
+                            state = RCV_MSG;
+                            buffer_idx = 0;
+                        }
+                    } else if (state == RCV_MSG) {
+                        if (data == ESCAPE_BYTE) {
+                            state = RCV_ESC;
+                        } else if (data == STOP_BYTE) {
+                            // We got a complete frame
+                            byte[] packet = new byte[buffer_idx];
+                            for (int i = 0; i < buffer_idx; i++) {
+                                packet[i] = buffer[i];
+                            }
+                            /*AnalogReadResultMsg myData = (AnalogReadResultMsg) JArduinoProtocol.createMessageFromPacket(packet);
+                            Log.d("coucou", String.valueOf(myData.getValue()));*/
+                            for (JArduinoObserver o : observers) {
+                                o.receiveMsg(packet);
+                            }
+                            state = RCV_WAIT;
+                        } else if (data == START_BYTE) {
+                            // Should not happen but we reset just in case
+                            state = RCV_MSG;
+                            buffer_idx = 0;
+                        } else { // it is just a byte to store
+                            buffer[buffer_idx] = (byte) data;
+                            buffer_idx++;
+                        }
+                    } else if (state == RCV_ESC) {
+                        // Store the byte without looking at it
+                        buffer[buffer_idx] = (byte) data;
+                        buffer_idx++;
+                        state = RCV_MSG;
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
         }
     }
 }

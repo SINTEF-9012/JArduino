@@ -17,7 +17,6 @@
  */
 package org.sintef.jarduino;
 
-import org.sintef.jarduino.comm.AndroidBluetoothConfiguration;
 import org.sintef.jarduino.comm.Udp4JArduino;
 import org.sintef.jarduino.msg.*;
 import org.sintef.jarduino.observer.JArduinoClientObserver;
@@ -45,9 +44,8 @@ public abstract class AbstractJArduino {
                 ((JArduinoSubject) serial).register(messageHandler);
             }
             if (com.equals(JArduinoCom.AndroidBluetooth)) {
-                AndroidBluetoothConfiguration androidConf = (AndroidBluetoothConfiguration)conf;
                 Class clazz = this.getClass().getClassLoader().loadClass("org.sintef.jarduino.comm.AndroidBluetooth4JArduino");
-                serial = (JArduinoClientObserver) clazz.getConstructor(String.class).newInstance(androidConf);
+                serial = (JArduinoClientObserver) clazz.getConstructor(ProtocolConfiguration.class).newInstance(conf);
                 messageHandler = new JArduinoDriverMessageHandler();
                 ((JArduinoSubject) serial).register(messageHandler);
             }

@@ -32,6 +32,14 @@ public abstract class JArduino extends AbstractJArduino {
         super(null, com, null);
     }
 
+    public JArduino(String ID, JArduinoCom com, ProtocolConfiguration prot) {
+        super(ID, com, prot);
+    }
+
+    public JArduino(JArduinoCom com, ProtocolConfiguration prot) {
+        super(null, com, prot);
+    }
+
     public JArduino() {
         super(null, JArduinoCom.Serial, null); //Serial by default
     }

@@ -15,13 +15,13 @@
         <version>0.1.7-SNAPSHOT</version>
     </parent>
 
-    <dependencies>
+    <!--<dependencies>
         <dependency>
             <groupId>org.sintef.jarduino</groupId>
             <artifactId>org.sintef.jarduino.bluetooth</artifactId>
             <version>${jarduino.version}</version>
         </dependency>
-    </dependencies>
+    </dependencies>-->
 
     <build>
         <plugins>
