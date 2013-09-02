@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="3dip"
+        android:textColor="#000000"
+        android:background="@drawable/log">
+
+</TextView> -->
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="fill_parent"
+             android:layout_height="fill_parent"
+             android:clickable="false" android:focusable="false">
+
+<LinearLayout
+        android:id="@+id/back"
+        android:tag="back"
+        android:gravity="center_horizontal" style="@style/ListBackContent">
+
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/delete"
+            style="@style/ListButtonAction"
+            android:text="Delete"/>
+</LinearLayout>
+
+<RelativeLayout
+        android:orientation="vertical"
+        android:id="@+id/front"
+        android:tag="front"
+        style="@style/ListFrontContent">
+
+    <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            style="@style/ListTitle"
+            android:id="@+id/example_row_tv_title"/>
+
+</RelativeLayout>
+
+</FrameLayout>

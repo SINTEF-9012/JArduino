@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:swipe="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:baselineAligned="false">
+    <LinearLayout android:layout_width="fill_parent"
+                  android:layout_height="fill_parent"
+                  android:layout_weight="29"
+                  android:baselineAligned="false">
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="60">
+            <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Run"
+                    android:id="@+id/run" android:layout_gravity="center" android:textSize="16dip"
+                    android:padding="19dip" android:enabled="true" android:visibility="visible"
+                    android:background="#ffffff" android:layout_margin="3dip"/>
+            <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Clear"
+                    android:id="@+id/clear" android:layout_gravity="center" android:textSize="16dip"
+                    android:padding="19dip" android:enabled="true" android:visibility="visible"
+                    android:background="#ffffff" android:layout_margin="3dip"/>
+        </LinearLayout>
+        <!--<ListView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/log"
+                android:layout_weight="20" android:layout_margin="3dip" android:padding="3dip">
+        </ListView>-->
+        <com.fortysevendeg.android.swipelistview.SwipeListView
+                android:listSelector="#00000000"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                swipe:swipeFrontView="@+id/front"
+                swipe:swipeBackView="@+id/back"
+                swipe:swipeDrawableChecked="@drawable/choice_selected"
+                swipe:swipeDrawableUnchecked="@drawable/choice_unselected"
+                swipe:swipeCloseAllItemsWhenMoveList="true"
+                swipe:swipeMode="both"
+                android:id="@+id/log"
+                android:layout_weight="20" android:layout_margin="1dip" android:padding="3dip"
+                />
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="60">
+            <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Save"
+                    android:id="@+id/save" android:textSize="16dip" android:padding="19dip" android:enabled="true"
+                    android:visibility="visible" android:background="#ffffff"
+                    android:layout_margin="3dip"/>
+            <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Load"
+                    android:id="@+id/load" android:textSize="16dip" android:padding="19dip" android:enabled="true"
+                    android:visibility="visible" android:background="#ffffff"
+                    android:layout_margin="3dip"/>
+            <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Reset"
+                    android:id="@+id/reset" android:layout_gravity="center" android:textSize="16dip"
+                    android:singleLine="false" android:padding="19dip" android:enabled="true"
+                    android:visibility="visible" android:background="#ffffff"
+                    android:layout_margin="3dip"/>
+            <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Ping"
+                    android:id="@+id/ping" android:singleLine="false" android:textSize="16dip"
+                    android:layout_gravity="center" android:padding="19dip" android:enabled="true"
+                    android:visibility="visible" android:background="#ffffff"
+                    android:layout_margin="3dip"/>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout android:layout_width="fill_parent"
+                  android:layout_height="fill_parent"
+                  android:layout_weight="20"
+                  android:baselineAligned="false">
+        <LinearLayout android:orientation="vertical"
+                      android:layout_width="fill_parent"
+                      android:layout_height="fill_parent"
+                      android:layout_weight="42">
+            <LinearLayout android:orientation="vertical"
+                          android:layout_width="fill_parent"
+                          android:layout_height="fill_parent"
+                          android:layout_weight="50"/>
+            <Button android:layout_width="fill_parent" android:layout_height="fill_parent"
+                    android:id="@+id/pinA0" android:layout_marginTop="0dp"
+                    android:visibility="visible" android:background="@drawable/bg_button" android:text="pinA0"
+                    android:textSize="0dp" android:layout_weight="100"/>
+            <Button android:layout_width="fill_parent" android:layout_height="fill_parent"
+                    android:id="@+id/pinA1"
+                    android:visibility="visible" android:background="@drawable/bg_button" android:text="pinA1"
+                    android:textSize="0dp" android:layout_weight="100"/>
+            <Button android:layout_width="fill_parent" android:layout_height="fill_parent"
+                    android:id="@+id/pinA2" android:layout_marginTop="0dp"
+                    android:visibility="visible" android:background="@drawable/bg_button" android:text="pinA2"
+                    android:textSize="0dp" android:layout_weight="100"/>
+            <Button android:layout_width="fill_parent" android:layout_height="fill_parent"
+                    android:id="@+id/pinA3" android:layout_marginTop="0dp"
+                    android:visibility="visible" android:background="@drawable/bg_button" android:text="pinA3"
+                    android:textSize="0dp" android:layout_weight="100"/>
+            <Button android:layout_width="fill_parent" android:layout_height="fill_parent"
+                    android:id="@+id/pinA4" android:layout_marginTop="0dp"
+                    android:visibility="visible" android:background="@drawable/bg_button" android:text="pinA4"
+                    android:textSize="0dp" android:layout_weight="100"/>
+            <Button android:layout_width="fill_parent" android:layout_height="fill_parent"
+                    android:id="@+id/pinA5" android:layout_marginTop="0dp"
+                    android:visibility="visible" android:background="@drawable/bg_button" android:text="pinA5"
+                    android:textSize="0dp" android:layout_weight="100"/>
+            <LinearLayout android:orientation="vertical" android:layout_width="fill_parent"
+                          android:layout_height="fill_parent" android:layout_weight="96" android:id="@+id/linearLayout"/>
+        </LinearLayout>
+        <LinearLayout android:orientation="vertical"
+                      android:layout_width="fill_parent"
+                      android:layout_height="fill_parent"
+                      android:layout_weight="20">
+            <LinearLayout android:orientation="vertical"
+                          android:layout_width="fill_parent"
+                          android:layout_height="fill_parent"
+                          android:layout_weight="2"/>
+            <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent" android:layout_gravity="top" android:gravity="top"
+                    android:layout_weight="1">
+                <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Analog Value (0 to 255)"
+                        android:id="@+id/textView1" android:background="#000000" android:gravity="center_horizontal"
+                        android:textColor="#ffffff" android:padding="4dp" android:textSize="18dp"/>
+                <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textView" android:clickable="true" android:editable="true" android:enabled="true"
+                        android:focusable="true" android:focusableInTouchMode="true" android:inputType="number"
+                        android:numeric="integer" android:textColor="#000000" android:gravity="center_horizontal"
+                        android:background="@drawable/log" android:autoText="false"
+                        android:padding="4dp" android:textSize="18dp"/>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout android:orientation="vertical"
+                      android:layout_width="fill_parent"
+                      android:layout_height="fill_parent"
+                      android:layout_weight="42">
+            <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:id="@+id/pin13" android:layout_column="3" android:layout_marginTop="0dp"
+                    android:visibility="visible" android:background="@drawable/bg_button" android:text="pin13"
+                    android:textSize="0dp" android:layout_weight="100"/>
+            <Button android:layout_width="fill_parent" android:layout_height="fill_parent"
+                    android:id="@+id/pin12" android:layout_column="3" android:layout_marginTop="0dp"
+                    android:visibility="visible" android:background="@drawable/bg_button" android:text="pin12"
+                    android:textSize="0dp" android:layout_weight="100"/>
+            <Button android:layout_width="fill_parent" android:layout_height="fill_parent"
+                    android:id="@+id/pin11" android:layout_column="3" android:layout_marginTop="0dp"
+                    android:visibility="visible" android:background="@drawable/bg_button" android:text="pin11"
+                    android:textSize="0dp" android:layout_weight="100"/>
+            <Button android:layout_width="fill_parent" android:layout_height="fill_parent"
+                    android:id="@+id/pin10" android:layout_column="3" android:layout_marginTop="0dp"
+                    android:visibility="visible" android:background="@drawable/bg_button" android:text="pin10"
+                    android:textSize="0dp" android:layout_weight="100"/>
+            <Button android:layout_width="fill_parent" android:layout_height="fill_parent"
+                    android:id="@+id/pin9" android:layout_column="3" android:layout_marginTop="0dp"
+                    android:visibility="visible" android:background="@drawable/bg_button" android:text="pin9"
+                    android:textSize="0dp" android:layout_weight="100"/>
+            <Button android:layout_width="fill_parent" android:layout_height="fill_parent"
+                    android:id="@+id/pin8" android:layout_column="3" android:layout_marginTop="0dp"
+                    android:visibility="visible" android:background="@drawable/bg_button" android:text="pin8"
+                    android:textSize="0dp" android:layout_weight="100"/>
+            <LinearLayout android:orientation="vertical" android:layout_width="fill_parent"
+                          android:layout_height="fill_parent" android:layout_weight="103"
+                          android:id="@+id/linearLayout2"/>
+            <Button android:layout_width="fill_parent" android:layout_height="fill_parent"
+                    android:id="@+id/pin7" android:layout_column="3"
+                    android:visibility="visible" android:background="@drawable/bg_button" android:text="pin7"
+                    android:textSize="0dp" android:layout_weight="100"/>
+            <Button android:layout_width="fill_parent" android:layout_height="fill_parent"
+                    android:id="@+id/pin6" android:layout_column="3" android:visibility="visible"
+                    android:background="@drawable/bg_button" android:text="pin6" android:textSize="0dp"
+                    android:layout_weight="100"/>
+            <Button android:layout_width="fill_parent" android:layout_height="fill_parent"
+                    android:id="@+id/pin5" android:layout_column="3" android:layout_marginTop="0dp"
+                    android:visibility="visible" android:background="@drawable/bg_button" android:text="pin5"
+                    android:textSize="0dp" android:layout_weight="100"/>
+            <Button android:layout_width="fill_parent" android:layout_height="fill_parent"
+                    android:id="@+id/pin4" android:layout_column="3" android:layout_marginTop="0dp"
+                    android:visibility="visible" android:background="@drawable/bg_button" android:text="pin4"
+                    android:textSize="0dp" android:layout_weight="100"/>
+            <Button android:layout_width="fill_parent" android:layout_height="fill_parent"
+                    android:id="@+id/pin3" android:layout_column="3" android:layout_marginTop="0dp"
+                    android:visibility="visible" android:background="@drawable/bg_button" android:text="pin3"
+                    android:textSize="0dp" android:layout_weight="100"/>
+            <Button android:layout_width="fill_parent" android:layout_height="fill_parent"
+                    android:id="@+id/pin2" android:layout_column="3" android:layout_marginTop="0dp"
+                    android:visibility="visible" android:background="@drawable/bg_button" android:text="pin2"
+                    android:textSize="0dp" android:layout_weight="100"/>
+            <LinearLayout android:orientation="vertical" android:layout_width="fill_parent"
+                          android:layout_height="fill_parent" android:layout_weight="83"
+                          android:id="@+id/linearLayout1"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
