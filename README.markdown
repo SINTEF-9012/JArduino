@@ -68,7 +68,7 @@ private String deviceName = "NameOfYourBluetoothDevice";
 ```
 
 You can also see the Android GUI in the folder org.sintef.samples.android.gui. Here also, you must set the bluetooth device name in order to connect to the Arduino.
-[[docs/pics/AndroidJarduinoGUI.png|width=640px]]
+![Android Arduino GUI](docs/pics/AndroidJarduinoGUI.png "Android Arduino GUI")
 
 
 
