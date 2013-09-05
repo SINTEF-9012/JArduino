@@ -68,7 +68,7 @@ private String deviceName = "NameOfYourBluetoothDevice";
 ```
 
 You can also see the Android GUI in the folder org.sintef.samples.android.gui. Here also, you must set the bluetooth device name in order to connect to the Arduino.
-![Android Arduino GUI](docs/pics/AndroidJarduinoGUI.png "Android Arduino GUI")
+![Android Arduino GUI](docs/pics/AndroidJarduinoGUI.png?raw=true "Android Arduino GUI")
 In the middle of the screen you can see the list of all the orders sent to the Arduino. You can also see the response of this one.
 
 If you click the button Run, all of these orders will be sent again.
@@ -81,7 +81,7 @@ Ping: send a ping to the Arduino.
 When you click on a Pin Button (blue with white edges) a list of action is displayed and you can choose the one you want to perform.
 If you want to make an Analog write, make sure you have set the "Analog value" before (it is in the middle of the screen).
 
-
+Make also sure that you are performing an action supported by the Arduino. Unattended action will result in unattended results.
 
 
 _The ThingML/JArduino team._
