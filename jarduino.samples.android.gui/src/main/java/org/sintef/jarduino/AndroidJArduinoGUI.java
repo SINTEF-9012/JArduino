@@ -435,7 +435,9 @@ public class AndroidJArduinoGUI extends Activity {
                                     mController.sendanalogRead(aPin, true);
                                 break;
                             case 6:
-                                int analogValue = Integer.parseInt(tv.getText().toString());
+                                int analogValue = 0;
+                                if(!tv.getText().toString().isEmpty())
+                                    analogValue = Integer.parseInt(tv.getText().toString());
                                 if(analogValue>255){
                                     break;
                                 }
