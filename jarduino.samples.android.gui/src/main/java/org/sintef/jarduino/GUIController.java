@@ -34,6 +34,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+
+
+/*
+ * This class is used to send orders into the Arduino.
+ * It also updates the log list with new orders.
+ */
 
 public class GUIController implements JArduinoObserver, JArduinoClientSubject {
 
@@ -67,10 +74,58 @@ public class GUIController implements JArduinoObserver, JArduinoClientSubject {
         mActivity.runOnUiThread(new OneShotTask(s, o));
     }
 
+    static String reverseSearch(Map<String, ?> m, Object o){
+        if(m.containsValue(o)){
+            for(Map.Entry<String, ?> e: m.entrySet()){
+                if(e.getValue() == o)
+                    return e.getKey();
+            }
+        }
+        return null;
+    }
+
+    static final int NONE = 0;
+    static final int READ = 1;
+    static final int WRITE = 2;
+
+    static void blinkButton(LogObject obj){
+        Object pin = obj.getPin();
+        String strPin = null;
+        boolean read = false;
+        if(pin instanceof PWMPin){
+            strPin = reverseSearch(AndroidJArduinoGUI.analogOut, pin);
+        }
+        if(pin instanceof AnalogPin){
+            strPin = reverseSearch(AndroidJArduinoGUI.analogIn, pin);
+            read = true;
+        }
+        if(pin instanceof DigitalPin){
+            strPin = reverseSearch(AndroidJArduinoGUI.digital, pin);
+            if(obj.getMode().equals("digitalRead"))
+                read = true;
+        }
+        final String finalStrPin = strPin;
+        final boolean finalRead = read;
+
+        if (finalRead){
+            AndroidJArduinoGUI.changeButtonBackground(finalStrPin, READ);
+        } else {
+            AndroidJArduinoGUI.changeButtonBackground(finalStrPin, WRITE);
+        }
+        try {
+            Thread.sleep(50);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        AndroidJArduinoGUI.changeButtonBackground(finalStrPin, NONE);
+    }
+
     private void doSend(FixedSizePacket data, LogObject obj){
         doSend(data);
-        if(obj != null)
+        if(obj != null){
             addToLogger(data.toString(), obj);
+            blinkButton(obj);
+        }
     }
 
     private void doSend(FixedSizePacket data){
@@ -85,11 +140,11 @@ public class GUIController implements JArduinoObserver, JArduinoClientSubject {
         }
     }
 
-    public final void sendpinMode(PinMode mode, DigitalPin pin) {
+    public final void sendpinMode(PinMode mode, DigitalPin pin, boolean tolog) {
         FixedSizePacket fsp = null;
         fsp = JArduinoProtocol.createPinMode(pin, mode);
         LogObject obj = null;
-        if(!running){
+        if(tolog){
             if(mode == PinMode.INPUT)
                 obj = new LogDigitalObject(pin, "input", (short)-1, (short)-1, (byte)-1);
             else
@@ -98,21 +153,21 @@ public class GUIController implements JArduinoObserver, JArduinoClientSubject {
         doSend(fsp, obj);
     }
 
-    public final void senddigitalRead(DigitalPin pin) {
+    public final void senddigitalRead(DigitalPin pin, boolean tolog) {
         FixedSizePacket fsp = null;
         fsp = JArduinoProtocol.createDigitalRead(pin);
         LogObject obj = null;
-        if(!running){
+        if(tolog){
             obj = new LogDigitalObject(pin, "digitalRead", (short)-1, (short)-1, (byte)-1);
         }
         doSend(fsp, obj);
     }
 
-    public final void senddigitalWrite(DigitalPin pin, DigitalState value) {
+    public final void senddigitalWrite(DigitalPin pin, DigitalState value, boolean tolog) {
         FixedSizePacket fsp = null;
         fsp = JArduinoProtocol.createDigitalWrite(pin, value);
         LogObject obj = null;
-        if(!running){
+        if(tolog){
             if(value == DigitalState.HIGH)
                 obj = new LogDigitalObject(pin, "high", (short)-1, (short)-1, (byte)-1);
             else
@@ -121,21 +176,21 @@ public class GUIController implements JArduinoObserver, JArduinoClientSubject {
         doSend(fsp, obj);
     }
 
-    public final void sendanalogRead(AnalogPin pin) {
+    public final void sendanalogRead(AnalogPin pin, boolean tolog) {
         FixedSizePacket fsp = null;
         fsp = JArduinoProtocol.createAnalogRead(pin);
         LogObject obj = null;
-        if(!running){
+        if(tolog){
             obj = new LogAnalogObject(pin, "analogRead", (short)-1, (short)-1, (byte)-1);
         }
         doSend(fsp, obj);
     }
 
-    public final void sendanalogWrite(PWMPin pin, byte value) {
+    public final void sendanalogWrite(PWMPin pin, byte value, boolean tolog) {
         FixedSizePacket fsp = null;
         fsp = JArduinoProtocol.createAnalogWrite(pin, value);
         LogObject obj = null;
-        if(!running){
+        if(tolog){
             obj = new LogPWMObject(pin, "analogWrite", (short)-1, (short)value, (byte)-1);
         }
         doSend(fsp, obj);
@@ -156,16 +211,15 @@ public class GUIController implements JArduinoObserver, JArduinoClientSubject {
     }
 
     public void executeOrders(){
-        running = true;
         List<LogObject> toDo = new ArrayList<LogObject>();
         for(int i = 0; i< logList.getCount(); i++){
             LogObject o = ((LogAdapter)logList.getAdapter()).getItem(i).getmObject();
-            if(o != null)
+            if(o != null){
                 toDo.add(o);
+            }
         }
         //new CommandExecuter(this, new ArrayList<LogObject>(orders)).run();
-        new CommandExecuter(this, toDo).run();
-        running = false;
+        new CommandExecuter(this, toDo).start();
     }
 
     //Methods defined in the Observer pattern specific to JArduino

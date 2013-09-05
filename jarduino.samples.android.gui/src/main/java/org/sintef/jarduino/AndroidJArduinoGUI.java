@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -21,31 +20,44 @@ import org.sintef.jarduino.comm.AndroidBluetoothConfiguration;
 import java.io.IOException;
 import java.util.*;
 
+/*
+ * This is the activity of the Android Arduino GUI.
+ * It is responsible for every graphical modification made to the UI.
+ */
+
 public class AndroidJArduinoGUI extends Activity {
 
     private static String TAG = "android.gui";
 
-    /**
-     * Called when the activity is first created.
-     * @param savedInstanceState If the activity is being re-initialized after 
-     * previously being shut down then this Bundle contains the data it most 
-     * recently supplied in onSaveInstanceState(Bundle). <b>Note: Otherwise it is null.</b>
-     */
     private String mUUID = "00001101-0000-1000-8000-00805F9B34FB"; //Special code, do not
     //change unless you know what you're doing.
 
     private String deviceName = "FireFly-4101";
     private int REQUEST_ENABLE_BT = 2000; //What you want here.
     private final static int MENU_DELETE_ID = Menu.FIRST + 1;
-    List<Button> buttons = new ArrayList<Button>();
-    Button ping, run, save, reset, clear, load, delete;
     static final int CUSTOM_DIALOG_ID = 0;
-    ListView dialog_ListView;
-    LogAdapter logger;
+
+    //Several buttons of the UI
+    static List<Button> buttons = new ArrayList<Button>();
+    Button ping, run, save, reset, clear, load, delete;
+
+    //The log list
     SwipeListView logList;
-    Dialog dialog = null;
+    //The adapter of the list, stocks data.
+    LogAdapter logger;
+
+    //The name of the files used by the application, can be fixed into preferences.
     public static String loadFile;
     public static String saveFile;
+
+    //To reference itself from a static context.
+    static AndroidJArduinoGUI ME;
+
+    //The menu displayed when a pin is clicked
+    Dialog dialog = null;
+    //The listView used for this menu
+    ListView dialog_ListView;
+    //Content of this menu
     String[] menuContent = {
             "PinMode INPUT",
             "PinMode OUTPUT",
@@ -55,7 +67,14 @@ public class AndroidJArduinoGUI extends Activity {
             "Analog READ",
             "Analog WRITE"
     };
-    Map<String, AnalogPin> analogIn = new Hashtable<String, AnalogPin>(){{
+
+    /* Data to retrieve which button refers to which pin of the Arduino,
+     * this depending of the action the user wants to perform.
+     * analogIn: Analog input (the user wants to read)
+     * analogOut: Analog output (the user wants to write)
+     * digital: Digital (the user wants to perform some action on a digital pin)
+     */
+    static Map<String, AnalogPin> analogIn = new Hashtable<String, AnalogPin>(){{
         put("pinA0", AnalogPin.A_0);
         put("pinA1", AnalogPin.A_1);
         put("pinA2", AnalogPin.A_2);
@@ -63,7 +82,7 @@ public class AndroidJArduinoGUI extends Activity {
         put("pinA4", AnalogPin.A_4);
         put("pinA5", AnalogPin.A_5);
     }};
-    Map<String, DigitalPin> digital = new Hashtable<String, DigitalPin>(){{
+    static Map<String, DigitalPin> digital = new Hashtable<String, DigitalPin>(){{
         put("pin2", DigitalPin.PIN_2);
         put("pin3", DigitalPin.PIN_3);
         put("pin4", DigitalPin.PIN_4);
@@ -83,7 +102,7 @@ public class AndroidJArduinoGUI extends Activity {
         put("pinA4", DigitalPin.A_4);
         put("pinA5", DigitalPin.A_5);
     }};
-    Map<String, PWMPin> analogOut = new Hashtable<String, PWMPin>(){{
+    static Map<String, PWMPin> analogOut = new Hashtable<String, PWMPin>(){{
         put("pin3", PWMPin.PWM_PIN_3);
         put("pin5", PWMPin.PWM_PIN_5);
         put("pin6", PWMPin.PWM_PIN_6);
@@ -91,27 +110,30 @@ public class AndroidJArduinoGUI extends Activity {
         put("pin10", PWMPin.PWM_PIN_10);
         put("pin11", PWMPin.PWM_PIN_11);
     }};
-    private String clickedButton = null;
 
+    //To remember which pin button the user has clicked when we want to send the order.
+    private String clickedButton = null;
+    //The order sender.
     private GUIController mController = null;
 
-    /**
-     * Called when the activity is first created.
-     * @param savedInstanceState If the activity is being re-initialized after
-     * previously being shut down then this Bundle contains the data it most
-     * recently supplied in onSaveInstanceState(Bundle). <b>Note: Otherwise it is null.</b>
-     */
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ME = this;
 
+        //Sets the background image
         getWindow().setBackgroundDrawableResource(R.drawable.bg_arduino);
 
+        //Gets the file names from the preferences, ".file" used by default.
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         loadFile = sp.getString(getString(R.string.pref_loadfile), ".file");
         saveFile = sp.getString(getString(R.string.pref_savefile), ".file");
 
+        //Set the main View of the application
         setContentView(R.layout.mainnew);
+
+        //Init of the log list stuff
         logList = (SwipeListView) findViewById(R.id.log);
         logger = new LogAdapter(getApplicationContext(), R.layout.logitem);
         logList.setAdapter(logger);
@@ -175,6 +197,7 @@ public class AndroidJArduinoGUI extends Activity {
 
         initButtons();
 
+        /* Set up the connection between the android platform and the Arduino using Bluetooth */
         final BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (mBluetoothAdapter == null) {
             // Device does not support Bluetooth
@@ -187,16 +210,12 @@ public class AndroidJArduinoGUI extends Activity {
 
         BluetoothDevice mmDevice = null;
 
-        //List<String> mArray = new ArrayList<String>();
+        //Retrieve the right paired bluetooth device.
         Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
-        // If there are paired devices
         if (pairedDevices.size() > 0) {
-            // Loop through paired devices
             for (BluetoothDevice device : pairedDevices) {
-                // Add the name and address to an array adapter to show in a ListView
                 if(device.getName().equals(deviceName))
                     mmDevice = device;
-                //mArray.add(device.getName() + "\n" + device.getAddress());
             }
         }
 
@@ -204,21 +223,20 @@ public class AndroidJArduinoGUI extends Activity {
         final BluetoothSocket mmSocket;
         BluetoothSocket tmp = null;
 
+
         UUID myUUID = UUID.fromString(mUUID);
         try {
-            // MY_UUID is the app's UUID string, also used by the server code
             tmp = mmDevice.createRfcommSocketToServiceRecord(myUUID);
         } catch (IOException e) { }
         mmSocket = tmp;
 
-        //socket created, try to connect
-
         try {
             mmSocket.connect();
         } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
 
+        //Launch the JArduino (link java to Arduino) and the Controller
         Thread mThread = new Thread(){
             @Override
             public void run() {
@@ -230,9 +248,10 @@ public class AndroidJArduinoGUI extends Activity {
                 device.register(mController);
             }
         };
-        mThread.run();
+        mThread.start();
     }
 
+    /* Long click menu on log list */
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
@@ -250,6 +269,7 @@ public class AndroidJArduinoGUI extends Activity {
         return super.onContextItemSelected(item);
     }
 
+    /* Top screen menu (with "Settings") */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
@@ -266,6 +286,27 @@ public class AndroidJArduinoGUI extends Activity {
         return false;
     }
 
+    /* Change the background of the specified button to the level lvl */
+    static void changeButtonBackground(String btnText, final int lvl){
+        Button b = null;
+        for(Button btn: buttons){
+            if(btn.getText().toString().equals(btnText)){
+                b = btn;
+                break;
+            }
+        }
+        final Button finalB = b;
+        ME.runOnUiThread(new Runnable() {
+            public void run() {
+                finalB.getBackground().setLevel(lvl);
+                finalB.refreshDrawableState();
+                finalB.invalidate();
+                ((LinearLayout)finalB.getParent()).invalidate();
+            }
+        });
+    }
+
+    // Put all the pin buttons into the buttons list
     void initButtons(){
         buttons.add(((Button) findViewById(R.id.pin2)));
         buttons.add(((Button) findViewById(R.id.pin3)));
@@ -334,6 +375,8 @@ public class AndroidJArduinoGUI extends Activity {
         });
     }
 
+
+    // Menu when a pin button is clicked.
     @Override
     protected Dialog onCreateDialog(int id) {
 
@@ -346,24 +389,6 @@ public class AndroidJArduinoGUI extends Activity {
 
                 dialog.setCancelable(true);
                 dialog.setCanceledOnTouchOutside(true);
-
-                dialog.setOnCancelListener(new DialogInterface.OnCancelListener(){
-                    public void onCancel(DialogInterface dialog) {
-                        // TODO Auto-generated method stub
-                        /*Toast.makeText(AndroidJArduinoGUI.this,
-                                "OnCancelListener",
-                                Toast.LENGTH_LONG).show();*/
-                    }
-                });
-
-                dialog.setOnDismissListener(new DialogInterface.OnDismissListener(){
-                    public void onDismiss(DialogInterface dialog) {
-                        // TODO Auto-generated method stub
-                        /*Toast.makeText(AndroidJArduinoGUI.this,
-                                "OnDismissListener",
-                                Toast.LENGTH_LONG).show();*/
-                    }
-                });
 
                 //Prepare ListView in dialog
                 dialog_ListView = (ListView)dialog.findViewById(R.id.dialoglist);
@@ -382,32 +407,32 @@ public class AndroidJArduinoGUI extends Activity {
                             case 0:
                                 dPin = digital.get(pin);
                                 if(dPin != null)
-                                    mController.sendpinMode(PinMode.INPUT, dPin);
+                                    mController.sendpinMode(PinMode.INPUT, dPin, true);
                                 break;
                             case 1:
                                 dPin = digital.get(pin);
                                 if(dPin != null)
-                                    mController.sendpinMode(PinMode.OUTPUT, dPin);
+                                    mController.sendpinMode(PinMode.OUTPUT, dPin, true);
                                 break;
                             case 2:
                                 dPin = digital.get(pin);
                                 if(dPin != null)
-                                    mController.senddigitalWrite(dPin, DigitalState.HIGH);
+                                    mController.senddigitalWrite(dPin, DigitalState.HIGH, true);
                                 break;
                             case 3:
                                 dPin = digital.get(pin);
                                 if(dPin != null)
-                                    mController.senddigitalWrite(dPin, DigitalState.LOW);
+                                    mController.senddigitalWrite(dPin, DigitalState.LOW, true);
                                 break;
                             case 4:
                                 dPin = digital.get(pin);
                                 if(dPin != null)
-                                    mController.senddigitalRead(dPin);
+                                    mController.senddigitalRead(dPin, true);
                                 break;
                             case 5:
                                 aPin = analogIn.get(pin);
                                 if(aPin != null)
-                                    mController.sendanalogRead(aPin);
+                                    mController.sendanalogRead(aPin, true);
                                 break;
                             case 6:
                                 int analogValue = Integer.parseInt(tv.getText().toString());
@@ -416,7 +441,7 @@ public class AndroidJArduinoGUI extends Activity {
                                 }
                                 pPin = analogOut.get(pin);
                                 if(pPin != null)
-                                    mController.sendanalogWrite(pPin, Integer.valueOf(analogValue).byteValue());
+                                    mController.sendanalogWrite(pPin, Integer.valueOf(analogValue).byteValue(), true);
                                 break;
                         }
 

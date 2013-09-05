@@ -17,6 +17,11 @@ import java.util.List;
  * Date: 29/08/13
  * Time: 12:11
  */
+
+/*
+ *  This class is responsible for the rendering of the LogItems into the log list.
+ */
+
 public class LogAdapter extends ArrayAdapter<LogItem> {
     public LogAdapter(Context context, int textViewResourceId) {
         super(context, textViewResourceId);

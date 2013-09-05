@@ -102,27 +102,27 @@
                           android:layout_weight="50"/>
             <Button android:layout_width="fill_parent" android:layout_height="fill_parent"
                     android:id="@+id/pinA0" android:layout_marginTop="0dp"
-                    android:visibility="visible" android:background="@drawable/bg_button" android:text="pinA0"
+                    android:visibility="visible" android:background="@drawable/button_bg" android:text="pinA0"
                     android:textSize="0dp" android:layout_weight="100"/>
             <Button android:layout_width="fill_parent" android:layout_height="fill_parent"
                     android:id="@+id/pinA1"
-                    android:visibility="visible" android:background="@drawable/bg_button" android:text="pinA1"
+                    android:visibility="visible" android:background="@drawable/button_bg" android:text="pinA1"
                     android:textSize="0dp" android:layout_weight="100"/>
             <Button android:layout_width="fill_parent" android:layout_height="fill_parent"
                     android:id="@+id/pinA2" android:layout_marginTop="0dp"
-                    android:visibility="visible" android:background="@drawable/bg_button" android:text="pinA2"
+                    android:visibility="visible" android:background="@drawable/button_bg" android:text="pinA2"
                     android:textSize="0dp" android:layout_weight="100"/>
             <Button android:layout_width="fill_parent" android:layout_height="fill_parent"
                     android:id="@+id/pinA3" android:layout_marginTop="0dp"
-                    android:visibility="visible" android:background="@drawable/bg_button" android:text="pinA3"
+                    android:visibility="visible" android:background="@drawable/button_bg" android:text="pinA3"
                     android:textSize="0dp" android:layout_weight="100"/>
             <Button android:layout_width="fill_parent" android:layout_height="fill_parent"
                     android:id="@+id/pinA4" android:layout_marginTop="0dp"
-                    android:visibility="visible" android:background="@drawable/bg_button" android:text="pinA4"
+                    android:visibility="visible" android:background="@drawable/button_bg" android:text="pinA4"
                     android:textSize="0dp" android:layout_weight="100"/>
             <Button android:layout_width="fill_parent" android:layout_height="fill_parent"
                     android:id="@+id/pinA5" android:layout_marginTop="0dp"
-                    android:visibility="visible" android:background="@drawable/bg_button" android:text="pinA5"
+                    android:visibility="visible" android:background="@drawable/button_bg" android:text="pinA5"
                     android:textSize="0dp" android:layout_weight="100"/>
             <LinearLayout android:orientation="vertical" android:layout_width="fill_parent"
                           android:layout_height="fill_parent" android:layout_weight="96" android:id="@+id/linearLayout"/>
@@ -164,54 +164,54 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:id="@+id/pin13" android:layout_column="3" android:layout_marginTop="0dp"
-                    android:visibility="visible" android:background="@drawable/bg_button" android:text="pin13"
+                    android:visibility="visible" android:background="@drawable/button_bg" android:text="pin13"
                     android:textSize="0dp" android:layout_weight="100"/>
             <Button android:layout_width="fill_parent" android:layout_height="fill_parent"
                     android:id="@+id/pin12" android:layout_column="3" android:layout_marginTop="0dp"
-                    android:visibility="visible" android:background="@drawable/bg_button" android:text="pin12"
+                    android:visibility="visible" android:background="@drawable/button_bg" android:text="pin12"
                     android:textSize="0dp" android:layout_weight="100"/>
             <Button android:layout_width="fill_parent" android:layout_height="fill_parent"
                     android:id="@+id/pin11" android:layout_column="3" android:layout_marginTop="0dp"
-                    android:visibility="visible" android:background="@drawable/bg_button" android:text="pin11"
+                    android:visibility="visible" android:background="@drawable/button_bg" android:text="pin11"
                     android:textSize="0dp" android:layout_weight="100"/>
             <Button android:layout_width="fill_parent" android:layout_height="fill_parent"
                     android:id="@+id/pin10" android:layout_column="3" android:layout_marginTop="0dp"
-                    android:visibility="visible" android:background="@drawable/bg_button" android:text="pin10"
+                    android:visibility="visible" android:background="@drawable/button_bg" android:text="pin10"
                     android:textSize="0dp" android:layout_weight="100"/>
             <Button android:layout_width="fill_parent" android:layout_height="fill_parent"
                     android:id="@+id/pin9" android:layout_column="3" android:layout_marginTop="0dp"
-                    android:visibility="visible" android:background="@drawable/bg_button" android:text="pin9"
+                    android:visibility="visible" android:background="@drawable/button_bg" android:text="pin9"
                     android:textSize="0dp" android:layout_weight="100"/>
             <Button android:layout_width="fill_parent" android:layout_height="fill_parent"
                     android:id="@+id/pin8" android:layout_column="3" android:layout_marginTop="0dp"
-                    android:visibility="visible" android:background="@drawable/bg_button" android:text="pin8"
+                    android:visibility="visible" android:background="@drawable/button_bg" android:text="pin8"
                     android:textSize="0dp" android:layout_weight="100"/>
             <LinearLayout android:orientation="vertical" android:layout_width="fill_parent"
                           android:layout_height="fill_parent" android:layout_weight="103"
                           android:id="@+id/linearLayout2"/>
             <Button android:layout_width="fill_parent" android:layout_height="fill_parent"
                     android:id="@+id/pin7" android:layout_column="3"
-                    android:visibility="visible" android:background="@drawable/bg_button" android:text="pin7"
+                    android:visibility="visible" android:background="@drawable/button_bg" android:text="pin7"
                     android:textSize="0dp" android:layout_weight="100"/>
             <Button android:layout_width="fill_parent" android:layout_height="fill_parent"
                     android:id="@+id/pin6" android:layout_column="3" android:visibility="visible"
-                    android:background="@drawable/bg_button" android:text="pin6" android:textSize="0dp"
+                    android:background="@drawable/button_bg" android:text="pin6" android:textSize="0dp"
                     android:layout_weight="100"/>
             <Button android:layout_width="fill_parent" android:layout_height="fill_parent"
                     android:id="@+id/pin5" android:layout_column="3" android:layout_marginTop="0dp"
-                    android:visibility="visible" android:background="@drawable/bg_button" android:text="pin5"
+                    android:visibility="visible" android:background="@drawable/button_bg" android:text="pin5"
                     android:textSize="0dp" android:layout_weight="100"/>
             <Button android:layout_width="fill_parent" android:layout_height="fill_parent"
                     android:id="@+id/pin4" android:layout_column="3" android:layout_marginTop="0dp"
-                    android:visibility="visible" android:background="@drawable/bg_button" android:text="pin4"
+                    android:visibility="visible" android:background="@drawable/button_bg" android:text="pin4"
                     android:textSize="0dp" android:layout_weight="100"/>
             <Button android:layout_width="fill_parent" android:layout_height="fill_parent"
                     android:id="@+id/pin3" android:layout_column="3" android:layout_marginTop="0dp"
-                    android:visibility="visible" android:background="@drawable/bg_button" android:text="pin3"
+                    android:visibility="visible" android:background="@drawable/button_bg" android:text="pin3"
                     android:textSize="0dp" android:layout_weight="100"/>
             <Button android:layout_width="fill_parent" android:layout_height="fill_parent"
                     android:id="@+id/pin2" android:layout_column="3" android:layout_marginTop="0dp"
-                    android:visibility="visible" android:background="@drawable/bg_button" android:text="pin2"
+                    android:visibility="visible" android:background="@drawable/button_bg" android:text="pin2"
                     android:textSize="0dp" android:layout_weight="100"/>
             <LinearLayout android:orientation="vertical" android:layout_width="fill_parent"
                           android:layout_height="fill_parent" android:layout_weight="83"

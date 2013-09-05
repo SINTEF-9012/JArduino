@@ -6,6 +6,12 @@ package org.sintef.jarduino;
  * Date: 28/08/13
  * Time: 10:27
  */
+
+/*
+ *  Object representing a PWM pin (Analog output) of the Arduino.
+ *  The toString() method fixes the text displayed into the log.
+ */
+
 public class LogPWMObject extends LogObject<PWMPin> {
     PWMPin pin;
 

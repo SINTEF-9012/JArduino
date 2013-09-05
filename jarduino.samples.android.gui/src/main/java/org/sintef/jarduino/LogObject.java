@@ -7,6 +7,10 @@ package org.sintef.jarduino;
  * Time: 10:24
  */
 
+/*
+ *  Abstract class for the several pin types.
+ */
+
 abstract public class LogObject<T> {
     private String mode;
     private short addr, val;

@@ -6,6 +6,12 @@ package org.sintef.jarduino;
  * Date: 28/08/13
  * Time: 10:27
  */
+
+/*
+ *  Object representing a Analog pin (Analog input) of the Arduino.
+ *  The toString() method fixes the text displayed into the log.
+ */
+
 public class LogAnalogObject extends LogObject<AnalogPin> {
     AnalogPin pin;
 

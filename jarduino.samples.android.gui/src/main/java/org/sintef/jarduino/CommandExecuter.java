@@ -8,6 +8,12 @@ import java.util.List;
  * Date: 28/08/13
  * Time: 10:16
  */
+
+/*
+ * This class is used to replay the log list orders.
+ * It takes a list of orders and executes them using the GUIController.
+ */
+
 public class CommandExecuter extends Thread{
     private GUIController mController;
     private List<LogObject> linkedList;
@@ -23,13 +29,13 @@ public class CommandExecuter extends Thread{
 
 
     public void run(){
-        for(int i = 0; i < linkedList.size(); i++){
-            executeObjectCommand(linkedList.get(i));
+        for(LogObject o: linkedList){
+            executeObjectCommand(o);
         }
     }
 
-
     void executeObjectCommand(LogObject o) {
+        GUIController.blinkButton(o);
 
         if(o.getMode().startsWith("delay")){
             long start = System.currentTimeMillis();
@@ -37,25 +43,25 @@ public class CommandExecuter extends Thread{
             }
         }
         if(o.getMode().equals("input")){
-            mController.sendpinMode(PinMode.INPUT, (DigitalPin)o.getPin());
+            mController.sendpinMode(PinMode.INPUT, (DigitalPin)o.getPin(), false);
         }
         if(o.getMode().equals("low") ){
-            mController.senddigitalWrite((DigitalPin)o.getPin(), DigitalState.LOW);
+            mController.senddigitalWrite((DigitalPin)o.getPin(), DigitalState.LOW, false);
         }
         if(o.getMode().equals("analogRead")){
-            mController.sendanalogRead((AnalogPin)o.getPin());
+            mController.sendanalogRead((AnalogPin)o.getPin(), false);
         }
         if(o.getMode().equals("output")){
-            mController.sendpinMode(PinMode.OUTPUT, (DigitalPin)o.getPin());
+            mController.sendpinMode(PinMode.OUTPUT, (DigitalPin)o.getPin(), false);
         }
         if( o.getMode().equals("digitalRead")){
-            mController.senddigitalRead((DigitalPin)o.getPin());
+            mController.senddigitalRead((DigitalPin)o.getPin(), false);
         }
         if(o.getMode().equals("high")){
-            mController.senddigitalWrite((DigitalPin)o.getPin(), DigitalState.HIGH);
+            mController.senddigitalWrite((DigitalPin)o.getPin(), DigitalState.HIGH, false);
         }
         if(o.getMode().equals("analogWrite")){
-            mController.sendanalogWrite((PWMPin)o.getPin(), (byte) o.getVal());
+            mController.sendanalogWrite((PWMPin)o.getPin(), (byte) o.getVal(), false);
         }
         //TODO implement running of while loops and if tests in emulator mode
     }

@@ -6,6 +6,12 @@ package org.sintef.jarduino;
  * Date: 28/08/13
  * Time: 10:27
  */
+
+/*
+ *  Object representing a Digital pin (Digital input/output) of the Arduino.
+ *  The toString() method fixes the text displayed into the log.
+ */
+
 public class LogDigitalObject extends LogObject<DigitalPin> {
     DigitalPin pin;
 
