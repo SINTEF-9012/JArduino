@@ -33,7 +33,7 @@ Replace "org.sintef.jarduino.gui.JArduinoGUI" with your own main class
 Please read our [2-minute tutorial] (https://github.com/SINTEF-9012/JArduino/wiki/2-Minute-Tutorial)
 
 
-    ## Ethernet usage
+## Ethernet usage
 
 1. Instead of JArduino folder, copy the JArduinoEthernet folder to Arduino IDE librairies folder
 2. Launch Arduino environment
@@ -63,8 +63,12 @@ mvn clean install exec:java -Dexec.mainClass="org.sintef.jarduino.examples.basic
 To run these examples you need to have a recent android platform.
 Then you just have to go in the org.sintef.jarduino.samples.android where you can find a basic android application that make a blink on the pin13 of the Arduino and read the value on the pinA0.
 This application connects the android platform to the Arduino using a bluetooth adapter so you have to set the name of your bluetooth device into deviceName in the program.
+```java
+private String deviceName = "NameOfYourBluetoothDevice";
+```
 
 You can also see the Android GUI in the folder org.sintef.samples.android.gui. Here also, you must set the bluetooth device name in order to connect to the Arduino.
+[[docs/pics/AndroidJarduinoGUI.png|width=640px]]
 
 
 
