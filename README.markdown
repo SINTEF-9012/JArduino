@@ -69,6 +69,7 @@ private String deviceName = "NameOfYourBluetoothDevice";
 
 You can also see the Android GUI in the folder org.sintef.samples.android.gui. Here also, you must set the bluetooth device name in order to connect to the Arduino.
 ![Android Arduino GUI](docs/pics/AndroidJarduinoGUI.png?raw=true "Android Arduino GUI")
+
 In the middle of the screen you can see the list of all the orders sent to the Arduino. You can also see the response of this one.
 
 If you click the button Run, all of these orders will be sent again.
