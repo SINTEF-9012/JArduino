@@ -74,13 +74,14 @@ In the middle of the screen you can see the list of all the orders sent to the A
 
 If you click the button Run, all of these orders will be sent again.
 Clear: clear the list.
+Delay: a pop-up will be open to set the delay you wish.
 Save: save the list into th file specified in the settings (top right corner).
 Load: load the specified file.
 Reset: save an empty file on the save file specified.
 Ping: send a ping to the Arduino.
 
 When you click on a Pin Button (blue with white edges) a list of action is displayed and you can choose the one you want to perform.
-If you want to make an Analog write, make sure you have set the "Analog value" before (it is in the middle of the screen).
+If you want to make an Analog write, a pop-up will be open to allow you to set the value you want to write.
 
 Make also sure that you are performing an action supported by the Arduino. Unattended action will result in unattended results.
 
