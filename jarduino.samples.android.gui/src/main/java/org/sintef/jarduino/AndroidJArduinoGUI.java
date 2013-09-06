@@ -36,9 +36,10 @@ public class AndroidJArduinoGUI extends Activity {
     //change unless you know what you're doing.
 
     private String deviceName = "FireFly-4101";
-    private int REQUEST_ENABLE_BT = 2000; //What you want here.
+    private int REQUEST_ENABLE_BT = 2; //What you want here.
     private final static int MENU_DELETE_ID = Menu.FIRST + 1;
     static final int CUSTOM_DIALOG_ID = 0;
+    private BluetoothAdapter mBluetoothAdapter;
 
     //Several buttons of the UI
     static List<Button> buttons = new ArrayList<Button>();
@@ -212,16 +213,51 @@ public class AndroidJArduinoGUI extends Activity {
         initButtons();
 
         /* Set up the connection between the android platform and the Arduino using Bluetooth */
-        final BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (mBluetoothAdapter == null) {
-            // Device does not support Bluetooth
+            final TextView et = new TextView(this);
+            et.setTextSize(16);
+            et.setPadding(10,10,10,10);
+            et.setText("This device does not support bluetooth.");
+            final AlertDialog ad = new AlertDialog.Builder(AndroidJArduinoGUI.this)
+                    .setTitle("Bluetooth issue!")
+                    .setView(et)
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            return;
+                        }
+                    })
+                    .create();
+            ad.show();
+            return;
         }
 
         if (!mBluetoothAdapter.isEnabled()) {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
         }
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_CANCELED){
+            final TextView et = new TextView(this);
+            et.setTextSize(16);
+            et.setPadding(10,10,10,10);
+            et.setText("Bluetooth has not been enabled.");
+            final AlertDialog ad = new AlertDialog.Builder(AndroidJArduinoGUI.this)
+                    .setTitle("Bluetooth issue!")
+                    .setView(et)
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            return;
+                        }
+                    })
+                    .create();
+            ad.show();
+            return;
+        }
         BluetoothDevice mmDevice = null;
 
         //Retrieve the right paired bluetooth device.
@@ -237,6 +273,23 @@ public class AndroidJArduinoGUI extends Activity {
         final BluetoothSocket mmSocket;
         BluetoothSocket tmp = null;
 
+        if(mmDevice == null){
+            final TextView et = new TextView(this);
+            et.setTextSize(16);
+            et.setPadding(10,10,10,10);
+            et.setText("Make sure you have correctly set the bluetooth device name. Make also sure you have paired this device with your Android platform.");
+            final AlertDialog ad = new AlertDialog.Builder(AndroidJArduinoGUI.this)
+                    .setTitle("Bluetooth issue!")
+                    .setView(et)
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            return;
+                        }
+                    })
+                    .create();
+            ad.show();
+            return;
+        }
 
         UUID myUUID = UUID.fromString(mUUID);
         try {
