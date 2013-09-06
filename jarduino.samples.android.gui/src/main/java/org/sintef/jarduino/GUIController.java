@@ -89,6 +89,9 @@ public class GUIController implements JArduinoObserver, JArduinoClientSubject {
     static final int WRITE = 2;
 
     static void blinkButton(LogObject obj){
+        if(obj.getMode().equals("delay"))
+            return;
+
         Object pin = obj.getPin();
         String strPin = null;
         boolean read = false;
@@ -138,6 +141,11 @@ public class GUIController implements JArduinoObserver, JArduinoClientSubject {
         else {
             Log.d(TAG, "Data is null");
         }
+    }
+
+    public final void delay(int value){
+        LogObject obj = new LogDelayObject("delay", (short)-1, (short)value, (byte)-1);
+        addToLogger(obj.toString(), obj);
     }
 
     public final void sendpinMode(PinMode mode, DigitalPin pin, boolean tolog) {

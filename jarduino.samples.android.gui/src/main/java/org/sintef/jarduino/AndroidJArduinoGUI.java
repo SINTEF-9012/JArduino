@@ -1,15 +1,18 @@
 package org.sintef.jarduino;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.InputType;
 import android.view.*;
 import android.widget.*;
 import com.fortysevendeg.android.swipelistview.BaseSwipeListViewListener;
@@ -39,7 +42,7 @@ public class AndroidJArduinoGUI extends Activity {
 
     //Several buttons of the UI
     static List<Button> buttons = new ArrayList<Button>();
-    Button ping, run, save, reset, clear, load, delete;
+    Button ping, run, save, reset, clear, load, delete, delay;
 
     //The log list
     SwipeListView logList;
@@ -333,6 +336,7 @@ public class AndroidJArduinoGUI extends Activity {
         clear = (Button)findViewById(R.id.clear);
         reset = (Button)findViewById(R.id.reset);
         delete = (Button)findViewById(R.id.delete);
+        delay = (Button) findViewById(R.id.delay);
 
         for(final Button b : buttons){
             b.setOnClickListener(new Button.OnClickListener(){
@@ -342,6 +346,29 @@ public class AndroidJArduinoGUI extends Activity {
                 }
             });
         }
+
+        delay.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                final EditText et = new EditText(AndroidJArduinoGUI.this);
+                et.setRawInputType(InputType.TYPE_CLASS_NUMBER);
+                final AlertDialog ad = new AlertDialog.Builder(AndroidJArduinoGUI.this)
+                        .setTitle("Delay in ms")
+                        .setView(et)
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                if(!et.getText().toString().isEmpty())
+                                    mController.delay(Integer.parseInt(et.getText().toString()));
+                            }
+                        })
+                        .create();
+                ad.show();
+                ad.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    public void onDismiss(DialogInterface dialogInterface) {
+                        ad.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+                    }
+                });
+            }
+        });
         ping.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View view) {
                 mController.sendping();
@@ -402,7 +429,7 @@ public class AndroidJArduinoGUI extends Activity {
                         String pin = clickedButton;
                         DigitalPin dPin;
                         AnalogPin aPin;
-                        PWMPin pPin;
+                        final PWMPin pPin;
                         switch(position){
                             case 0:
                                 dPin = digital.get(pin);
@@ -435,7 +462,7 @@ public class AndroidJArduinoGUI extends Activity {
                                     mController.sendanalogRead(aPin, true);
                                 break;
                             case 6:
-                                int analogValue = 0;
+                                /*int analogValue = 0;
                                 if(!tv.getText().toString().isEmpty())
                                     analogValue = Integer.parseInt(tv.getText().toString());
                                 if(analogValue>255){
@@ -444,7 +471,28 @@ public class AndroidJArduinoGUI extends Activity {
                                 pPin = analogOut.get(pin);
                                 if(pPin != null)
                                     mController.sendanalogWrite(pPin, Integer.valueOf(analogValue).byteValue(), true);
-                                break;
+                                break;*/
+                                pPin = analogOut.get(pin);
+                                if(pPin != null){
+                                    final EditText et = new EditText(AndroidJArduinoGUI.this);
+                                    et.setRawInputType(InputType.TYPE_CLASS_NUMBER);
+                                    final AlertDialog ad = new AlertDialog.Builder(AndroidJArduinoGUI.this)
+                                            .setTitle("Value to write (0-255)")
+                                            .setView(et)
+                                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialogInterface, int i) {
+                                                    if(!et.getText().toString().isEmpty())
+                                                        mController.sendanalogWrite(pPin, Integer.valueOf(et.getText().toString()).byteValue(), true);
+                                                }
+                                            })
+                                            .create();
+                                    ad.show();
+                                    ad.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                                        public void onDismiss(DialogInterface dialogInterface) {
+                                            ad.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+                                        }
+                                    });
+                                }
                         }
 
                         dismissDialog(CUSTOM_DIALOG_ID);

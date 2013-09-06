@@ -21,22 +21,23 @@
                     android:layout_height="wrap_content"
                     android:text="Run"
                     android:id="@+id/run" android:layout_gravity="center" android:textSize="16dip"
-                    android:padding="19dip" android:enabled="true" android:visibility="visible"
-                    android:background="#ffffff" android:layout_margin="3dip"/>
+                    android:padding="0dip" android:enabled="true" android:visibility="visible"
+                    android:background="#ffffff" android:layout_margin="3dip" android:singleLine="true"
+                    android:layout_weight="1"/>
             <Button
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:text="Clear"
                     android:id="@+id/clear" android:layout_gravity="center" android:textSize="16dip"
-                    android:padding="19dip" android:enabled="true" android:visibility="visible"
-                    android:background="#ffffff" android:layout_margin="3dip"/>
+                    android:padding="0dip" android:enabled="true" android:visibility="visible"
+                    android:background="#ffffff" android:layout_margin="3dip" android:singleLine="true"
+                    android:layout_weight="1"/>
+            <Button android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="Delay"
+                    android:id="@+id/delay" android:layout_gravity="center" android:textSize="16dip"
+                    android:padding="0dip" android:enabled="true" android:visibility="visible"
+                    android:background="#ffffff" android:layout_margin="3dip" android:singleLine="true"
+                    android:layout_weight="1"/>
         </LinearLayout>
-        <!--<ListView
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:id="@+id/log"
-                android:layout_weight="20" android:layout_margin="3dip" android:padding="3dip">
-        </ListView>-->
         <com.fortysevendeg.android.swipelistview.SwipeListView
                 android:listSelector="#00000000"
                 android:layout_width="fill_parent"
@@ -60,32 +61,32 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:text="Save"
-                    android:id="@+id/save" android:textSize="16dip" android:padding="19dip" android:enabled="true"
+                    android:id="@+id/save" android:textSize="16dip" android:padding="0dip" android:enabled="true"
                     android:visibility="visible" android:background="#ffffff"
-                    android:layout_margin="3dip"/>
+                    android:layout_margin="3dip" android:singleLine="true" android:layout_weight="1"/>
             <Button
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:text="Load"
-                    android:id="@+id/load" android:textSize="16dip" android:padding="19dip" android:enabled="true"
+                    android:id="@+id/load" android:textSize="16dip" android:padding="0dip" android:enabled="true"
                     android:visibility="visible" android:background="#ffffff"
-                    android:layout_margin="3dip"/>
+                    android:layout_margin="3dip" android:singleLine="true" android:layout_weight="1"/>
             <Button
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:text="Reset"
                     android:id="@+id/reset" android:layout_gravity="center" android:textSize="16dip"
-                    android:singleLine="false" android:padding="19dip" android:enabled="true"
+                    android:singleLine="true" android:padding="0dip" android:enabled="true"
                     android:visibility="visible" android:background="#ffffff"
-                    android:layout_margin="3dip"/>
+                    android:layout_margin="3dip" android:layout_weight="1"/>
             <Button
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:text="Ping"
-                    android:id="@+id/ping" android:singleLine="false" android:textSize="16dip"
-                    android:layout_gravity="center" android:padding="19dip" android:enabled="true"
+                    android:id="@+id/ping" android:singleLine="true" android:textSize="16dip"
+                    android:layout_gravity="center" android:padding="0dip" android:enabled="true"
                     android:visibility="visible" android:background="#ffffff"
-                    android:layout_margin="3dip"/>
+                    android:layout_margin="3dip" android:layout_weight="1"/>
         </LinearLayout>
     </LinearLayout>
     <LinearLayout android:layout_width="fill_parent"
@@ -134,18 +135,19 @@
             <LinearLayout android:orientation="vertical"
                           android:layout_width="fill_parent"
                           android:layout_height="fill_parent"
-                          android:layout_weight="2"/>
+                          android:layout_weight="1"/>
             <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent" android:layout_gravity="top" android:gravity="top"
                     android:layout_weight="1">
-                <TextView
+                <!--<TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:text="Analog Value (0 to 255)"
                         android:id="@+id/textView1" android:background="#000000" android:gravity="center_horizontal"
-                        android:textColor="#ffffff" android:padding="4dp" android:textSize="18dp"/>
+                        android:textColor="#ffffff" android:padding="4dp" android:textSize="16dip"
+                        android:layout_weight="1" android:singleLine="true"/>
                 <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -153,8 +155,11 @@
                         android:focusable="true" android:focusableInTouchMode="true" android:inputType="number"
                         android:numeric="integer" android:textColor="#000000" android:gravity="center_horizontal"
                         android:background="@drawable/log" android:autoText="false"
-                        android:padding="4dp" android:textSize="18dp"/>
+                        android:padding="4dp" android:textSize="16dp" android:layout_weight="1"
+                        android:singleLine="true"/>-->
             </LinearLayout>
+            <LinearLayout android:orientation="vertical" android:layout_width="fill_parent"
+                          android:layout_height="fill_parent" android:layout_weight="1" android:id="@+id/linearLayout3"/>
         </LinearLayout>
         <LinearLayout android:orientation="vertical"
                       android:layout_width="fill_parent"
