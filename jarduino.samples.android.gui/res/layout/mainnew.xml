@@ -131,35 +131,14 @@
         <LinearLayout android:orientation="vertical"
                       android:layout_width="fill_parent"
                       android:layout_height="fill_parent"
-                      android:layout_weight="20">
-            <LinearLayout android:orientation="vertical"
-                          android:layout_width="fill_parent"
-                          android:layout_height="fill_parent"
-                          android:layout_weight="1"/>
-            <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent" android:layout_gravity="top" android:gravity="top"
-                    android:layout_weight="1">
-                <!--<TextView
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Analog Value (0 to 255)"
-                        android:id="@+id/textView1" android:background="#000000" android:gravity="center_horizontal"
-                        android:textColor="#ffffff" android:padding="4dp" android:textSize="16dip"
-                        android:layout_weight="1" android:singleLine="true"/>
-                <TextView
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/textView" android:clickable="true" android:editable="true" android:enabled="true"
-                        android:focusable="true" android:focusableInTouchMode="true" android:inputType="number"
-                        android:numeric="integer" android:textColor="#000000" android:gravity="center_horizontal"
-                        android:background="@drawable/log" android:autoText="false"
-                        android:padding="4dp" android:textSize="16dp" android:layout_weight="1"
-                        android:singleLine="true"/>-->
-            </LinearLayout>
-            <LinearLayout android:orientation="vertical" android:layout_width="fill_parent"
-                          android:layout_height="fill_parent" android:layout_weight="1" android:id="@+id/linearLayout3"/>
+                      android:layout_weight="20" android:layout_gravity="bottom" android:gravity="bottom">
+            <ListView android:orientation="vertical"
+                      android:layout_width="fill_parent"
+                      android:layout_height="fill_parent"
+                      android:id="@+id/readLog" android:background="#99FFFFFF"
+                      android:layout_marginLeft="4dip" android:layout_marginRight="4dip"
+                      android:layout_marginBottom="4dip" android:layout_gravity="bottom" android:padding="4dip"
+                      android:stackFromBottom="true"/>
         </LinearLayout>
         <LinearLayout android:orientation="vertical"
                       android:layout_width="fill_parent"

@@ -213,7 +213,8 @@ public class GUIController implements JArduinoObserver, JArduinoClientSubject {
         if (data != null) {
             //gui.writeToLog( " ["+dateFormat.format(new Date(System.currentTimeMillis()))+"]: "+data.toString()+" --> "+FixedSizePacket.toString(packet));
             Log.d(TAG, /*" [" + dateFormat.format(new Date(System.currentTimeMillis())) + "]: " +*/ data.toString() /*+ " --> " + FixedSizePacket.toString(packet)*/);
-            addToLogger(data.toString(), null);
+            //addToLogger(data.toString(), null);
+            ((AndroidJArduinoGUI)mActivity).addToReadLog(data.toString());
             //TODO Add
         }
     }

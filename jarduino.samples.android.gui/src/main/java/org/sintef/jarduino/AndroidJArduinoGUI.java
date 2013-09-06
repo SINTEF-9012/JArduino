@@ -44,6 +44,11 @@ public class AndroidJArduinoGUI extends Activity {
     static List<Button> buttons = new ArrayList<Button>();
     Button ping, run, save, reset, clear, load, delete, delay;
 
+    //The readLog list
+    ListView readLog;
+    //The adapter of this list.
+    ArrayAdapter readLogger;
+
     //The log list
     SwipeListView logList;
     //The adapter of the list, stocks data.
@@ -135,6 +140,12 @@ public class AndroidJArduinoGUI extends Activity {
 
         //Set the main View of the application
         setContentView(R.layout.mainnew);
+
+        readLog = (ListView)findViewById(R.id.readLog);
+        readLogger = new ArrayAdapter<String>(getApplicationContext(), R.layout.read_logitem);
+        readLog.setAdapter(readLogger);
+        ((LinearLayout)readLog.getParent()).setVerticalScrollBarEnabled(true);
+
 
         //Init of the log list stuff
         logList = (SwipeListView) findViewById(R.id.log);
@@ -252,6 +263,16 @@ public class AndroidJArduinoGUI extends Activity {
             }
         };
         mThread.start();
+    }
+
+    public void addToReadLog(final String text){
+        runOnUiThread(new Runnable() {
+            public void run() {
+                readLogger.add(text);
+                readLog.invalidate();
+                readLog.setSelection(readLog.getCount());
+            }
+        });
     }
 
     /* Long click menu on log list */
