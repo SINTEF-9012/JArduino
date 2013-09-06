@@ -321,6 +321,17 @@ public class GUIController implements JArduinoObserver, JArduinoClientSubject {
         while(pointer < fileContent.lastIndexOf("]")){
             word = fileContent.substring(pointer);
             word = word.substring(0, word.indexOf("["));
+            if(word.equals("Delay")){
+                pointer += fileContent.substring(pointer).indexOf("[")+1;
+                int finalPointer = fileContent.substring(pointer).indexOf("]") + pointer;
+                String object = fileContent.substring(pointer, finalPointer);
+                finalPointer ++;
+
+                String data[] = object.split(",");
+                LogDelayObject delay = new LogDelayObject();
+                addOrder(delay, data);
+                pointer = finalPointer;
+            }
             if(word.equals("Digital")){
                 pointer += fileContent.substring(pointer).indexOf("[")+1;
                 int finalPointer = fileContent.substring(pointer).indexOf("]") + pointer;
@@ -364,6 +375,12 @@ public class GUIController implements JArduinoObserver, JArduinoClientSubject {
     }
 
     private void addOrder(LogObject lo, String[] data){
+        if(lo instanceof LogDelayObject){
+            lo.setMode(data[0]);
+            lo.setVal(Short.parseShort(data[1]));
+            addToLogger(lo.toLog(), lo);
+            return;
+        }
         if(lo instanceof LogAnalogObject)
             ((LogAnalogObject)lo).setPin(AnalogPin.valueOf(data[0]));
         if(lo instanceof LogDigitalObject)

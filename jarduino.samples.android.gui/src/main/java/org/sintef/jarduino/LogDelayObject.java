@@ -34,4 +34,10 @@ public class LogDelayObject extends LogObject<DigitalPin> {
                 getMode() + "," +
                 getVal() + "]");
     }
+
+    public String toLog(){
+        return String.valueOf("Delay["+
+                getMode() + "," +
+                getVal() + "]");
+    }
 }
