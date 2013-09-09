@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello android.gui!</string>
+    <string name="app_name">JArduino Android GUI</string>
+    <string name="pref_savefile">pref_savefile</string>
+    <string name="pref_loadfile">pref_loadfile</string>
+    <string name="pref_bt_device">pref_bt_device</string>
+    <string name="newTag">New!</string>
+</resources>

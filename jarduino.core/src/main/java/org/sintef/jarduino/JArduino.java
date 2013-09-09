@@ -25,19 +25,27 @@ public abstract class JArduino extends AbstractJArduino {
     ExecutorService interruptRoutineExecutor = Executors.newSingleThreadExecutor();
 
     public JArduino(String ID, JArduinoCom com) {
-        super(ID, com);
+        super(ID, com, null);
     }
 
     public JArduino(JArduinoCom com) {
-        super(null, com);
+        super(null, com, null);
+    }
+
+    public JArduino(String ID, JArduinoCom com, ProtocolConfiguration prot) {
+        super(ID, com, prot);
+    }
+
+    public JArduino(JArduinoCom com, ProtocolConfiguration prot) {
+        super(null, com, prot);
     }
 
     public JArduino() {
-        super(null, JArduinoCom.Serial); //Serial by default
+        super(null, JArduinoCom.Serial, null); //Serial by default
     }
 
     public JArduino(String id) {
-        super(id, JArduinoCom.Serial); //Serial by default
+        super(id, JArduinoCom.Serial, null); //Serial by default
     }
 
     @Override

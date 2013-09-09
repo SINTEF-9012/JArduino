@@ -8,6 +8,6 @@ package org.sintef.jarduino;
  */
 public enum JArduinoCom {
 
-    Ethernet, Serial;
+    Ethernet, Serial, AndroidBluetooth;
 
 }

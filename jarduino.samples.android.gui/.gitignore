@@ -1,0 +1,5 @@
+target/
+out/
+lib/
+gen-external-apklibs/
+*.iml
