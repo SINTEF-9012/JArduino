@@ -28,17 +28,24 @@ public abstract class AbstractJArduino {
     protected JArduinoDriverMessageHandler messageHandler;
     protected JArduinoClientObserver serial;
 
-    public AbstractJArduino(String ID, JArduinoCom com) {
+    public AbstractJArduino(String ID, JArduinoCom com, ProtocolConfiguration conf) {
         try {
             if (com.equals(JArduinoCom.Ethernet)) {
+                //conf must be null as there is no configuration needed
                 serial = new Udp4JArduino(ID, 4000);
                 messageHandler = new JArduinoDriverMessageHandler();
                 ((JArduinoSubject) serial).register(messageHandler);
             }
             if (com.equals(JArduinoCom.Serial)) {
-
+                //conf must be null as there is no configuration needed
                 Class clazz = this.getClass().getClassLoader().loadClass("org.sintef.jarduino.comm.Serial4JArduino");
                 serial = (JArduinoClientObserver) clazz.getConstructor(String.class).newInstance(ID);
+                messageHandler = new JArduinoDriverMessageHandler();
+                ((JArduinoSubject) serial).register(messageHandler);
+            }
+            if (com.equals(JArduinoCom.AndroidBluetooth)) {
+                Class clazz = this.getClass().getClassLoader().loadClass("org.sintef.jarduino.comm.AndroidBluetooth4JArduino");
+                serial = (JArduinoClientObserver) clazz.getConstructor(ProtocolConfiguration.class).newInstance(conf);
                 messageHandler = new JArduinoDriverMessageHandler();
                 ((JArduinoSubject) serial).register(messageHandler);
             }
