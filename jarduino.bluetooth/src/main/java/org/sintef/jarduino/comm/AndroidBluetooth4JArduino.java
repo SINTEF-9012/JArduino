@@ -157,4 +157,12 @@ public class AndroidBluetooth4JArduino implements JArduinoClientObserver, JArdui
 
         }
     }
+
+    public void close(){
+        try {
+            mSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+    }
 }

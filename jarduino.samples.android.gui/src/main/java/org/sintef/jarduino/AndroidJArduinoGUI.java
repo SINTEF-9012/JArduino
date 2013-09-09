@@ -35,11 +35,14 @@ public class AndroidJArduinoGUI extends Activity {
     private String mUUID = "00001101-0000-1000-8000-00805F9B34FB"; //Special code, do not
     //change unless you know what you're doing.
 
-    private String deviceName = "FireFly-4101";
+    public static String deviceName = "FireFly-4101";
     private int REQUEST_ENABLE_BT = 2; //What you want here.
     private final static int MENU_DELETE_ID = Menu.FIRST + 1;
     static final int CUSTOM_DIALOG_ID = 0;
     private BluetoothAdapter mBluetoothAdapter;
+
+    //The thread which manage and hold the connection
+    private Thread mThread;
 
     //Several buttons of the UI
     static List<Button> buttons = new ArrayList<Button>();
@@ -138,6 +141,7 @@ public class AndroidJArduinoGUI extends Activity {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         loadFile = sp.getString(getString(R.string.pref_loadfile), ".file");
         saveFile = sp.getString(getString(R.string.pref_savefile), ".file");
+        deviceName = sp.getString(getString(R.string.pref_bt_device), deviceName);
 
         //Set the main View of the application
         setContentView(R.layout.mainnew);
@@ -215,47 +219,41 @@ public class AndroidJArduinoGUI extends Activity {
         /* Set up the connection between the android platform and the Arduino using Bluetooth */
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (mBluetoothAdapter == null) {
-            final TextView et = new TextView(this);
-            et.setTextSize(16);
-            et.setPadding(10,10,10,10);
-            et.setText("This device does not support bluetooth.");
-            final AlertDialog ad = new AlertDialog.Builder(AndroidJArduinoGUI.this)
-                    .setTitle("Bluetooth issue!")
-                    .setView(et)
-                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            return;
-                        }
-                    })
-                    .create();
-            ad.show();
+            showError("Bluetooth issue!", "This Android device does not support bluetooth.");
             return;
         }
 
         if (!mBluetoothAdapter.isEnabled()) {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+        } else {
+            onActivityResult(0, RESULT_OK, null);
         }
+    }
+
+    private void showError(String title, String text){
+        final TextView et = new TextView(this);
+        et.setTextSize(16);
+        et.setPadding(10,10,10,10);
+        et.setText(text);
+        final AlertDialog ad = new AlertDialog.Builder(AndroidJArduinoGUI.this)
+                .setTitle(title)
+                .setView(et)
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        return;
+                    }
+                })
+                .create();
+        ad.show();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if(resultCode == RESULT_CANCELED){
-            final TextView et = new TextView(this);
-            et.setTextSize(16);
-            et.setPadding(10,10,10,10);
-            et.setText("Bluetooth has not been enabled.");
-            final AlertDialog ad = new AlertDialog.Builder(AndroidJArduinoGUI.this)
-                    .setTitle("Bluetooth issue!")
-                    .setView(et)
-                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            return;
-                        }
-                    })
-                    .create();
-            ad.show();
+            showError("Bluetooth issue!", "Bluetooth has not been enabled.");
             return;
         }
         BluetoothDevice mmDevice = null;
@@ -274,20 +272,7 @@ public class AndroidJArduinoGUI extends Activity {
         BluetoothSocket tmp = null;
 
         if(mmDevice == null){
-            final TextView et = new TextView(this);
-            et.setTextSize(16);
-            et.setPadding(10,10,10,10);
-            et.setText("Make sure you have correctly set the bluetooth device name. Make also sure you have paired this device with your Android platform.");
-            final AlertDialog ad = new AlertDialog.Builder(AndroidJArduinoGUI.this)
-                    .setTitle("Bluetooth issue!")
-                    .setView(et)
-                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            return;
-                        }
-                    })
-                    .create();
-            ad.show();
+            showError("Bluetooth issue!", "Make sure you have correctly set the bluetooth device name. Make also sure you have paired this device with your Android platform.");
             return;
         }
 
@@ -304,7 +289,7 @@ public class AndroidJArduinoGUI extends Activity {
         }
 
         //Launch the JArduino (link java to Arduino) and the Controller
-        Thread mThread = new Thread(){
+        mThread = new Thread(){
             @Override
             public void run() {
                 super.run();
@@ -316,6 +301,20 @@ public class AndroidJArduinoGUI extends Activity {
             }
         };
         mThread.start();
+    }
+
+    public void refreshConnection(){
+        if(mThread != null){
+            mController.unregisterAll();
+            mThread.interrupt();
+            mThread = null;
+        }
+        if (!mBluetoothAdapter.isEnabled()) {
+            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+        } else {
+            onActivityResult(0, RESULT_OK, null);
+        }
     }
 
     public void addToReadLog(final String text){

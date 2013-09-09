@@ -21,6 +21,7 @@ public class Preferences extends PreferenceActivity {
 
             final EditTextPreference loadFile = (EditTextPreference) findPreference(getString(R.string.pref_loadfile));
             final EditTextPreference saveFile = (EditTextPreference) findPreference(getString(R.string.pref_savefile));
+            final EditTextPreference bluetoothDevice = (EditTextPreference) findPreference(getString(R.string.pref_bt_device));
 
             loadFile.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 public boolean onPreferenceChange(Preference preference, Object o) {
@@ -34,6 +35,15 @@ public class Preferences extends PreferenceActivity {
                 public boolean onPreferenceChange(Preference preference, Object o) {
                     AndroidJArduinoGUI.saveFile = (String)o;
                     prefEditor.putString(getString(R.string.pref_savefile), (String)o);
+                    return true;
+                }
+            });
+
+            bluetoothDevice.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                public boolean onPreferenceChange(Preference preference, Object o) {
+                    prefEditor.putString(getString(R.string.pref_bt_device), (String)o);
+                    AndroidJArduinoGUI.deviceName = (String)o;
+                    AndroidJArduinoGUI.ME.refreshConnection();
                     return true;
                 }
             });

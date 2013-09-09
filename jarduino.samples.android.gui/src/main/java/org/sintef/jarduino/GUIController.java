@@ -249,7 +249,7 @@ public class GUIController implements JArduinoObserver, JArduinoClientSubject {
         for(JArduinoClientObserver handler: handlers){
             temp = (AndroidBluetooth4JArduino) handler;
             Log.d(TAG, "Closer " + temp);
-            //temp.close();
+            temp.close();
         }
         handlers.clear();
         Log.d(TAG, "Size = " + handlers.size());

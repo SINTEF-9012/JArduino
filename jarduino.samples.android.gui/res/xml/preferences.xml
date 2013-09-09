@@ -31,5 +31,11 @@
                 android:title="Load File"
                 android:dialogTitle="Set the name of your loading file"
                 android:defaultValue=".file"/>
+        <EditTextPreference
+                android:id="@+id/pref_bt_device"
+                android:key="@string/pref_bt_device"
+                android:title="Bluetooth Device Name"
+                android:dialogTitle="Set the name of your bluetooth device"
+                android:defaultValue="FireFly-4101"/>
     </PreferenceCategory>
 </PreferenceScreen>
