@@ -212,8 +212,7 @@ public class GUIController implements JArduinoObserver, JArduinoClientSubject {
         FixedSizePacket data = JArduinoProtocol.createMessageFromPacket(packet);
         if (data != null) {
             //gui.writeToLog( " ["+dateFormat.format(new Date(System.currentTimeMillis()))+"]: "+data.toString()+" --> "+FixedSizePacket.toString(packet));
-            Log.d(TAG, /*" [" + dateFormat.format(new Date(System.currentTimeMillis())) + "]: " +*/ data.toString() /*+ " --> " + FixedSizePacket.toString(packet)*/);
-            //addToLogger(data.toString(), null);
+            Log.d(TAG, data.toString());
             ((AndroidJArduinoGUI)mActivity).addToReadLog(data.toString());
             //TODO Add
         }
@@ -227,7 +226,6 @@ public class GUIController implements JArduinoObserver, JArduinoClientSubject {
                 toDo.add(o);
             }
         }
-        //new CommandExecuter(this, new ArrayList<LogObject>(orders)).run();
         new CommandExecuter(this, toDo).start();
     }
 
@@ -273,9 +271,6 @@ public class GUIController implements JArduinoObserver, JArduinoClientSubject {
         }
 
         try {
-            /*for(LogObject o : orders){
-                output.write(o.toString().getBytes());
-            } */
             for(int i=0; i<logList.getCount(); i++){
                 LogObject o = ((LogAdapter)logList.getAdapter()).getItem(i).getmObject();
                 if(o != null)
@@ -392,7 +387,6 @@ public class GUIController implements JArduinoObserver, JArduinoClientSubject {
         lo.setB(Byte.parseByte(data[2]));
         lo.setMode(data[3]);
         lo.setVal(Short.parseShort(data[4]));
-        //orders.add(lo);
         addToLogger(lo.toLog(), lo);
     }
 

@@ -211,9 +211,6 @@ public class AndroidJArduinoGUI extends Activity {
             }
         });
 
-        /* USELESS
-        ViewHelper vh;*/
-
         initButtons();
 
         /* Set up the connection between the android platform and the Arduino using Bluetooth */
@@ -248,6 +245,11 @@ public class AndroidJArduinoGUI extends Activity {
         ad.show();
     }
 
+
+    /*
+     * This function is executed when a result is available after a call to "onActivityResult"
+     * Here, it continue the init of the application if bluetooth is enabled.
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -303,6 +305,7 @@ public class AndroidJArduinoGUI extends Activity {
         mThread.start();
     }
 
+    // Close and reconnect to the bluetooth device.
     public void refreshConnection(){
         if(mThread != null){
             mController.unregisterAll();
@@ -424,6 +427,7 @@ public class AndroidJArduinoGUI extends Activity {
             public void onClick(View view) {
                 final EditText et = new EditText(AndroidJArduinoGUI.this);
                 et.setRawInputType(InputType.TYPE_CLASS_NUMBER);
+                //Dialog in order to get the value to write as a delay.
                 final AlertDialog ad = new AlertDialog.Builder(AndroidJArduinoGUI.this)
                         .setTitle("Delay in ms")
                         .setView(et)
@@ -505,40 +509,48 @@ public class AndroidJArduinoGUI extends Activity {
                         final PWMPin pPin;
                         switch(position){
                             case 0:
+                                //Input Mode
                                 dPin = digital.get(pin);
                                 if(dPin != null)
                                     mController.sendpinMode(PinMode.INPUT, dPin, true);
                                 break;
                             case 1:
+                                //Output Mode
                                 dPin = digital.get(pin);
                                 if(dPin != null)
                                     mController.sendpinMode(PinMode.OUTPUT, dPin, true);
                                 break;
                             case 2:
+                                //Digital Write HIGH
                                 dPin = digital.get(pin);
                                 if(dPin != null)
                                     mController.senddigitalWrite(dPin, DigitalState.HIGH, true);
                                 break;
                             case 3:
+                                //Digital Write LOW
                                 dPin = digital.get(pin);
                                 if(dPin != null)
                                     mController.senddigitalWrite(dPin, DigitalState.LOW, true);
                                 break;
                             case 4:
+                                //Digital Read
                                 dPin = digital.get(pin);
                                 if(dPin != null)
                                     mController.senddigitalRead(dPin, true);
                                 break;
                             case 5:
+                                //Analog Read
                                 aPin = analogIn.get(pin);
                                 if(aPin != null)
                                     mController.sendanalogRead(aPin, true);
                                 break;
                             case 6:
+                                //Analog Write
                                 pPin = analogOut.get(pin);
                                 if(pPin != null){
                                     final EditText et = new EditText(AndroidJArduinoGUI.this);
                                     et.setRawInputType(InputType.TYPE_CLASS_NUMBER);
+                                    //Dialog in order to get the value to write.
                                     final AlertDialog ad = new AlertDialog.Builder(AndroidJArduinoGUI.this)
                                             .setTitle("Value to write (0-255)")
                                             .setView(et)

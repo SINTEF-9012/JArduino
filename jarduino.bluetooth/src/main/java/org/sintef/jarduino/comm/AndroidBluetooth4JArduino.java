@@ -108,11 +108,9 @@ public class AndroidBluetooth4JArduino implements JArduinoClientObserver, JArdui
     @Override
     public void run() {
         byte[] buffer = new byte[1024];
-        //DatagramPacket p = new DatagramPacket(buffer, buffer.length);
         while (true) {
             try {
                 in.read(buffer);
-                //ByteArrayInputStream in = new ByteArrayInputStream(p.getData());
                 int data;
                 while ((data = in.read()) > -1) {
                     // we got a byte from the serial port
@@ -130,8 +128,6 @@ public class AndroidBluetooth4JArduino implements JArduinoClientObserver, JArdui
                             for (int i = 0; i < buffer_idx; i++) {
                                 packet[i] = buffer[i];
                             }
-                            /*AnalogReadResultMsg myData = (AnalogReadResultMsg) JArduinoProtocol.createMessageFromPacket(packet);
-                            Log.d("coucou", String.valueOf(myData.getValue()));*/
                             for (JArduinoObserver o : observers) {
                                 o.receiveMsg(packet);
                             }
@@ -162,7 +158,7 @@ public class AndroidBluetooth4JArduino implements JArduinoClientObserver, JArdui
         try {
             mSocket.close();
         } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
     }
 }
