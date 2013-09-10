@@ -46,7 +46,8 @@ public class AndroidJArduinoGUI extends Activity {
 
     //Several buttons of the UI
     static List<Button> buttons = new ArrayList<Button>();
-    Button ping, run, save, reset, clear, load, delete, delay;
+    ProgressBar progressBar;
+    Button ping, run, pause, stop, save, clear, load, delete, delay;
 
     //The readLog list
     ListView readLog;
@@ -55,8 +56,10 @@ public class AndroidJArduinoGUI extends Activity {
 
     //The log list
     SwipeListView logList;
-    //The adapter of the list, stocks data.
-    LogAdapter logger;
+    //The adapter of the Loop list, stocks data.
+    LogAdapter loop;
+    //The adapter of the setup list
+    LogAdapter setup;
 
     //The name of the files used by the application, can be fixed into preferences.
     public static String loadFile;
@@ -154,11 +157,15 @@ public class AndroidJArduinoGUI extends Activity {
 
         //Init of the log list stuff
         logList = (SwipeListView) findViewById(R.id.log);
-        logger = new LogAdapter(getApplicationContext(), R.layout.logitem);
-        logList.setAdapter(logger);
+        loop = new LogAdapter(getApplicationContext(), R.layout.logitem);
+        setup = new LogAdapter(getApplicationContext(), R.layout.logitem);
+        logList.setAdapter(loop);
         logList.setVerticalScrollBarEnabled(true);
         registerForContextMenu(logList);
         ((LinearLayout)logList.getParent()).setVerticalScrollBarEnabled(true);
+
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar.setMax(100);
 
         if (Build.VERSION.SDK_INT >= 11) {
             logList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
@@ -204,10 +211,11 @@ public class AndroidJArduinoGUI extends Activity {
 
             @Override
             public void onDismiss(int[] reverseSortedPositions) {
+                LogAdapter a = ((LogAdapter)logList.getAdapter());
                 for (int position : reverseSortedPositions) {
-                    logger.remove(logger.getItem(position));
+                    a.remove(a.getItem(position));
                 }
-                logger.notifyDataSetChanged();
+                a.notifyDataSetChanged();
             }
         });
 
@@ -226,6 +234,10 @@ public class AndroidJArduinoGUI extends Activity {
         } else {
             onActivityResult(0, RESULT_OK, null);
         }
+    }
+
+    public void setProgressBar(int i){
+        progressBar.setProgress(i);
     }
 
     private void showError(String title, String text){
@@ -340,9 +352,10 @@ public class AndroidJArduinoGUI extends Activity {
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        LogAdapter a = ((LogAdapter)logList.getAdapter());
         switch (item.getItemId()) {
             case MENU_DELETE_ID:
-                logger.remove(logger.getItem(info.position));
+                a.remove(a.getItem(info.position));
                 return true;
         }
         return super.onContextItemSelected(item);
@@ -358,6 +371,14 @@ public class AndroidJArduinoGUI extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.loop:
+                logList.setAdapter(loop);
+                logList.setSelection(logList.getCount());
+                return true;
+            case R.id.setup:
+                logList.setAdapter(setup);
+                logList.setSelection(logList.getCount());
+                return true;
             case R.id.preferences:
                 startActivity(new Intent(getApplicationContext(), Preferences.class));
                 return true;
@@ -411,10 +432,11 @@ public class AndroidJArduinoGUI extends Activity {
         buttons.add(((Button) findViewById(R.id.pinA5)));
         ping = (Button)findViewById(R.id.ping);
         run = (Button)findViewById(R.id.run);
+        pause = (Button)findViewById(R.id.pause);
+        stop = (Button)findViewById(R.id.stop);
         save = (Button)findViewById(R.id.save);
         load = (Button)findViewById(R.id.load);
         clear = (Button)findViewById(R.id.clear);
-        reset = (Button)findViewById(R.id.reset);
         delete = (Button)findViewById(R.id.delete);
         delay = (Button) findViewById(R.id.delay);
 
@@ -458,32 +480,39 @@ public class AndroidJArduinoGUI extends Activity {
         });
         save.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View view) {
-                mController.toFile();
+                mController.toFile(loop, setup);
                 makeToast("File saved to "+saveFile+".");
             }
         });
         load.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View view) {
-                mController.fromFile();
+                mController.fromFile(loop, setup);
                 makeToast("File loaded from "+loadFile+".");
             }
         });
         run.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View view) {
-                mController.executeOrders();
+                mController.executeOrders(loop, setup);
                 makeToast("Running.");
+            }
+        });
+        pause.setOnClickListener(new Button.OnClickListener() {
+            public void onClick(View view) {
+                mController.pause();
+                makeToast("Paused.");
+            }
+        });
+        stop.setOnClickListener(new Button.OnClickListener() {
+            public void onClick(View view) {
+                setProgressBar(0);
+                mController.stop();
+                makeToast("Stopped.");
             }
         });
         clear.setOnClickListener(new Button.OnClickListener(){
             public void onClick(View view){
                 ((LogAdapter) logList.getAdapter()).clear();
                 ((LogAdapter) logList.getAdapter()).notifyDataSetChanged();
-            }
-        });
-        reset.setOnClickListener(new Button.OnClickListener(){
-            public void onClick(View view){
-                mController.resetFile();
-                makeToast("File "+saveFile+" reset.");
             }
         });
     }

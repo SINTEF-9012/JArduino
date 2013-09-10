@@ -51,6 +51,7 @@ public class GUIController implements JArduinoObserver, JArduinoClientSubject {
     private ListView logList;
     private Activity mActivity;
     private boolean running = false;
+    private CommandExecuter runner = null;
 
     public GUIController(ListView logger, Activity activity){
         orders = new ArrayList<LogObject>();
@@ -60,18 +61,22 @@ public class GUIController implements JArduinoObserver, JArduinoClientSubject {
         dateFormat = new SimpleDateFormat("dd MMM yyy 'at' HH:mm:ss.SSS");
     }
 
-    private void addToLogger(String s, LogObject o){
-        class OneShotTask implements Runnable {
-            String str;
-            LogObject obj;
-            OneShotTask(String s, LogObject o) { str = s; obj = o; }
-            public void run() {
-                ((LogAdapter)logList.getAdapter()).add(str, obj);
-                logList.invalidate();
-                logList.setSelection(logList.getCount());
-            }
+    class OneShotTask implements Runnable {
+        String str;
+        LogObject obj;
+        LogAdapter adapter;
+        OneShotTask(String s, LogObject o, LogAdapter a) {
+            str = s; obj = o; adapter = a;
         }
-        mActivity.runOnUiThread(new OneShotTask(s, o));
+        public void run() {
+            adapter.add(str, obj);
+            logList.invalidate();
+            logList.setSelection(logList.getCount());
+        }
+    }
+
+    private void addToLogger(String s, LogObject o, final LogAdapter adapter){
+        mActivity.runOnUiThread(new OneShotTask(s, o, adapter));
     }
 
     static String reverseSearch(Map<String, ?> m, Object o){
@@ -126,7 +131,7 @@ public class GUIController implements JArduinoObserver, JArduinoClientSubject {
     private void doSend(FixedSizePacket data, LogObject obj){
         doSend(data);
         if(obj != null){
-            addToLogger(data.toString(), obj);
+            addToLogger(data.toString(), obj, (LogAdapter)logList.getAdapter());
             blinkButton(obj);
         }
     }
@@ -145,7 +150,7 @@ public class GUIController implements JArduinoObserver, JArduinoClientSubject {
 
     public final void delay(int value){
         LogObject obj = new LogDelayObject("delay", (short)-1, (short)value, (byte)-1);
-        addToLogger(obj.toString(), obj);
+        addToLogger(obj.toString(), obj, (LogAdapter)logList.getAdapter());
     }
 
     public final void sendpinMode(PinMode mode, DigitalPin pin, boolean tolog) {
@@ -218,15 +223,36 @@ public class GUIController implements JArduinoObserver, JArduinoClientSubject {
         }
     }
 
-    public void executeOrders(){
-        List<LogObject> toDo = new ArrayList<LogObject>();
-        for(int i = 0; i< logList.getCount(); i++){
-            LogObject o = ((LogAdapter)logList.getAdapter()).getItem(i).getmObject();
-            if(o != null){
-                toDo.add(o);
+    public void executeOrders(LogAdapter loop, LogAdapter setup){
+        if(runner != null && runner.isAlive()){
+            runner.setPause(false);
+        } else {
+            //Main loop list
+            List<LogObject> toDo = new ArrayList<LogObject>();
+            //Setup List
+            List<LogObject> toSetup = new ArrayList<LogObject>();
+
+            for(int i=0; i< loop.getCount(); i++){
+                toDo.add(loop.getItem(i).getmObject());
             }
+            for(int i=0; i< setup.getCount(); i++){
+                toSetup.add(setup.getItem(i).getmObject());
+            }
+
+            runner = new CommandExecuter(this, toDo, toSetup);
+            runner.start();
         }
-        new CommandExecuter(this, toDo).start();
+    }
+
+    public void pause(){
+        runner.setPause(true);
+    }
+
+    public void stop(){
+        if(runner != null){
+            runner.setStop(true);
+            runner = null;
+        }
     }
 
     //Methods defined in the Observer pattern specific to JArduino
@@ -253,7 +279,7 @@ public class GUIController implements JArduinoObserver, JArduinoClientSubject {
         Log.d(TAG, "Size = " + handlers.size());
     }
 
-    public void toFile(){
+    public void toFile(LogAdapter loop, LogAdapter setup){
         Log.d(TAG, "toFile");
         FileOutputStream output = null;
 
@@ -271,18 +297,26 @@ public class GUIController implements JArduinoObserver, JArduinoClientSubject {
         }
 
         try {
-            for(int i=0; i<logList.getCount(); i++){
-                LogObject o = ((LogAdapter)logList.getAdapter()).getItem(i).getmObject();
+            output.write("{".getBytes());
+            for(int i=0; i<loop.getCount(); i++){
+                LogObject o = loop.getItem(i).getmObject();
                 if(o != null)
                     output.write(o.toString().getBytes());
             }
+            output.write("}{".getBytes());
+            for(int i=0; i<setup.getCount(); i++){
+                LogObject o = setup.getItem(i).getmObject();
+                if(o != null)
+                    output.write(o.toString().getBytes());
+            }
+            output.write("}".getBytes());
             output.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void fromFile(){
+    public void fromFile(LogAdapter loop, LogAdapter setup){
         StringBuilder fileContent = new StringBuilder("");
         byte[] buffer = new byte[1024];
 
@@ -314,53 +348,45 @@ public class GUIController implements JArduinoObserver, JArduinoClientSubject {
 
         Log.d(TAG, fileContent.toString());
 
+        //handle the { and }.
+        LogAdapter adapter = loop;
         while(pointer < fileContent.lastIndexOf("]")){
             word = fileContent.substring(pointer);
             word = word.substring(0, word.indexOf("["));
-            if(word.equals("Delay")){
-                pointer += fileContent.substring(pointer).indexOf("[")+1;
-                int finalPointer = fileContent.substring(pointer).indexOf("]") + pointer;
-                String object = fileContent.substring(pointer, finalPointer);
-                finalPointer ++;
 
-                String data[] = object.split(",");
-                LogDelayObject delay = new LogDelayObject();
-                addOrder(delay, data);
-                pointer = finalPointer;
+            Log.d(TAG, word);
+            if(word.charAt(0) == '{'){
+                word = word.substring(1);
+            }
+            if(word.charAt(0) == '}'){
+                word = word.substring(2);
+                adapter = setup;
+            }
+
+            pointer += fileContent.substring(pointer).indexOf("[")+1;
+            int finalPointer = fileContent.substring(pointer).indexOf("]") + pointer;
+            String object = fileContent.substring(pointer, finalPointer);
+            finalPointer ++;
+
+            String data[] = object.split(",");
+            LogObject o = null;
+
+            if(word.equals("Delay")){
+                //LogDelayObject delay = new LogDelayObject();
+                o = new LogDelayObject();
             }
             if(word.equals("Digital")){
-                pointer += fileContent.substring(pointer).indexOf("[")+1;
-                int finalPointer = fileContent.substring(pointer).indexOf("]") + pointer;
-                String object = fileContent.substring(pointer, finalPointer);
-                finalPointer ++;
-
-                String data[] = object.split(",");
-                LogDigitalObject digital = new LogDigitalObject();
-                addOrder(digital, data);
-                pointer = finalPointer;
+                //LogDigitalObject digital = new LogDigitalObject();
+                o = new LogDigitalObject();
             }
             if(word.equals("Analog")){
-                pointer += fileContent.substring(pointer).indexOf("[")+1;
-                int finalPointer = fileContent.substring(pointer).indexOf("]") + pointer;
-                String object = fileContent.substring(pointer, finalPointer);
-                finalPointer ++;
-
-                String data[] = object.split(",");
-                LogAnalogObject analog = new LogAnalogObject();
-                addOrder(analog, data);
-                pointer = finalPointer;
+                o = new LogAnalogObject();
             }
             if(word.equals("Pwm")){
-                pointer += fileContent.substring(pointer).indexOf("[")+1;
-                int finalPointer = fileContent.substring(pointer).indexOf("]") + pointer;
-                String object = fileContent.substring(pointer, finalPointer);
-                finalPointer ++;
-
-                String data[] = object.split(",");
-                LogPWMObject pwm = new LogPWMObject();
-                addOrder(pwm, data);
-                pointer = finalPointer;
+                o = new LogPWMObject();
             }
+            addOrder(o, data, adapter);
+            pointer = finalPointer;
         }
 
         try {
@@ -370,11 +396,11 @@ public class GUIController implements JArduinoObserver, JArduinoClientSubject {
         }
     }
 
-    private void addOrder(LogObject lo, String[] data){
+    private void addOrder(LogObject lo, String[] data, LogAdapter adapter){
         if(lo instanceof LogDelayObject){
             lo.setMode(data[0]);
             lo.setVal(Short.parseShort(data[1]));
-            addToLogger(lo.toLog(), lo);
+            addToLogger(lo.toLog(), lo, adapter);
             return;
         }
         if(lo instanceof LogAnalogObject)
@@ -387,31 +413,10 @@ public class GUIController implements JArduinoObserver, JArduinoClientSubject {
         lo.setB(Byte.parseByte(data[2]));
         lo.setMode(data[3]);
         lo.setVal(Short.parseShort(data[4]));
-        addToLogger(lo.toLog(), lo);
+        addToLogger(lo.toLog(), lo, adapter);
     }
 
     public void clearOrders(){
         orders.clear();
-    }
-
-    public void resetFile(){
-        Log.d(TAG, "toFile");
-        FileOutputStream output = null;
-        String filename = ".saved";
-
-        try {
-            output = mActivity.openFileOutput(filename, Context.MODE_PRIVATE);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        if(output == null){
-            Log.d(TAG, "open issue");
-            return;
-        }
-        try {
-            output.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }
