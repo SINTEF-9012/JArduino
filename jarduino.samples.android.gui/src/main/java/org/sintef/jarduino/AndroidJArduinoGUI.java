@@ -385,6 +385,10 @@ public class AndroidJArduinoGUI extends Activity {
         });
     }
 
+    public void makeToast(String text){
+        Toast.makeText(this, text, 200).show();
+    }
+
     // Put all the pin buttons into the buttons list
     void initButtons(){
         buttons.add(((Button) findViewById(R.id.pin2)));
@@ -449,21 +453,25 @@ public class AndroidJArduinoGUI extends Activity {
         ping.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View view) {
                 mController.sendping();
+                makeToast("Ping sent.");
             }
         });
         save.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View view) {
                 mController.toFile();
+                makeToast("File saved to "+saveFile+".");
             }
         });
         load.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View view) {
                 mController.fromFile();
+                makeToast("File loaded from "+loadFile+".");
             }
         });
         run.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View view) {
                 mController.executeOrders();
+                makeToast("Running.");
             }
         });
         clear.setOnClickListener(new Button.OnClickListener(){
@@ -475,6 +483,7 @@ public class AndroidJArduinoGUI extends Activity {
         reset.setOnClickListener(new Button.OnClickListener(){
             public void onClick(View view){
                 mController.resetFile();
+                makeToast("File "+saveFile+" reset.");
             }
         });
     }

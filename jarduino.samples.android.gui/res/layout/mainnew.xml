@@ -135,7 +135,7 @@
             <ListView android:orientation="vertical"
                       android:layout_width="fill_parent"
                       android:layout_height="fill_parent"
-                      android:id="@+id/readLog" android:background="#99FFFFFF"
+                      android:id="@+id/readLog" android:background="#CCFFFFFF"
                       android:layout_marginLeft="4dip" android:layout_marginRight="4dip"
                       android:layout_marginBottom="4dip" android:layout_gravity="bottom" android:padding="4dip"
                       android:stackFromBottom="true"/>
