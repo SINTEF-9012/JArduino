@@ -18,7 +18,6 @@ import android.widget.*;
 import com.fortysevendeg.android.swipelistview.BaseSwipeListViewListener;
 import com.fortysevendeg.android.swipelistview.SwipeListView;
 import org.sintef.jarduino.comm.AndroidBluetooth4JArduino;
-import org.sintef.jarduino.comm.AndroidBluetoothConfiguration;
 
 import java.io.IOException;
 import java.util.*;
@@ -36,7 +35,7 @@ public class AndroidJArduinoGUI extends Activity {
     //change unless you know what you're doing.
 
     public static String deviceName = "FireFly-4101";
-    private int REQUEST_ENABLE_BT = 2; //What you want here.
+    private final static int REQUEST_ENABLE_BT = 2; //What you want here.
     private final static int MENU_DELETE_ID = Menu.FIRST + 1;
     static final int CUSTOM_DIALOG_ID = 0;
     private BluetoothAdapter mBluetoothAdapter;
@@ -232,7 +231,7 @@ public class AndroidJArduinoGUI extends Activity {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
         } else {
-            onActivityResult(0, RESULT_OK, null);
+            onActivityResult(REQUEST_ENABLE_BT, RESULT_OK, null);
         }
     }
 
@@ -266,55 +265,59 @@ public class AndroidJArduinoGUI extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(resultCode == RESULT_CANCELED){
-            showError("Bluetooth issue!", "Bluetooth has not been enabled.");
-            return;
+        switch(requestCode){
+            case REQUEST_ENABLE_BT:
+                if(resultCode == RESULT_CANCELED){
+                    showError("Bluetooth issue!", "Bluetooth has not been enabled.");
+                    return;
+                }
+                BluetoothDevice mmDevice = null;
+
+                //Retrieve the right paired bluetooth device.
+                Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
+                if (pairedDevices.size() > 0) {
+                    for (BluetoothDevice device : pairedDevices) {
+                        if(device.getName().equals(deviceName))
+                            mmDevice = device;
+                    }
+                }
+
+                //Creating the socket.
+                final BluetoothSocket mmSocket;
+                BluetoothSocket tmp = null;
+
+                if(mmDevice == null){
+                    showError("Bluetooth issue!", "Make sure you have correctly set the bluetooth device name. Make also sure you have paired this device with your Android platform.");
+                    return;
+                }
+
+                UUID myUUID = UUID.fromString(mUUID);
+                try {
+                    tmp = mmDevice.createRfcommSocketToServiceRecord(myUUID);
+                } catch (IOException e) { }
+                mmSocket = tmp;
+
+                try {
+                    mmSocket.connect();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                //Launch the JArduino (link java to Arduino) and the Controller
+                mThread = new Thread(){
+                    @Override
+                    public void run() {
+                        super.run();
+
+                        mController = new GUIController(logList, AndroidJArduinoGUI.this);
+                        AndroidBluetooth4JArduino device = new AndroidBluetooth4JArduino(new AndroidBluetoothConfiguration(mmSocket));
+                        mController.register(device);
+                        device.register(mController);
+                    }
+                };
+                mThread.start();
+                break;
         }
-        BluetoothDevice mmDevice = null;
-
-        //Retrieve the right paired bluetooth device.
-        Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
-        if (pairedDevices.size() > 0) {
-            for (BluetoothDevice device : pairedDevices) {
-                if(device.getName().equals(deviceName))
-                    mmDevice = device;
-            }
-        }
-
-        //Creating the socket.
-        final BluetoothSocket mmSocket;
-        BluetoothSocket tmp = null;
-
-        if(mmDevice == null){
-            showError("Bluetooth issue!", "Make sure you have correctly set the bluetooth device name. Make also sure you have paired this device with your Android platform.");
-            return;
-        }
-
-        UUID myUUID = UUID.fromString(mUUID);
-        try {
-            tmp = mmDevice.createRfcommSocketToServiceRecord(myUUID);
-        } catch (IOException e) { }
-        mmSocket = tmp;
-
-        try {
-            mmSocket.connect();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        //Launch the JArduino (link java to Arduino) and the Controller
-        mThread = new Thread(){
-            @Override
-            public void run() {
-                super.run();
-
-                mController = new GUIController(logList, AndroidJArduinoGUI.this);
-                AndroidBluetooth4JArduino device = new AndroidBluetooth4JArduino(new AndroidBluetoothConfiguration(mmSocket));
-                mController.register(device);
-                device.register(mController);
-            }
-        };
-        mThread.start();
     }
 
     // Close and reconnect to the bluetooth device.

@@ -354,12 +354,14 @@ public class GUIController implements JArduinoObserver, JArduinoClientSubject {
             word = fileContent.substring(pointer);
             word = word.substring(0, word.indexOf("["));
 
-            Log.d(TAG, word);
             if(word.charAt(0) == '{'){
+                //Beginning of the file
                 word = word.substring(1);
             }
             if(word.charAt(0) == '}'){
+                //We are between the two lists
                 word = word.substring(2);
+                //So we switch the adapter
                 adapter = setup;
             }
 
@@ -372,11 +374,9 @@ public class GUIController implements JArduinoObserver, JArduinoClientSubject {
             LogObject o = null;
 
             if(word.equals("Delay")){
-                //LogDelayObject delay = new LogDelayObject();
                 o = new LogDelayObject();
             }
             if(word.equals("Digital")){
-                //LogDigitalObject digital = new LogDigitalObject();
                 o = new LogDigitalObject();
             }
             if(word.equals("Analog")){

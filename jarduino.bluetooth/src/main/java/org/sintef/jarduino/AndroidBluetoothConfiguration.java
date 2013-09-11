@@ -1,7 +1,6 @@
-package org.sintef.jarduino.comm;
+package org.sintef.jarduino;
 
 import android.bluetooth.BluetoothSocket;
-import org.sintef.jarduino.ProtocolConfiguration;
 
 /**
  * Created with IntelliJ IDEA.
