@@ -111,11 +111,13 @@
             <ProgressBar
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/progressBar" style="@android:style/Widget.ProgressBar.Horizontal"/>
+                    android:id="@+id/progressBar" style="@android:style/Widget.ProgressBar.Horizontal"
+                    android:layout_marginLeft="4dip" android:layout_marginRight="4dip"/>
             <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="fill_parent"
-                    android:layout_height="fill_parent" android:layout_weight="4" android:background="#CC000000">
+                    android:layout_height="wrap_content" android:background="#CCffffff"
+                    android:layout_marginLeft="4dip" android:layout_marginRight="4dip">
                 <Button
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -149,7 +151,7 @@
                       android:id="@+id/readLog" android:background="#CCFFFFFF"
                       android:layout_marginLeft="4dip" android:layout_marginRight="4dip"
                       android:layout_marginBottom="4dip" android:layout_gravity="bottom" android:padding="4dip"
-                      android:stackFromBottom="true" android:layout_weight="1"/>
+                      android:stackFromBottom="true"/>
         </LinearLayout>
         <LinearLayout android:orientation="vertical"
                       android:layout_width="fill_parent"
