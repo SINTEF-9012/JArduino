@@ -60,10 +60,6 @@ public class AndroidJArduinoGUI extends Activity {
     //The adapter of the setup list
     LogAdapter setup;
 
-    //The name of the files used by the application, can be fixed into preferences.
-    public static String loadFile;
-    public static String saveFile;
-
     //To reference itself from a static context.
     static AndroidJArduinoGUI ME;
 
@@ -139,10 +135,8 @@ public class AndroidJArduinoGUI extends Activity {
         //Sets the background image
         getWindow().setBackgroundDrawableResource(R.drawable.bg_arduino);
 
-        //Gets the file names from the preferences, ".file" used by default.
+        //Gets the device name from the preferences.
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        loadFile = sp.getString(getString(R.string.pref_loadfile), ".file");
-        saveFile = sp.getString(getString(R.string.pref_savefile), ".file");
         deviceName = sp.getString(getString(R.string.pref_bt_device), deviceName);
 
         //Set the main View of the application
@@ -239,7 +233,7 @@ public class AndroidJArduinoGUI extends Activity {
         progressBar.setProgress(i);
     }
 
-    private void showError(String title, String text){
+    public void showError(String title, String text){
         final TextView et = new TextView(this);
         et.setTextSize(16);
         et.setPadding(10,10,10,10);
@@ -331,7 +325,7 @@ public class AndroidJArduinoGUI extends Activity {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
         } else {
-            onActivityResult(0, RESULT_OK, null);
+            onActivityResult(REQUEST_ENABLE_BT, RESULT_OK, null);
         }
     }
 
@@ -383,7 +377,7 @@ public class AndroidJArduinoGUI extends Activity {
                 logList.setSelection(logList.getCount());
                 return true;
             case R.id.preferences:
-                startActivity(new Intent(getApplicationContext(), Preferences.class));
+                startActivity(new Intent(this, Preferences.class));
                 return true;
         }
         return false;
@@ -484,13 +478,11 @@ public class AndroidJArduinoGUI extends Activity {
         save.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View view) {
                 mController.toFile(loop, setup);
-                makeToast("File saved to "+saveFile+".");
             }
         });
         load.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View view) {
                 mController.fromFile(loop, setup);
-                makeToast("File loaded from "+loadFile+".");
             }
         });
         run.setOnClickListener(new Button.OnClickListener() {
@@ -514,8 +506,8 @@ public class AndroidJArduinoGUI extends Activity {
         });
         clear.setOnClickListener(new Button.OnClickListener(){
             public void onClick(View view){
-                ((LogAdapter) logList.getAdapter()).clear();
-                ((LogAdapter) logList.getAdapter()).notifyDataSetChanged();
+                loop.clear();
+                setup.clear();
             }
         });
     }

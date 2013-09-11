@@ -18,18 +18,16 @@
 package org.sintef.jarduino;
 
 import android.app.Activity;
-import android.content.Context;
+import android.app.Dialog;
 import android.util.Log;
 import android.widget.ListView;
+import ar.com.daidalos.afiledialog.FileChooserDialog;
 import org.sintef.jarduino.comm.AndroidBluetooth4JArduino;
 import org.sintef.jarduino.observer.JArduinoClientObserver;
 import org.sintef.jarduino.observer.JArduinoClientSubject;
 import org.sintef.jarduino.observer.JArduinoObserver;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -52,6 +50,7 @@ public class GUIController implements JArduinoObserver, JArduinoClientSubject {
     private Activity mActivity;
     private boolean running = false;
     private CommandExecuter runner = null;
+    static String file;
 
     public GUIController(ListView logger, Activity activity){
         orders = new ArrayList<LogObject>();
@@ -93,6 +92,7 @@ public class GUIController implements JArduinoObserver, JArduinoClientSubject {
     static final int READ = 1;
     static final int WRITE = 2;
 
+    //Blink buttons in the UI when order is sent.
     static void blinkButton(LogObject obj){
         if(obj.getMode().equals("delay"))
             return;
@@ -138,13 +138,9 @@ public class GUIController implements JArduinoObserver, JArduinoClientSubject {
 
     private void doSend(FixedSizePacket data){
         if (data != null) {
-            Log.d(TAG, data + " --> " + data.getPacket());
             for (JArduinoClientObserver h : handlers){
                 h.receiveMsg(data.getPacket());
             }
-        }
-        else {
-            Log.d(TAG, "Data is null");
         }
     }
 
@@ -216,13 +212,11 @@ public class GUIController implements JArduinoObserver, JArduinoClientSubject {
     public final void receiveMessage(byte[] packet){
         FixedSizePacket data = JArduinoProtocol.createMessageFromPacket(packet);
         if (data != null) {
-            //gui.writeToLog( " ["+dateFormat.format(new Date(System.currentTimeMillis()))+"]: "+data.toString()+" --> "+FixedSizePacket.toString(packet));
-            Log.d(TAG, data.toString());
             ((AndroidJArduinoGUI)mActivity).addToReadLog(data.toString());
-            //TODO Add
         }
     }
 
+    //Triggered when Run is pressed
     public void executeOrders(LogAdapter loop, LogAdapter setup){
         if(runner != null && runner.isAlive()){
             runner.setPause(false);
@@ -272,27 +266,55 @@ public class GUIController implements JArduinoObserver, JArduinoClientSubject {
         AndroidBluetooth4JArduino temp;
         for(JArduinoClientObserver handler: handlers){
             temp = (AndroidBluetooth4JArduino) handler;
-            Log.d(TAG, "Closer " + temp);
             temp.close();
         }
         handlers.clear();
-        Log.d(TAG, "Size = " + handlers.size());
+    }
+
+    //To choose the file.
+    private void showFileDialog(final String rw, final LogAdapter loop, final LogAdapter setup){
+        FileChooserDialog dialog = new FileChooserDialog(AndroidJArduinoGUI.ME);
+        dialog.setCanCreateFiles(true);
+        dialog.addListener(new FileChooserDialog.OnFileSelectedListener() {
+            //File is chosen
+            public void onFileSelected(Dialog source, File file) {
+                source.hide();
+
+                if(rw.equals("read")){   //Read file ?
+                    listsFromFile(file, loop, setup);
+                } else {                 //Write file ?
+                    listsToFile(file, loop, setup);
+                }
+            }
+
+            //New file is created
+            public void onFileSelected(Dialog source, File folder, String name) {
+                source.hide();
+
+                if(rw.equals("read")){   //Read ? (strange... but why not =)
+                    listsFromFile(new File(folder, name), loop, setup);
+                } else {                 //Write ?
+                    listsToFile(new File(folder, name), loop, setup);
+                }
+            }
+        });
+        dialog.show();
     }
 
     public void toFile(LogAdapter loop, LogAdapter setup){
-        Log.d(TAG, "toFile");
+        showFileDialog("write", loop, setup);
+    }
+
+    private void listsToFile(File file, LogAdapter loop, LogAdapter setup){
         FileOutputStream output = null;
-
-        String filename = ((AndroidJArduinoGUI) mActivity).saveFile;
-
         try {
-            output = mActivity.openFileOutput(filename, Context.MODE_PRIVATE);
+            output = new FileOutputStream(file);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            AndroidJArduinoGUI.ME.showError("File Open Issue","This file or the folder may be protected.");
         }
 
         if(output == null){
-            Log.d(TAG, "open issue");
+            Log.d(TAG, "open issue: "+file.getPath());
             return;
         }
 
@@ -316,22 +338,32 @@ public class GUIController implements JArduinoObserver, JArduinoClientSubject {
         }
     }
 
+    /*
+     * The format of the file is this one:
+     *
+     * {word1[data(),data(1)...]word2[...]word3[...]...}{wordi[...]wordj[...]...}
+     *
+     */
+
+
+
     public void fromFile(LogAdapter loop, LogAdapter setup){
+        showFileDialog("read", loop, setup);
+    }
+
+    private void listsFromFile(File file, LogAdapter loop, LogAdapter setup){
+
         StringBuilder fileContent = new StringBuilder("");
         byte[] buffer = new byte[1024];
-
-        Log.d(TAG, "fromFile");
         FileInputStream input = null;
 
-        String filename = ((AndroidJArduinoGUI) mActivity).loadFile;
-
         try {
-            input = mActivity.openFileInput(filename);
+            input = new FileInputStream(file);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
         if(input == null){
-            Log.d(TAG, "open issue");
+            Log.d(TAG, "open issue: "+file.getAbsolutePath());
             return;
         }
 
@@ -345,8 +377,6 @@ public class GUIController implements JArduinoObserver, JArduinoClientSubject {
 
         String word;
         int pointer = 0;
-
-        Log.d(TAG, fileContent.toString());
 
         //handle the { and }.
         LogAdapter adapter = loop;

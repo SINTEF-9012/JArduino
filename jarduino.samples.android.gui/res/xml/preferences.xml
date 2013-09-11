@@ -20,18 +20,6 @@
     <PreferenceCategory
             android:title="General">
         <EditTextPreference
-                android:id="@+id/pref_savefile"
-                android:key="@string/pref_savefile"
-                android:title="Save File"
-                android:dialogTitle="Set the name of your saving file"
-                android:defaultValue=".file"/>
-        <EditTextPreference
-                android:id="@+id/pref_loadfile"
-                android:key="@string/pref_loadfile"
-                android:title="Load File"
-                android:dialogTitle="Set the name of your loading file"
-                android:defaultValue=".file"/>
-        <EditTextPreference
                 android:id="@+id/pref_bt_device"
                 android:key="@string/pref_bt_device"
                 android:title="Bluetooth Device Name"
