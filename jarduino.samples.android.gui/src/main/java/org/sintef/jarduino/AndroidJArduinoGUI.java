@@ -39,9 +39,11 @@ public class AndroidJArduinoGUI extends Activity {
     private final static int MENU_DELETE_ID = Menu.FIRST + 1;
     static final int CUSTOM_DIALOG_ID = 0;
     private BluetoothAdapter mBluetoothAdapter;
+    private BluetoothSocket mmSocket;
+    private boolean mRunning = false;
 
     //The thread which manage and hold the connection
-    private Thread mThread;
+    private Thread mThread = null;
 
     //Several buttons of the UI
     static List<Button> buttons = new ArrayList<Button>();
@@ -277,7 +279,6 @@ public class AndroidJArduinoGUI extends Activity {
                 }
 
                 //Creating the socket.
-                final BluetoothSocket mmSocket;
                 BluetoothSocket tmp = null;
 
                 if(mmDevice == null){
@@ -294,7 +295,7 @@ public class AndroidJArduinoGUI extends Activity {
                 try {
                     mmSocket.connect();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    showError("Bluetooth issue!", "Connection attempt failed.");
                 }
 
                 //Launch the JArduino (link java to Arduino) and the Controller
@@ -307,6 +308,9 @@ public class AndroidJArduinoGUI extends Activity {
                         AndroidBluetooth4JArduino device = new AndroidBluetooth4JArduino(new AndroidBluetoothConfiguration(mmSocket));
                         mController.register(device);
                         device.register(mController);
+
+                        if(mRunning)
+                            mController.executeOrders(loop, setup);
                     }
                 };
                 mThread.start();
@@ -316,6 +320,8 @@ public class AndroidJArduinoGUI extends Activity {
 
     // Close and reconnect to the bluetooth device.
     public void refreshConnection(){
+        mRunning = mController.isRunning();
+        mController.stop();
         if(mThread != null){
             mController.unregisterAll();
             mThread.interrupt();
@@ -368,6 +374,9 @@ public class AndroidJArduinoGUI extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.reconnect:
+                refreshConnection();
+                return true;
             case R.id.loop:
                 logList.setAdapter(loop);
                 logList.setSelection(logList.getCount());

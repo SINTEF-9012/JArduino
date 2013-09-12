@@ -21,14 +21,14 @@
                     android:layout_height="wrap_content"
                     android:text="Load"
                     android:id="@+id/load" android:textSize="16dip" android:padding="0dip" android:enabled="true"
-                    android:visibility="visible" android:background="#ffffff"
+                    android:visibility="visible" android:background="@drawable/button_custom"
                     android:layout_margin="3dip" android:singleLine="true" android:layout_weight="1"/>
             <Button
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:text="Save"
                     android:id="@+id/save" android:textSize="16dip" android:padding="0dip" android:enabled="true"
-                    android:visibility="visible" android:background="#ffffff"
+                    android:visibility="visible" android:background="@drawable/button_custom"
                     android:layout_margin="3dip" android:singleLine="true" android:layout_weight="1"/>
         </LinearLayout>
         <com.fortysevendeg.android.swipelistview.SwipeListView
@@ -56,12 +56,12 @@
                     android:text="Ping"
                     android:id="@+id/ping" android:singleLine="true" android:textSize="16dip"
                     android:layout_gravity="center" android:padding="0dip" android:enabled="true"
-                    android:visibility="visible" android:background="#ffffff"
+                    android:visibility="visible" android:background="@drawable/button_custom"
                     android:layout_margin="3dip" android:layout_weight="1"/>
             <Button android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="Delay"
                     android:id="@+id/delay" android:textSize="16dip"
                     android:padding="0dip" android:enabled="true" android:visibility="visible"
-                    android:background="#ffffff" android:layout_margin="3dip" android:singleLine="true"
+                    android:background="@drawable/button_custom" android:layout_margin="3dip" android:singleLine="true"
                     android:layout_weight="1"/>
         </LinearLayout>
     </LinearLayout>
@@ -112,7 +112,8 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/progressBar" style="@android:style/Widget.ProgressBar.Horizontal"
-                    android:layout_marginLeft="4dip" android:layout_marginRight="4dip"/>
+                    android:layout_marginLeft="4dip" android:layout_marginRight="4dip" android:background="#CCFFFFFF"
+                    android:clickable="true"/>
             <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="fill_parent"

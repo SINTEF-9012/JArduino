@@ -42,6 +42,8 @@ import java.util.Map;
 
 public class GUIController implements JArduinoObserver, JArduinoClientSubject {
 
+    static final String HEADER_FILE = "AndroidJArduinoFile";
+
     private List<JArduinoClientObserver> handlers;
     private List<LogObject> orders;
     private SimpleDateFormat dateFormat;
@@ -51,6 +53,8 @@ public class GUIController implements JArduinoObserver, JArduinoClientSubject {
     private boolean running = false;
     private CommandExecuter runner = null;
     static String file;
+    private boolean pingTestRunning = false;
+    private boolean pingTestOkay = false;
 
     public GUIController(ListView logger, Activity activity){
         orders = new ArrayList<LogObject>();
@@ -211,16 +215,42 @@ public class GUIController implements JArduinoObserver, JArduinoClientSubject {
 
     public final void receiveMessage(byte[] packet){
         FixedSizePacket data = JArduinoProtocol.createMessageFromPacket(packet);
+
         if (data != null) {
-            ((AndroidJArduinoGUI)mActivity).addToReadLog(data.toString());
+            if(pingTestRunning && data.toString().equals("pong:"))
+                pingTestOkay=true;
+            else
+                ((AndroidJArduinoGUI)mActivity).addToReadLog(data.toString());
         }
+    }
+
+    private boolean pingTest(){
+        pingTestRunning = true;
+        pingTestOkay = false;
+        sendping();
+        sendping();
+        try {
+            Thread.sleep(400);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        pingTestRunning = false;
+        return pingTestOkay;
     }
 
     //Triggered when Run is pressed
     public void executeOrders(LogAdapter loop, LogAdapter setup){
+        if(!pingTest()){
+            AndroidJArduinoGUI.ME.runOnUiThread(new Runnable() {
+                public void run() {
+                    AndroidJArduinoGUI.ME.showError("Bluetooth issue!", "Not connected.");
+                }
+            });
+            return;
+        }
         if(runner != null && runner.isAlive()){
             runner.setPause(false);
-        } else {
+        } else if(!(loop.isEmpty() && setup.isEmpty())){
             //Main loop list
             List<LogObject> toDo = new ArrayList<LogObject>();
             //Setup List
@@ -239,7 +269,9 @@ public class GUIController implements JArduinoObserver, JArduinoClientSubject {
     }
 
     public void pause(){
-        runner.setPause(true);
+        if(runner != null){
+            runner.setPause(true);
+        }
     }
 
     public void stop(){
@@ -247,6 +279,10 @@ public class GUIController implements JArduinoObserver, JArduinoClientSubject {
             runner.setStop(true);
             runner = null;
         }
+    }
+
+    public boolean isRunning(){
+        return runner != null;
     }
 
     //Methods defined in the Observer pattern specific to JArduino
@@ -319,7 +355,7 @@ public class GUIController implements JArduinoObserver, JArduinoClientSubject {
         }
 
         try {
-            output.write("{".getBytes());
+            output.write((HEADER_FILE+"{").getBytes());
             for(int i=0; i<loop.getCount(); i++){
                 LogObject o = loop.getItem(i).getmObject();
                 if(o != null)
@@ -376,18 +412,22 @@ public class GUIController implements JArduinoObserver, JArduinoClientSubject {
         }
 
         String word;
-        int pointer = 0;
+        int pointer = fileContent.indexOf(HEADER_FILE+"{")+(HEADER_FILE+"{").length();
 
+        if(pointer == -1){
+            AndroidJArduinoGUI.ME.showError("File issue!", "This is not an Android JArduino file.");
+            return;
+        }
         //handle the { and }.
         LogAdapter adapter = loop;
         while(pointer < fileContent.lastIndexOf("]")){
             word = fileContent.substring(pointer);
             word = word.substring(0, word.indexOf("["));
 
-            if(word.charAt(0) == '{'){
+            /*if(word.charAt(0) == '{'){
                 //Beginning of the file
                 word = word.substring(1);
-            }
+            } */
             if(word.charAt(0) == '}'){
                 //We are between the two lists
                 word = word.substring(2);
