@@ -243,7 +243,7 @@ public class GUIController implements JArduinoObserver, JArduinoClientSubject {
         if(!pingTest()){
             AndroidJArduinoGUI.ME.runOnUiThread(new Runnable() {
                 public void run() {
-                    AndroidJArduinoGUI.ME.showError("Bluetooth issue!", "Not connected.");
+                AndroidJArduinoGUI.ME.showError("Bluetooth issue!", "Not connected.");
                 }
             });
             return;
@@ -396,7 +396,7 @@ public class GUIController implements JArduinoObserver, JArduinoClientSubject {
         try {
             input = new FileInputStream(file);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            AndroidJArduinoGUI.ME.showError("File Open Issue","This file or the folder may be protected.");
         }
         if(input == null){
             Log.d(TAG, "open issue: "+file.getAbsolutePath());
@@ -412,12 +412,15 @@ public class GUIController implements JArduinoObserver, JArduinoClientSubject {
         }
 
         String word;
-        int pointer = fileContent.indexOf(HEADER_FILE+"{")+(HEADER_FILE+"{").length();
+        int pointer = fileContent.indexOf(HEADER_FILE+"{");
 
         if(pointer == -1){
             AndroidJArduinoGUI.ME.showError("File issue!", "This is not an Android JArduino file.");
             return;
         }
+
+        pointer += (HEADER_FILE+"{").length();
+
         //handle the { and }.
         LogAdapter adapter = loop;
         while(pointer < fileContent.lastIndexOf("]")){
