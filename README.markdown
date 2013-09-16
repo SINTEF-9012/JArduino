@@ -67,7 +67,7 @@ This application connects the android platform to the Arduino using a bluetooth 
 private String deviceName = "NameOfYourBluetoothDevice";
 ```
 
-You can also see the Android GUI in the folder org.sintef.samples.android.gui. Here also, you must set the bluetooth device name in order to connect to the Arduino.
+You can also see the Android GUI in the folder org.sintef.samples.android.gui. Here also, you must set the bluetooth device name using the preference screen in order to connect to the Arduino. The preference screen can be reached using the "settings" button on the top of the screen.
 ![Android Arduino GUI](docs/pics/AndroidJarduinoGUI.png?raw=true "Android Arduino GUI")
 
 In the top middle of the screen you can see the list of all the orders sent to the Arduino. In fact there are two lists. The "loop" list and the "setup" list. You can edit each one of those using the "Loop" or "Setup" option on the top of the screen and then writing orders using the GUI.
