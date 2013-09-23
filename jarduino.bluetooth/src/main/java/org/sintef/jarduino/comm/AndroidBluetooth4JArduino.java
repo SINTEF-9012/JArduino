@@ -19,6 +19,7 @@ package org.sintef.jarduino.comm;
 
 import android.bluetooth.BluetoothSocket;
 import org.sintef.jarduino.AndroidBluetoothConfiguration;
+import org.sintef.jarduino.ProtocolConfiguration;
 import org.sintef.jarduino.observer.JArduinoClientObserver;
 import org.sintef.jarduino.observer.JArduinoObserver;
 import org.sintef.jarduino.observer.JArduinoSubject;
@@ -45,10 +46,10 @@ public class AndroidBluetooth4JArduino implements JArduinoClientObserver, JArdui
         reader = new Thread(this);
         reader.start();
     }
-            /*
+
     public AndroidBluetooth4JArduino(ProtocolConfiguration myConf) {
         this(((AndroidBluetoothConfiguration)myConf));
-    }         */
+    }
 
     public void setAndroidBluetoothSocket(BluetoothSocket socket){
         mSocket = socket;
