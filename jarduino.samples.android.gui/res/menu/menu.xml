@@ -2,6 +2,21 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
     <item
+            android:id="@+id/reconnect"
+            android:showAsAction="always"
+            android:title="Reconnect">
+    </item>
+    <item
+            android:id="@+id/loop"
+            android:showAsAction="always"
+            android:title="Loop">
+    </item>
+    <item
+            android:id="@+id/setup"
+            android:showAsAction="always"
+            android:title="Setup">
+    </item>
+    <item
             android:id="@+id/preferences"
             android:showAsAction="always"
             android:title="Settings">

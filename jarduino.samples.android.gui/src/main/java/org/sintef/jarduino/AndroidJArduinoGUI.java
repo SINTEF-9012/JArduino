@@ -18,7 +18,6 @@ import android.widget.*;
 import com.fortysevendeg.android.swipelistview.BaseSwipeListViewListener;
 import com.fortysevendeg.android.swipelistview.SwipeListView;
 import org.sintef.jarduino.comm.AndroidBluetooth4JArduino;
-import org.sintef.jarduino.comm.AndroidBluetoothConfiguration;
 
 import java.io.IOException;
 import java.util.*;
@@ -36,17 +35,20 @@ public class AndroidJArduinoGUI extends Activity {
     //change unless you know what you're doing.
 
     public static String deviceName = "FireFly-4101";
-    private int REQUEST_ENABLE_BT = 2; //What you want here.
+    private final static int REQUEST_ENABLE_BT = 2; //What you want here.
     private final static int MENU_DELETE_ID = Menu.FIRST + 1;
     static final int CUSTOM_DIALOG_ID = 0;
     private BluetoothAdapter mBluetoothAdapter;
+    private BluetoothSocket mmSocket;
+    private boolean mRunning = false;
 
     //The thread which manage and hold the connection
-    private Thread mThread;
+    private Thread mThread = null;
 
     //Several buttons of the UI
     static List<Button> buttons = new ArrayList<Button>();
-    Button ping, run, save, reset, clear, load, delete, delay;
+    ProgressBar progressBar;
+    Button ping, run, pause, stop, save, clear, load, delete, delay;
 
     //The readLog list
     ListView readLog;
@@ -55,12 +57,10 @@ public class AndroidJArduinoGUI extends Activity {
 
     //The log list
     SwipeListView logList;
-    //The adapter of the list, stocks data.
-    LogAdapter logger;
-
-    //The name of the files used by the application, can be fixed into preferences.
-    public static String loadFile;
-    public static String saveFile;
+    //The adapter of the Loop list, stocks data.
+    LogAdapter loop;
+    //The adapter of the setup list
+    LogAdapter setup;
 
     //To reference itself from a static context.
     static AndroidJArduinoGUI ME;
@@ -137,10 +137,8 @@ public class AndroidJArduinoGUI extends Activity {
         //Sets the background image
         getWindow().setBackgroundDrawableResource(R.drawable.bg_arduino);
 
-        //Gets the file names from the preferences, ".file" used by default.
+        //Gets the device name from the preferences.
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        loadFile = sp.getString(getString(R.string.pref_loadfile), ".file");
-        saveFile = sp.getString(getString(R.string.pref_savefile), ".file");
         deviceName = sp.getString(getString(R.string.pref_bt_device), deviceName);
 
         //Set the main View of the application
@@ -154,11 +152,15 @@ public class AndroidJArduinoGUI extends Activity {
 
         //Init of the log list stuff
         logList = (SwipeListView) findViewById(R.id.log);
-        logger = new LogAdapter(getApplicationContext(), R.layout.logitem);
-        logList.setAdapter(logger);
+        loop = new LogAdapter(getApplicationContext(), R.layout.logitem);
+        setup = new LogAdapter(getApplicationContext(), R.layout.logitem);
+        logList.setAdapter(loop);
         logList.setVerticalScrollBarEnabled(true);
         registerForContextMenu(logList);
         ((LinearLayout)logList.getParent()).setVerticalScrollBarEnabled(true);
+
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar.setMax(100);
 
         if (Build.VERSION.SDK_INT >= 11) {
             logList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
@@ -204,10 +206,11 @@ public class AndroidJArduinoGUI extends Activity {
 
             @Override
             public void onDismiss(int[] reverseSortedPositions) {
+                LogAdapter a = ((LogAdapter)logList.getAdapter());
                 for (int position : reverseSortedPositions) {
-                    logger.remove(logger.getItem(position));
+                    a.remove(a.getItem(position));
                 }
-                logger.notifyDataSetChanged();
+                a.notifyDataSetChanged();
             }
         });
 
@@ -224,11 +227,15 @@ public class AndroidJArduinoGUI extends Activity {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
         } else {
-            onActivityResult(0, RESULT_OK, null);
+            onActivityResult(REQUEST_ENABLE_BT, RESULT_OK, null);
         }
     }
 
-    private void showError(String title, String text){
+    public void setProgressBar(int i){
+        progressBar.setProgress(i);
+    }
+
+    public void showError(String title, String text){
         final TextView et = new TextView(this);
         et.setTextSize(16);
         et.setPadding(10,10,10,10);
@@ -254,59 +261,67 @@ public class AndroidJArduinoGUI extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(resultCode == RESULT_CANCELED){
-            showError("Bluetooth issue!", "Bluetooth has not been enabled.");
-            return;
+        switch(requestCode){
+            case REQUEST_ENABLE_BT:
+                if(resultCode == RESULT_CANCELED){
+                    showError("Bluetooth issue!", "Bluetooth has not been enabled.");
+                    return;
+                }
+                BluetoothDevice mmDevice = null;
+
+                //Retrieve the right paired bluetooth device.
+                Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
+                if (pairedDevices.size() > 0) {
+                    for (BluetoothDevice device : pairedDevices) {
+                        if(device.getName().equals(deviceName))
+                            mmDevice = device;
+                    }
+                }
+
+                //Creating the socket.
+                BluetoothSocket tmp = null;
+
+                if(mmDevice == null){
+                    showError("Bluetooth issue!", "Make sure you have correctly set the bluetooth device name. Make also sure you have paired this device with your Android platform.");
+                    return;
+                }
+
+                UUID myUUID = UUID.fromString(mUUID);
+                try {
+                    tmp = mmDevice.createRfcommSocketToServiceRecord(myUUID);
+                } catch (IOException e) { }
+                mmSocket = tmp;
+
+                try {
+                    mmSocket.connect();
+                } catch (IOException e) {
+                    showError("Bluetooth issue!", "Connection attempt failed.");
+                }
+
+                //Launch the JArduino (link java to Arduino) and the Controller
+                mThread = new Thread(){
+                    @Override
+                    public void run() {
+                        super.run();
+
+                        mController = new GUIController(logList, AndroidJArduinoGUI.this);
+                        AndroidBluetooth4JArduino device = new AndroidBluetooth4JArduino(new AndroidBluetoothConfiguration(mmSocket));
+                        mController.register(device);
+                        device.register(mController);
+
+                        if(mRunning)
+                            mController.executeOrders(loop, setup);
+                    }
+                };
+                mThread.start();
+                break;
         }
-        BluetoothDevice mmDevice = null;
-
-        //Retrieve the right paired bluetooth device.
-        Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
-        if (pairedDevices.size() > 0) {
-            for (BluetoothDevice device : pairedDevices) {
-                if(device.getName().equals(deviceName))
-                    mmDevice = device;
-            }
-        }
-
-        //Creating the socket.
-        final BluetoothSocket mmSocket;
-        BluetoothSocket tmp = null;
-
-        if(mmDevice == null){
-            showError("Bluetooth issue!", "Make sure you have correctly set the bluetooth device name. Make also sure you have paired this device with your Android platform.");
-            return;
-        }
-
-        UUID myUUID = UUID.fromString(mUUID);
-        try {
-            tmp = mmDevice.createRfcommSocketToServiceRecord(myUUID);
-        } catch (IOException e) { }
-        mmSocket = tmp;
-
-        try {
-            mmSocket.connect();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        //Launch the JArduino (link java to Arduino) and the Controller
-        mThread = new Thread(){
-            @Override
-            public void run() {
-                super.run();
-
-                mController = new GUIController(logList, AndroidJArduinoGUI.this);
-                AndroidBluetooth4JArduino device = new AndroidBluetooth4JArduino(new AndroidBluetoothConfiguration(mmSocket));
-                mController.register(device);
-                device.register(mController);
-            }
-        };
-        mThread.start();
     }
 
     // Close and reconnect to the bluetooth device.
     public void refreshConnection(){
+        mRunning = mController.isRunning();
+        mController.stop();
         if(mThread != null){
             mController.unregisterAll();
             mThread.interrupt();
@@ -316,7 +331,7 @@ public class AndroidJArduinoGUI extends Activity {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
         } else {
-            onActivityResult(0, RESULT_OK, null);
+            onActivityResult(REQUEST_ENABLE_BT, RESULT_OK, null);
         }
     }
 
@@ -340,9 +355,10 @@ public class AndroidJArduinoGUI extends Activity {
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        LogAdapter a = ((LogAdapter)logList.getAdapter());
         switch (item.getItemId()) {
             case MENU_DELETE_ID:
-                logger.remove(logger.getItem(info.position));
+                a.remove(a.getItem(info.position));
                 return true;
         }
         return super.onContextItemSelected(item);
@@ -358,8 +374,19 @@ public class AndroidJArduinoGUI extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.reconnect:
+                refreshConnection();
+                return true;
+            case R.id.loop:
+                logList.setAdapter(loop);
+                logList.setSelection(logList.getCount());
+                return true;
+            case R.id.setup:
+                logList.setAdapter(setup);
+                logList.setSelection(logList.getCount());
+                return true;
             case R.id.preferences:
-                startActivity(new Intent(getApplicationContext(), Preferences.class));
+                startActivity(new Intent(this, Preferences.class));
                 return true;
         }
         return false;
@@ -385,6 +412,10 @@ public class AndroidJArduinoGUI extends Activity {
         });
     }
 
+    public void makeToast(String text){
+        Toast.makeText(this, text, 200).show();
+    }
+
     // Put all the pin buttons into the buttons list
     void initButtons(){
         buttons.add(((Button) findViewById(R.id.pin2)));
@@ -407,10 +438,11 @@ public class AndroidJArduinoGUI extends Activity {
         buttons.add(((Button) findViewById(R.id.pinA5)));
         ping = (Button)findViewById(R.id.ping);
         run = (Button)findViewById(R.id.run);
+        pause = (Button)findViewById(R.id.pause);
+        stop = (Button)findViewById(R.id.stop);
         save = (Button)findViewById(R.id.save);
         load = (Button)findViewById(R.id.load);
         clear = (Button)findViewById(R.id.clear);
-        reset = (Button)findViewById(R.id.reset);
         delete = (Button)findViewById(R.id.delete);
         delay = (Button) findViewById(R.id.delay);
 
@@ -449,32 +481,42 @@ public class AndroidJArduinoGUI extends Activity {
         ping.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View view) {
                 mController.sendping();
+                makeToast("Ping sent.");
             }
         });
         save.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View view) {
-                mController.toFile();
+                mController.toFile(loop, setup);
             }
         });
         load.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View view) {
-                mController.fromFile();
+                mController.fromFile(loop, setup);
             }
         });
         run.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View view) {
-                mController.executeOrders();
+                mController.executeOrders(loop, setup);
+                makeToast("Running.");
+            }
+        });
+        pause.setOnClickListener(new Button.OnClickListener() {
+            public void onClick(View view) {
+                mController.pause();
+                makeToast("Paused.");
+            }
+        });
+        stop.setOnClickListener(new Button.OnClickListener() {
+            public void onClick(View view) {
+                setProgressBar(0);
+                mController.stop();
+                makeToast("Stopped.");
             }
         });
         clear.setOnClickListener(new Button.OnClickListener(){
             public void onClick(View view){
-                ((LogAdapter) logList.getAdapter()).clear();
-                ((LogAdapter) logList.getAdapter()).notifyDataSetChanged();
-            }
-        });
-        reset.setOnClickListener(new Button.OnClickListener(){
-            public void onClick(View view){
-                mController.resetFile();
+                loop.clear();
+                setup.clear();
             }
         });
     }

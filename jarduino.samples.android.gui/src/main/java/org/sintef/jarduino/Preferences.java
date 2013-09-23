@@ -19,25 +19,7 @@ public class Preferences extends PreferenceActivity {
             addPreferencesFromResource(R.xml.preferences);
             final SharedPreferences.Editor prefEditor = getPreferenceManager().getSharedPreferences().edit();
 
-            final EditTextPreference loadFile = (EditTextPreference) findPreference(getString(R.string.pref_loadfile));
-            final EditTextPreference saveFile = (EditTextPreference) findPreference(getString(R.string.pref_savefile));
             final EditTextPreference bluetoothDevice = (EditTextPreference) findPreference(getString(R.string.pref_bt_device));
-
-            loadFile.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                public boolean onPreferenceChange(Preference preference, Object o) {
-                    AndroidJArduinoGUI.loadFile = (String)o;
-                    prefEditor.putString(getString(R.string.pref_loadfile), (String)o);
-                    return true;
-                }
-            });
-
-            saveFile.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                public boolean onPreferenceChange(Preference preference, Object o) {
-                    AndroidJArduinoGUI.saveFile = (String)o;
-                    prefEditor.putString(getString(R.string.pref_savefile), (String)o);
-                    return true;
-                }
-            });
 
             bluetoothDevice.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 public boolean onPreferenceChange(Preference preference, Object o) {
