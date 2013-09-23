@@ -67,19 +67,20 @@ This application connects the android platform to the Arduino using a bluetooth 
 private String deviceName = "NameOfYourBluetoothDevice";
 ```
 
-You can also see the Android GUI in the folder org.sintef.samples.android.gui. Here also, you must set the bluetooth device name in order to connect to the Arduino.
+You can also see the Android GUI in the folder org.sintef.samples.android.gui. Here also, you must set the bluetooth device name using the preference screen in order to connect to the Arduino. The preference screen can be reached using the "settings" button on the top of the screen.
 ![Android Arduino GUI](docs/pics/AndroidJarduinoGUI.png?raw=true "Android Arduino GUI")
 
-In the top middle of the screen you can see the list of all the orders sent to the Arduino.
+In the top middle of the screen you can see the list of all the orders sent to the Arduino. In fact there are two lists. The "loop" list and the "setup" list. You can edit each one of those using the "Loop" or "Setup" option on the top of the screen and then writing orders using the GUI.
 
 In the bottom middle of the screen see the responses sent from the Arduino to the Android pltaform.
 
-If you click the button Run, all of these orders will be sent again.
-Clear: clear the list.
+If you click the button Run (Play), the orders of the setup list will be executed once, and the loop list orders will be executed infinitely.
+Pause: pauses the execution of the orders. If play is pressed while it is paused, it will continue.
+Stop: stops the execution.
+Clear: clear the two lists (loop and setup).
 Delay: a pop-up will be open to set the delay you wish.
-Save: save the list into th file specified in the settings (top right corner).
-Load: load the specified file.
-Reset: save an empty file on the save file specified.
+Save: save the two lists into the specified file.
+Load: load the two lists contained into the specified file.
 Ping: send a ping to the Arduino.
 
 When you click on a Pin Button (blue with white edges) a list of action is displayed and you can choose the one you want to perform.

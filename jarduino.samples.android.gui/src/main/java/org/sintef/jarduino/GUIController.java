@@ -18,18 +18,16 @@
 package org.sintef.jarduino;
 
 import android.app.Activity;
-import android.content.Context;
+import android.app.Dialog;
 import android.util.Log;
 import android.widget.ListView;
+import ar.com.daidalos.afiledialog.FileChooserDialog;
 import org.sintef.jarduino.comm.AndroidBluetooth4JArduino;
 import org.sintef.jarduino.observer.JArduinoClientObserver;
 import org.sintef.jarduino.observer.JArduinoClientSubject;
 import org.sintef.jarduino.observer.JArduinoObserver;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -44,6 +42,8 @@ import java.util.Map;
 
 public class GUIController implements JArduinoObserver, JArduinoClientSubject {
 
+    static final String HEADER_FILE = "AndroidJArduinoFile";
+
     private List<JArduinoClientObserver> handlers;
     private List<LogObject> orders;
     private SimpleDateFormat dateFormat;
@@ -51,6 +51,10 @@ public class GUIController implements JArduinoObserver, JArduinoClientSubject {
     private ListView logList;
     private Activity mActivity;
     private boolean running = false;
+    private CommandExecuter runner = null;
+    static String file;
+    private boolean pingTestRunning = false;
+    private boolean pingTestOkay = false;
 
     public GUIController(ListView logger, Activity activity){
         orders = new ArrayList<LogObject>();
@@ -60,18 +64,22 @@ public class GUIController implements JArduinoObserver, JArduinoClientSubject {
         dateFormat = new SimpleDateFormat("dd MMM yyy 'at' HH:mm:ss.SSS");
     }
 
-    private void addToLogger(String s, LogObject o){
-        class OneShotTask implements Runnable {
-            String str;
-            LogObject obj;
-            OneShotTask(String s, LogObject o) { str = s; obj = o; }
-            public void run() {
-                ((LogAdapter)logList.getAdapter()).add(str, obj);
-                logList.invalidate();
-                logList.setSelection(logList.getCount());
-            }
+    class OneShotTask implements Runnable {
+        String str;
+        LogObject obj;
+        LogAdapter adapter;
+        OneShotTask(String s, LogObject o, LogAdapter a) {
+            str = s; obj = o; adapter = a;
         }
-        mActivity.runOnUiThread(new OneShotTask(s, o));
+        public void run() {
+            adapter.add(str, obj);
+            logList.invalidate();
+            logList.setSelection(logList.getCount());
+        }
+    }
+
+    private void addToLogger(String s, LogObject o, final LogAdapter adapter){
+        mActivity.runOnUiThread(new OneShotTask(s, o, adapter));
     }
 
     static String reverseSearch(Map<String, ?> m, Object o){
@@ -88,6 +96,7 @@ public class GUIController implements JArduinoObserver, JArduinoClientSubject {
     static final int READ = 1;
     static final int WRITE = 2;
 
+    //Blink buttons in the UI when order is sent.
     static void blinkButton(LogObject obj){
         if(obj.getMode().equals("delay"))
             return;
@@ -126,26 +135,22 @@ public class GUIController implements JArduinoObserver, JArduinoClientSubject {
     private void doSend(FixedSizePacket data, LogObject obj){
         doSend(data);
         if(obj != null){
-            addToLogger(data.toString(), obj);
+            addToLogger(data.toString(), obj, (LogAdapter)logList.getAdapter());
             blinkButton(obj);
         }
     }
 
     private void doSend(FixedSizePacket data){
         if (data != null) {
-            Log.d(TAG, data + " --> " + data.getPacket());
             for (JArduinoClientObserver h : handlers){
                 h.receiveMsg(data.getPacket());
             }
-        }
-        else {
-            Log.d(TAG, "Data is null");
         }
     }
 
     public final void delay(int value){
         LogObject obj = new LogDelayObject("delay", (short)-1, (short)value, (byte)-1);
-        addToLogger(obj.toString(), obj);
+        addToLogger(obj.toString(), obj, (LogAdapter)logList.getAdapter());
     }
 
     public final void sendpinMode(PinMode mode, DigitalPin pin, boolean tolog) {
@@ -210,23 +215,74 @@ public class GUIController implements JArduinoObserver, JArduinoClientSubject {
 
     public final void receiveMessage(byte[] packet){
         FixedSizePacket data = JArduinoProtocol.createMessageFromPacket(packet);
+
         if (data != null) {
-            //gui.writeToLog( " ["+dateFormat.format(new Date(System.currentTimeMillis()))+"]: "+data.toString()+" --> "+FixedSizePacket.toString(packet));
-            Log.d(TAG, data.toString());
-            ((AndroidJArduinoGUI)mActivity).addToReadLog(data.toString());
-            //TODO Add
+            if(pingTestRunning && data.toString().equals("pong:"))
+                pingTestOkay=true;
+            else
+                ((AndroidJArduinoGUI)mActivity).addToReadLog(data.toString());
         }
     }
 
-    public void executeOrders(){
-        List<LogObject> toDo = new ArrayList<LogObject>();
-        for(int i = 0; i< logList.getCount(); i++){
-            LogObject o = ((LogAdapter)logList.getAdapter()).getItem(i).getmObject();
-            if(o != null){
-                toDo.add(o);
-            }
+    private boolean pingTest(){
+        pingTestRunning = true;
+        pingTestOkay = false;
+        sendping();
+        sendping();
+        try {
+            Thread.sleep(400);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
-        new CommandExecuter(this, toDo).start();
+        pingTestRunning = false;
+        return pingTestOkay;
+    }
+
+    //Triggered when Run is pressed
+    public void executeOrders(LogAdapter loop, LogAdapter setup){
+        if(!pingTest()){
+            AndroidJArduinoGUI.ME.runOnUiThread(new Runnable() {
+                public void run() {
+                AndroidJArduinoGUI.ME.showError("Bluetooth issue!", "Not connected.");
+                }
+            });
+            return;
+        }
+        if(runner != null && runner.isAlive()){
+            runner.setPause(false);
+        } else if(!(loop.isEmpty() && setup.isEmpty())){
+            //Main loop list
+            List<LogObject> toDo = new ArrayList<LogObject>();
+            //Setup List
+            List<LogObject> toSetup = new ArrayList<LogObject>();
+
+            for(int i=0; i< loop.getCount(); i++){
+                toDo.add(loop.getItem(i).getmObject());
+            }
+            for(int i=0; i< setup.getCount(); i++){
+                toSetup.add(setup.getItem(i).getmObject());
+            }
+
+            runner = new CommandExecuter(this, toDo, toSetup);
+            runner.start();
+        }
+    }
+
+    public void pause(){
+        if(runner != null){
+            runner.setPause(true);
+        }
+    }
+
+    public void stop(){
+        if(runner != null){
+            runner.setStop(true);
+            runner = null;
+        }
+    }
+
+    public boolean isRunning(){
+        return runner != null;
     }
 
     //Methods defined in the Observer pattern specific to JArduino
@@ -246,58 +302,104 @@ public class GUIController implements JArduinoObserver, JArduinoClientSubject {
         AndroidBluetooth4JArduino temp;
         for(JArduinoClientObserver handler: handlers){
             temp = (AndroidBluetooth4JArduino) handler;
-            Log.d(TAG, "Closer " + temp);
             temp.close();
         }
         handlers.clear();
-        Log.d(TAG, "Size = " + handlers.size());
     }
 
-    public void toFile(){
-        Log.d(TAG, "toFile");
+    //To choose the file.
+    private void showFileDialog(final String rw, final LogAdapter loop, final LogAdapter setup){
+        FileChooserDialog dialog = new FileChooserDialog(AndroidJArduinoGUI.ME);
+        dialog.setCanCreateFiles(true);
+        dialog.addListener(new FileChooserDialog.OnFileSelectedListener() {
+            //File is chosen
+            public void onFileSelected(Dialog source, File file) {
+                source.hide();
+
+                if(rw.equals("read")){   //Read file ?
+                    listsFromFile(file, loop, setup);
+                } else {                 //Write file ?
+                    listsToFile(file, loop, setup);
+                }
+            }
+
+            //New file is created
+            public void onFileSelected(Dialog source, File folder, String name) {
+                source.hide();
+
+                if(rw.equals("read")){   //Read ? (strange... but why not =)
+                    listsFromFile(new File(folder, name), loop, setup);
+                } else {                 //Write ?
+                    listsToFile(new File(folder, name), loop, setup);
+                }
+            }
+        });
+        dialog.show();
+    }
+
+    public void toFile(LogAdapter loop, LogAdapter setup){
+        showFileDialog("write", loop, setup);
+    }
+
+    private void listsToFile(File file, LogAdapter loop, LogAdapter setup){
         FileOutputStream output = null;
-
-        String filename = ((AndroidJArduinoGUI) mActivity).saveFile;
-
         try {
-            output = mActivity.openFileOutput(filename, Context.MODE_PRIVATE);
+            output = new FileOutputStream(file);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            AndroidJArduinoGUI.ME.showError("File Open Issue","This file or the folder may be protected.");
         }
 
         if(output == null){
-            Log.d(TAG, "open issue");
+            Log.d(TAG, "open issue: "+file.getPath());
             return;
         }
 
         try {
-            for(int i=0; i<logList.getCount(); i++){
-                LogObject o = ((LogAdapter)logList.getAdapter()).getItem(i).getmObject();
+            output.write((HEADER_FILE+"{").getBytes());
+            for(int i=0; i<loop.getCount(); i++){
+                LogObject o = loop.getItem(i).getmObject();
                 if(o != null)
                     output.write(o.toString().getBytes());
             }
+            output.write("}{".getBytes());
+            for(int i=0; i<setup.getCount(); i++){
+                LogObject o = setup.getItem(i).getmObject();
+                if(o != null)
+                    output.write(o.toString().getBytes());
+            }
+            output.write("}".getBytes());
             output.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void fromFile(){
+    /*
+     * The format of the file is this one:
+     *
+     * {word1[data(),data(1)...]word2[...]word3[...]...}{wordi[...]wordj[...]...}
+     *
+     */
+
+
+
+    public void fromFile(LogAdapter loop, LogAdapter setup){
+        showFileDialog("read", loop, setup);
+    }
+
+    private void listsFromFile(File file, LogAdapter loop, LogAdapter setup){
+
         StringBuilder fileContent = new StringBuilder("");
         byte[] buffer = new byte[1024];
-
-        Log.d(TAG, "fromFile");
         FileInputStream input = null;
 
-        String filename = ((AndroidJArduinoGUI) mActivity).loadFile;
-
         try {
-            input = mActivity.openFileInput(filename);
+            input = new FileInputStream(file);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            AndroidJArduinoGUI.ME.showError("File Open Issue","This file or the folder may be protected.");
         }
         if(input == null){
-            Log.d(TAG, "open issue");
+            Log.d(TAG, "open issue: "+file.getAbsolutePath());
             return;
         }
 
@@ -310,57 +412,54 @@ public class GUIController implements JArduinoObserver, JArduinoClientSubject {
         }
 
         String word;
-        int pointer = 0;
+        int pointer = fileContent.indexOf(HEADER_FILE+"{");
 
-        Log.d(TAG, fileContent.toString());
+        if(pointer == -1){
+            AndroidJArduinoGUI.ME.showError("File issue!", "This is not an Android JArduino file.");
+            return;
+        }
 
+        pointer += (HEADER_FILE+"{").length();
+
+        //handle the { and }.
+        LogAdapter adapter = loop;
         while(pointer < fileContent.lastIndexOf("]")){
             word = fileContent.substring(pointer);
             word = word.substring(0, word.indexOf("["));
-            if(word.equals("Delay")){
-                pointer += fileContent.substring(pointer).indexOf("[")+1;
-                int finalPointer = fileContent.substring(pointer).indexOf("]") + pointer;
-                String object = fileContent.substring(pointer, finalPointer);
-                finalPointer ++;
 
-                String data[] = object.split(",");
-                LogDelayObject delay = new LogDelayObject();
-                addOrder(delay, data);
-                pointer = finalPointer;
+            /*if(word.charAt(0) == '{'){
+                //Beginning of the file
+                word = word.substring(1);
+            } */
+            if(word.charAt(0) == '}'){
+                //We are between the two lists
+                word = word.substring(2);
+                //So we switch the adapter
+                adapter = setup;
+            }
+
+            pointer += fileContent.substring(pointer).indexOf("[")+1;
+            int finalPointer = fileContent.substring(pointer).indexOf("]") + pointer;
+            String object = fileContent.substring(pointer, finalPointer);
+            finalPointer ++;
+
+            String data[] = object.split(",");
+            LogObject o = null;
+
+            if(word.equals("Delay")){
+                o = new LogDelayObject();
             }
             if(word.equals("Digital")){
-                pointer += fileContent.substring(pointer).indexOf("[")+1;
-                int finalPointer = fileContent.substring(pointer).indexOf("]") + pointer;
-                String object = fileContent.substring(pointer, finalPointer);
-                finalPointer ++;
-
-                String data[] = object.split(",");
-                LogDigitalObject digital = new LogDigitalObject();
-                addOrder(digital, data);
-                pointer = finalPointer;
+                o = new LogDigitalObject();
             }
             if(word.equals("Analog")){
-                pointer += fileContent.substring(pointer).indexOf("[")+1;
-                int finalPointer = fileContent.substring(pointer).indexOf("]") + pointer;
-                String object = fileContent.substring(pointer, finalPointer);
-                finalPointer ++;
-
-                String data[] = object.split(",");
-                LogAnalogObject analog = new LogAnalogObject();
-                addOrder(analog, data);
-                pointer = finalPointer;
+                o = new LogAnalogObject();
             }
             if(word.equals("Pwm")){
-                pointer += fileContent.substring(pointer).indexOf("[")+1;
-                int finalPointer = fileContent.substring(pointer).indexOf("]") + pointer;
-                String object = fileContent.substring(pointer, finalPointer);
-                finalPointer ++;
-
-                String data[] = object.split(",");
-                LogPWMObject pwm = new LogPWMObject();
-                addOrder(pwm, data);
-                pointer = finalPointer;
+                o = new LogPWMObject();
             }
+            addOrder(o, data, adapter);
+            pointer = finalPointer;
         }
 
         try {
@@ -370,11 +469,11 @@ public class GUIController implements JArduinoObserver, JArduinoClientSubject {
         }
     }
 
-    private void addOrder(LogObject lo, String[] data){
+    private void addOrder(LogObject lo, String[] data, LogAdapter adapter){
         if(lo instanceof LogDelayObject){
             lo.setMode(data[0]);
             lo.setVal(Short.parseShort(data[1]));
-            addToLogger(lo.toLog(), lo);
+            addToLogger(lo.toLog(), lo, adapter);
             return;
         }
         if(lo instanceof LogAnalogObject)
@@ -387,31 +486,10 @@ public class GUIController implements JArduinoObserver, JArduinoClientSubject {
         lo.setB(Byte.parseByte(data[2]));
         lo.setMode(data[3]);
         lo.setVal(Short.parseShort(data[4]));
-        addToLogger(lo.toLog(), lo);
+        addToLogger(lo.toLog(), lo, adapter);
     }
 
     public void clearOrders(){
         orders.clear();
-    }
-
-    public void resetFile(){
-        Log.d(TAG, "toFile");
-        FileOutputStream output = null;
-        String filename = ".saved";
-
-        try {
-            output = mActivity.openFileOutput(filename, Context.MODE_PRIVATE);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        if(output == null){
-            Log.d(TAG, "open issue");
-            return;
-        }
-        try {
-            output.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }

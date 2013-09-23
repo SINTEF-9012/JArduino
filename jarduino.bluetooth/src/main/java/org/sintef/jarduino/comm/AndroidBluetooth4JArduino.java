@@ -18,6 +18,7 @@
 package org.sintef.jarduino.comm;
 
 import android.bluetooth.BluetoothSocket;
+import org.sintef.jarduino.AndroidBluetoothConfiguration;
 import org.sintef.jarduino.ProtocolConfiguration;
 import org.sintef.jarduino.observer.JArduinoClientObserver;
 import org.sintef.jarduino.observer.JArduinoObserver;

@@ -17,21 +17,57 @@ import java.util.List;
 public class CommandExecuter extends Thread{
     private GUIController mController;
     private List<LogObject> linkedList;
+    private List<LogObject> setup;
+    private boolean pause = false;
+    private boolean stop = false;
+
     public CommandExecuter(GUIController c){
         this.mController = c;
     }
 
 
-    public CommandExecuter(GUIController c, List<LogObject> linkedList) {
+    public CommandExecuter(GUIController c, List<LogObject> linkedList, List<LogObject> setup) {
         this.mController = c;
         this.linkedList = linkedList;
+        this.setup = setup;
     }
 
 
     public void run(){
-        for(LogObject o: linkedList){
+        // Setup one time
+        for(LogObject o: setup){
             executeObjectCommand(o);
         }
+        // Then loop on orders
+        int count = 0;
+        while(!stop){
+            for(LogObject o: linkedList){
+                // If paused, do not forget to handle stop.
+                while(pause){
+                    if(stop){
+                        AndroidJArduinoGUI.ME.setProgressBar(0);
+                        this.interrupt();
+                        return;
+                    }
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                // catch stop if stopped.
+                if(stop){
+                    AndroidJArduinoGUI.ME.setProgressBar(0);
+                    this.interrupt();
+                    return;
+                }
+                executeObjectCommand(o);
+                AndroidJArduinoGUI.ME.setProgressBar((int)((count/(float)linkedList.size())*100));
+                count ++;
+            }
+            count = 0;
+        }
+        this.interrupt();
     }
 
     void executeObjectCommand(LogObject o) {
@@ -64,5 +100,13 @@ public class CommandExecuter extends Thread{
             mController.sendanalogWrite((PWMPin)o.getPin(), (byte) o.getVal(), false);
         }
         //TODO implement running of while loops and if tests in emulator mode
+    }
+
+    public void setPause(boolean b){
+        pause = b;
+    }
+
+    public void setStop(boolean b){
+        stop = b;
     }
 }
