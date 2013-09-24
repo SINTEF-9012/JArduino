@@ -2,7 +2,6 @@ package org.sintef.jarduino;
 
 import android.bluetooth.BluetoothSocket;
 import android.util.Log;
-import org.sintef.jarduino.comm.AndroidBluetoothConfiguration;
 
 /**
  * Created with IntelliJ IDEA.
