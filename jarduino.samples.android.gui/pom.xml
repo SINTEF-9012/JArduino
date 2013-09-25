@@ -81,7 +81,7 @@
                     <undeployBeforeDeploy>true</undeployBeforeDeploy>
 
                     <proguard>
-                        <skip>true</skip>
+                        <skip>${proguard.skip}</skip>
                         <config>${project.basedir}/proguard.cfg</config>
                     </proguard>
 
