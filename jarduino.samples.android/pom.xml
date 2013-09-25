@@ -12,6 +12,10 @@
     <packaging>apk</packaging>
     <name>org.sintef.jarduino.samples.android</name>
 
+    <properties>
+        <proguard.skip>false</proguard.skip>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.sintef.jarduino</groupId>

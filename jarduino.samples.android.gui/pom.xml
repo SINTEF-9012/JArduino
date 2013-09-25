@@ -8,6 +8,10 @@
   <packaging>apk</packaging>
   <name>org.sintef.jarduino.samples.android.gui</name>
 
+    <properties>
+        <proguard.skip>false</proguard.skip>
+    </properties>
+
   <repositories>
     <repository>
         <id>sonatype</id>
