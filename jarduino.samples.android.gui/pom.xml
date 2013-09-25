@@ -9,7 +9,7 @@
   <name>org.sintef.jarduino.samples.android.gui</name>
 
     <properties>
-        <proguard.skip>false</proguard.skip>
+        <proguard.skip>true</proguard.skip>
     </properties>
 
   <repositories>
@@ -76,7 +76,7 @@
                     <nativeLibrariesDirectory>${project.basedir}/src/main/native</nativeLibrariesDirectory>
                     <sdk>
                         <path>${android.sdk.path}</path>
-                        <platform>15</platform>
+                        <platform>18</platform>
                     </sdk>
                     <undeployBeforeDeploy>true</undeployBeforeDeploy>
 
