@@ -91,6 +91,3 @@ Make also sure that you are performing an action supported by the Arduino. Unatt
 
 _The ThingML/JArduino team._
 
-## Build status, by Travis CI
-
-<img src="https://api.travis-ci.org/SINTEF-9012/JArduino.png" alt="Build status"/>
