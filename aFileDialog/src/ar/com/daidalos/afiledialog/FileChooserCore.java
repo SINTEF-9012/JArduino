@@ -1,5 +1,5 @@
 /*
- * �Copyright 2013 Jose F. Maldonado�
+ * Copyright 2013 Jose F. Maldonado
  *
  *  This file is part of aFileDialog.
  *
@@ -541,7 +541,7 @@ class FileChooserCore {
 			if(this.currentFolder.getParent() != null) {
 				File parent = new File(this.currentFolder.getParent());
 				if(parent.exists()) {
-					fileItems.add(new FileItem(this.chooser.getContext(), parent, ""));
+					fileItems.add(new FileItem(this.chooser.getContext(), parent, ".."));					
 				}
 			}
 			

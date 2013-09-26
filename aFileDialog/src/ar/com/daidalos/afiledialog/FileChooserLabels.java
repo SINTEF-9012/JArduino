@@ -1,5 +1,5 @@
 /*
- * «Copyright 2013 Jose F. Maldonado»
+ * Copyright 2013 Jose F. Maldonado
  *
  *  This file is part of aFileDialog.
  *
