@@ -25,7 +25,7 @@
     </distributionManagement>
 
     <modules>
-        <module>aFileDialog</module>
+        <!--<module>aFileDialog</module>-->
         <module>jarduino.core</module>
         <module>jarduino.gui</module>
         <module>jarduino.serial</module>
