@@ -21,7 +21,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.util.Log;
 import android.widget.ListView;
-import ar.com.daidalos.afiledialog.FileChooserDialog;
+//import ar.com.daidalos.afiledialog.FileChooserDialog;
 import org.sintef.jarduino.comm.AndroidBluetooth4JArduino;
 import org.sintef.jarduino.observer.JArduinoClientObserver;
 import org.sintef.jarduino.observer.JArduinoClientSubject;
@@ -308,7 +308,7 @@ public class GUIController implements JArduinoObserver, JArduinoClientSubject {
     }
 
     //To choose the file.
-    private void showFileDialog(final String rw, final LogAdapter loop, final LogAdapter setup){
+    /*private void showFileDialog(final String rw, final LogAdapter loop, final LogAdapter setup){
         FileChooserDialog dialog = new FileChooserDialog(AndroidJArduinoGUI.ME);
         dialog.setCanCreateFiles(true);
         dialog.addListener(new FileChooserDialog.OnFileSelectedListener() {
@@ -335,10 +335,10 @@ public class GUIController implements JArduinoObserver, JArduinoClientSubject {
             }
         });
         dialog.show();
-    }
+    } */
 
     public void toFile(LogAdapter loop, LogAdapter setup){
-        showFileDialog("write", loop, setup);
+        //showFileDialog("write", loop, setup);
     }
 
     private void listsToFile(File file, LogAdapter loop, LogAdapter setup){
@@ -384,7 +384,7 @@ public class GUIController implements JArduinoObserver, JArduinoClientSubject {
 
 
     public void fromFile(LogAdapter loop, LogAdapter setup){
-        showFileDialog("read", loop, setup);
+        //showFileDialog("read", loop, setup);
     }
 
     private void listsFromFile(File file, LogAdapter loop, LogAdapter setup){
