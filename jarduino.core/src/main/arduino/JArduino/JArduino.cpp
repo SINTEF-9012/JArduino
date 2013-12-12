@@ -17,7 +17,7 @@
  */
 
 // include core Wiring API
-#include "WProgram.h"
+#include "Arduino.h"
 
 // include this library's description file
 #include "JArduino.h"
