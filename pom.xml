@@ -30,9 +30,9 @@
         <module>jarduino.gui</module>
         <module>jarduino.serial</module>
         <module>jarduino.bluetooth</module>
-        <module>jarduino.samples</module>
+        <!--<module>jarduino.samples</module>
         <module>jarduino.samples.android</module>
-        <module>jarduino.samples.android.gui</module>
+        <module>jarduino.samples.android.gui</module>-->
     </modules>
     
     <properties>
