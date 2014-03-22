@@ -43,6 +43,9 @@ void receivetone(uint8_t pin, uint16_t frequency, uint16_t duration) {
 void receivenoTone(uint8_t pin) {
 	// TODO: Implement the handler for message reception of the message noTone
 }
+void receivepulseIn(uint8_t pin, uint8_t value) {
+	// TODO: Implement the handler for message reception of the message noTone
+}
 void receiveping() {
 	// TODO: Implement the handler for message reception of the message ping
 }

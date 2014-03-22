@@ -29,6 +29,7 @@ public interface IJArduinoMessageHandler {
 	void handleAnalogWrite(AnalogWriteMsg msg);
 	void handleTone(ToneMsg msg);
 	void handleNoTone(NoToneMsg msg);
+    void handlePulseIn(PulseInMsg msg);
 	void handlePing(PingMsg msg);
 	void handleAttachInterrupt(AttachInterruptMsg msg);
 	void handleDetachInterrupt(DetachInterruptMsg msg);
@@ -38,6 +39,7 @@ public interface IJArduinoMessageHandler {
 	
 	void handleDigitalReadResult(DigitalReadResultMsg msg);
 	void handleAnalogReadResult(AnalogReadResultMsg msg);
+    void handlePulseInResult(PulseInResultMsg msg);
 	void handlePong(PongMsg msg);
 	void handleInterruptNotification(InterruptNotificationMsg msg);
 	void handleEeprom_value(Eeprom_valueMsg msg);

@@ -28,6 +28,7 @@ public abstract class JArduinoMessageHandler implements IJArduinoMessageHandler{
 	@Override public void handleAnalogWrite(AnalogWriteMsg msg){ /* Nothing */ }
 	@Override public void handleTone(ToneMsg msg){ /* Nothing */ }
 	@Override public void handleNoTone(NoToneMsg msg){ /* Nothing */ }
+    @Override public void handlePulseIn(PulseInMsg msg){ /* Nothing */ }
 	@Override public void handlePing(PingMsg msg){ /* Nothing */ }
 	@Override public void handleAttachInterrupt(AttachInterruptMsg msg){ /* Nothing */ }
 	@Override public void handleDetachInterrupt(DetachInterruptMsg msg){ /* Nothing */ }

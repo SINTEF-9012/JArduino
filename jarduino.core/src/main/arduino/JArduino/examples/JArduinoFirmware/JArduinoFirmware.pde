@@ -65,6 +65,10 @@ void receivetone(uint8_t pin, uint16_t frequency, uint16_t duration) {
 void receivenoTone(uint8_t pin) {
   noTone(pin);
 }
+void receivepulseIn(uint8_t pin, uint8_t value) {
+    unsigned long duration = pulseIn(pin, value);
+    _JArduino.sendpulseInResult(duration);
+}
 void receiveeeprom_read(uint16_t address) {
   uint8_t result = EEPROM.read(address);
   _JArduino.sendeeprom_value(result);

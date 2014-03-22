@@ -30,15 +30,17 @@ public abstract class JArduinoProtocol {
 	public static final byte ANALOG_READ = 7; 
 	public static final byte ANALOG_WRITE = 9; 
 	public static final byte TONE = 10; 
-	public static final byte NO_TONE = 11; 
-	public static final byte PING = 66; 
+	public static final byte NO_TONE = 11;
+    public static final byte PULSE_IN = 12;
+    public static final byte PING = 66;
 	public static final byte ATTACH_INTERRUPT = 21; 
 	public static final byte DETACH_INTERRUPT = 22; 
 	public static final byte EEPROM__READ = 31; 
 	public static final byte EEPROM__SYNC__WRITE = 34; 
 	public static final byte EEPROM__WRITE = 33; 
 	public static final byte DIGITAL_READ_RESULT = 5; 
-	public static final byte ANALOG_READ_RESULT = 8; 
+	public static final byte ANALOG_READ_RESULT = 8;
+    public static final byte PULSE_IN_RESULT = 13;
 	public static final byte PONG = 67; 
 	public static final byte INTERRUPT_NOTIFICATION = 23; 
 	public static final byte EEPROM__VALUE = 32; 
@@ -104,6 +106,10 @@ public abstract class JArduinoProtocol {
 	public static FixedSizePacket createNoTone(DigitalPin pin) {
 		return new NoToneMsg(pin);
 	}
+
+    public static FixedSizePacket createPulseIn(DigitalPin pin, DigitalState state) {
+        return new PulseInMsg(pin, state);
+    }
 	
 	public static FixedSizePacket createPing() {
 		return new PingMsg();

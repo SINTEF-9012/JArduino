@@ -218,6 +218,32 @@ public abstract class AbstractJArduino {
 
     }
 
+    private int pulseIn_result;
+    private boolean pulseIn_result_available;
+    private final Object pulseInMonitor = "pulseInMonitor";
+
+    public int pulseIn(DigitalPin pin, DigitalState state) {
+        try {
+            synchronized (pulseInMonitor) {
+                pulseIn_result_available = false;
+                // Create message using the factory
+                FixedSizePacket p = JArduinoProtocol.createPulseIn(pin, state);
+                // Create message using the factory
+                serial.receiveMsg(p.getPacket());
+                pulseInMonitor.wait(500);
+                if (pulseIn_result_available) return pulseIn_result;
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        // The exception alternative
+        //throw new Error("JArduino: Timeout waiting for the result of pulseIn");
+        // The error message alternative
+        System.err.println("JArduino: Timeout waiting for the result of pulseIn");
+        return 0;
+
+    }
+
     private byte eeprom_read_result;
     private boolean eeprom_read_result_available;
     private final Object eeprom_readMonitor = "eeprom_readMonitor";
@@ -280,6 +306,15 @@ public abstract class AbstractJArduino {
             analogRead_result_available = true;
             synchronized (analogReadMonitor) {
                 analogReadMonitor.notify();
+            }
+        }
+
+        @Override
+        public void handlePulseInResult(PulseInResultMsg msg) {
+            pulseIn_result = msg.getValue();
+            pulseIn_result_available = true;
+            synchronized (pulseInMonitor) {
+                pulseInMonitor.notify();
             }
         }
 

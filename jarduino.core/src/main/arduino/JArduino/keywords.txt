@@ -38,6 +38,7 @@ receiveanalogRead	KEYWORD2
 receiveanalogWrite	KEYWORD2
 receivetone	KEYWORD2
 receivenoTone	KEYWORD2
+receivepulseIn	KEYWORD2
 receiveping	KEYWORD2
 receiveattachInterrupt	KEYWORD2
 receivedetachInterrupt	KEYWORD2
@@ -47,6 +48,7 @@ receiveeeprom_write	KEYWORD2
 
 senddigitalReadResult	KEYWORD2
 sendanalogReadResult	KEYWORD2
+sendpulseInResult	KEYWORD2
 sendpong	KEYWORD2
 sendinterruptNotification	KEYWORD2
 sendeeprom_value	KEYWORD2
