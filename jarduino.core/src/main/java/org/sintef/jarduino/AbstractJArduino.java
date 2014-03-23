@@ -222,7 +222,7 @@ public abstract class AbstractJArduino {
     private boolean pulseIn_result_available;
     private final Object pulseInMonitor = "pulseInMonitor";
 
-    public int pulseIn(DigitalPin pin, DigitalState state) {
+    public int pulseIn(DigitalPin pin, DigitalState state, long timeout) {
         try {
             synchronized (pulseInMonitor) {
                 pulseIn_result_available = false;
@@ -230,7 +230,7 @@ public abstract class AbstractJArduino {
                 FixedSizePacket p = JArduinoProtocol.createPulseIn(pin, state);
                 // Create message using the factory
                 serial.receiveMsg(p.getPacket());
-                pulseInMonitor.wait(500);
+                pulseInMonitor.wait(timeout);
                 if (pulseIn_result_available) return pulseIn_result;
             }
         } catch (InterruptedException e) {
