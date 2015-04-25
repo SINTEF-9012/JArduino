@@ -21,7 +21,12 @@
 #define JArduino_h
 
 // include types & constants of Wiring core API
-#include "WConstants.h"
+#if defined(ARDUINO) && ARDUINO >= 100
+	#include "Arduino.h"
+#else
+	#include "WConstants.h"
+#endif
+
 #undef abs
 #undef round
 
