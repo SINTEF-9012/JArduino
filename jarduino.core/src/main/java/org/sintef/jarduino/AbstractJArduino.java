@@ -39,7 +39,7 @@ public abstract class AbstractJArduino {
             if (com.equals(JArduinoCom.Serial)) {
                 //conf must be null as there is no configuration needed
                 Class clazz = this.getClass().getClassLoader().loadClass("org.sintef.jarduino.comm.Serial4JArduino");
-                serial = (JArduinoClientObserver) clazz.getConstructor(String.class).newInstance(ID);
+                serial = (JArduinoClientObserver) clazz.getConstructor(String.class).newInstance(ID,conf);
                 messageHandler = new JArduinoDriverMessageHandler();
                 ((JArduinoSubject) serial).register(messageHandler);
             }

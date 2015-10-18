@@ -47,6 +47,10 @@ public abstract class JArduino extends AbstractJArduino {
     public JArduino(String id) {
         super(id, JArduinoCom.Serial, null); //Serial by default
     }
+    
+    public JArduino(String id, ProtocolConfiguration prot) {
+        super(id, JArduinoCom.Serial, prot); //Serial by default
+    }
 
     @Override
     protected void receiveInterruptNotification(InterruptPin interrupt) {
