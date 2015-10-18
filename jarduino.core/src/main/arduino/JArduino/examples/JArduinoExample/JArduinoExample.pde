@@ -68,7 +68,7 @@ void receiveeeprom_write(uint16_t address, uint8_t value) {
 void setup()
 {
 	// initialize the JArduino protocol
-	_JArduino.init_JArduino();
+	_JArduino.init_JArduino(9600);
 	
 	// TODO: Add your own setup code here
 }
