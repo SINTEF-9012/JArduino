@@ -67,20 +67,29 @@ public class Serial4JArduino implements JArduinoClientObserver, JArduinoSubject 
     public static final byte START_BYTE = 0x12;
     public static final byte STOP_BYTE = 0x13;
     public static final byte ESCAPE_BYTE = 0x7D;
+    public static final int DEFAULT_BAUD = 9600;
     protected String port;
     protected SerialPort serialPort;
     protected InputStream in;
     protected OutputStream out;
-
+    
     public Serial4JArduino(String port) {
+    	this(port, new SerialConfiguration(DEFAULT_BAUD));
+    }
+    
+    public Serial4JArduino(String port, SerialConfiguration conf) {
         this.port = port;
         if (port == null) {
             port = Serial4JArduino.selectSerialPort();
         }
         connect(port);
     }
-
+    
     void connect(String portName) {
+    	this.connect(portName,  new SerialConfiguration(DEFAULT_BAUD));
+    }
+
+    void connect(String portName, SerialConfiguration conf) {
         registerPort(portName);
         try {
             CommPortIdentifier portIdentifier = CommPortIdentifier.getPortIdentifier(portName);
