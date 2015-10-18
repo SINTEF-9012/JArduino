@@ -111,7 +111,7 @@ class JArduino
 	// Constructor
     JArduino();
 	// Standard init and pool operations to be called in setup and loop
-	void init_JArduino();
+	void init_JArduino(uint16_t baud);
 	void poll_JArduino();
 	// Operations for sending all messages
     void senddigitalReadResult(uint8_t value);
