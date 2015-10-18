@@ -33,9 +33,9 @@ JArduino::JArduino() {
 }
 
 // Public Methods //////////////////////////////////////////////////////////////
-void JArduino::init_JArduino(void) {
+void JArduino::init_JArduino(uint16_t baud = 9600) {
 	// init the serial port
-	Serial.begin(9600);
+	Serial.begin(baud);
 }
 
 void JArduino::poll_JArduino(void) {	
