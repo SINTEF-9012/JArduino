@@ -389,13 +389,13 @@ public abstract class AbstractJArduino {
             receiveInterruptNotification(msg.getInterrupt());
         }
         
-		@Override
-		public void handleUltrassonic(UltrassonicMsg msg) {
+	@Override
+	public void handleUltrassonic(UltrassonicMsg msg) {
             ultrassonic_result = msg.getValue();
             ultrassonic_result_available = true;
             synchronized (ultrassonicMonitor) {
-                ultrassonicMonitor.notify();
+            	ultrassonicMonitor.notify();
             }
-		}
+	}
     }
 }
