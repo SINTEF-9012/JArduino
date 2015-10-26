@@ -309,7 +309,7 @@ public abstract class AbstractJArduino {
 
     private class JArduinoDriverMessageHandler extends JArduinoMessageHandler implements JArduinoObserver {
 
-		@Override
+	@Override
         // Messages from the JArduino device arrive here
         public void receiveMsg(byte[] msg) {
             JArduinoProtocolPacket p = (JArduinoProtocolPacket) JArduinoProtocol.createMessageFromPacket(msg);
