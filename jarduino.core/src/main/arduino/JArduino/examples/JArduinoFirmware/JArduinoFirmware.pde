@@ -35,7 +35,7 @@ void receiveUltrassonic(uint8_t pinOut, uint8_t pinIn) {
   delayMicroseconds(10);
   digitalWrite(pinOut, LOW);
   unsigned long duration = pulseIn(pinIn,HIGH);
-  if (duration == 0) {
+  if (duration < 0) {
     duration = 0;
   }
   _JArduino.sendUltrassonicResult(duration);
