@@ -17,7 +17,29 @@
  */
 package org.sintef.jarduino;
 
-import org.sintef.jarduino.msg.*;
+import org.sintef.jarduino.msg.AnalogReadMsg;
+import org.sintef.jarduino.msg.AnalogReadResultMsg;
+import org.sintef.jarduino.msg.AnalogReferenceMsg;
+import org.sintef.jarduino.msg.AnalogWriteMsg;
+import org.sintef.jarduino.msg.AttachInterruptMsg;
+import org.sintef.jarduino.msg.DetachInterruptMsg;
+import org.sintef.jarduino.msg.DigitalReadMsg;
+import org.sintef.jarduino.msg.DigitalReadResultMsg;
+import org.sintef.jarduino.msg.DigitalWriteMsg;
+import org.sintef.jarduino.msg.Eeprom_readMsg;
+import org.sintef.jarduino.msg.Eeprom_sync_writeMsg;
+import org.sintef.jarduino.msg.Eeprom_valueMsg;
+import org.sintef.jarduino.msg.Eeprom_writeMsg;
+import org.sintef.jarduino.msg.Eeprom_write_ackMsg;
+import org.sintef.jarduino.msg.InterruptNotificationMsg;
+import org.sintef.jarduino.msg.NoToneMsg;
+import org.sintef.jarduino.msg.PinModeMsg;
+import org.sintef.jarduino.msg.PingMsg;
+import org.sintef.jarduino.msg.PongMsg;
+import org.sintef.jarduino.msg.PulseInMsg;
+import org.sintef.jarduino.msg.PulseInResultMsg;
+import org.sintef.jarduino.msg.ToneMsg;
+import org.sintef.jarduino.msg.UltrassonicMsg;
 
 public interface IJArduinoMessageHandler {
 
@@ -40,8 +62,10 @@ public interface IJArduinoMessageHandler {
 	void handleDigitalReadResult(DigitalReadResultMsg msg);
 	void handleAnalogReadResult(AnalogReadResultMsg msg);
     void handlePulseInResult(PulseInResultMsg msg);
+    void handleUltrassonic(UltrassonicMsg msg);
 	void handlePong(PongMsg msg);
 	void handleInterruptNotification(InterruptNotificationMsg msg);
 	void handleEeprom_value(Eeprom_valueMsg msg);
 	void handleEeprom_write_ack(Eeprom_write_ackMsg msg);
+	void handleResultByCode(byte code, JArduinoProtocolPacket msg);
 }

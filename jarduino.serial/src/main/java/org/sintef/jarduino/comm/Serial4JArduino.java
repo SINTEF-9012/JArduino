@@ -17,13 +17,13 @@
  */
 package org.sintef.jarduino.comm;
 
-import gnu.io.*;
-import org.sintef.jarduino.observer.JArduinoClientObserver;
-import org.sintef.jarduino.observer.JArduinoObserver;
-import org.sintef.jarduino.observer.JArduinoSubject;
-import org.sintef.jarduino.sim.InteractiveJArduinoDataControllerClient;
+import gnu.io.CommPort;
+import gnu.io.CommPortIdentifier;
+import gnu.io.PortInUseException;
+import gnu.io.SerialPort;
+import gnu.io.SerialPortEvent;
+import gnu.io.SerialPortEventListener;
 
-import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,6 +32,13 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.swing.JOptionPane;
+
+import org.sintef.jarduino.observer.JArduinoClientObserver;
+import org.sintef.jarduino.observer.JArduinoObserver;
+import org.sintef.jarduino.observer.JArduinoSubject;
+import org.sintef.jarduino.sim.InteractiveJArduinoDataControllerClient;
 
 public class Serial4JArduino implements JArduinoClientObserver, JArduinoSubject {
 
@@ -241,7 +248,7 @@ public class Serial4JArduino implements JArduinoClientObserver, JArduinoSubject 
      */
     public static HashSet<CommPortIdentifier> getAvailableSerialPorts() {
         HashSet<CommPortIdentifier> h = new HashSet<CommPortIdentifier>();
-        Enumeration thePorts = CommPortIdentifier.getPortIdentifiers();
+        Enumeration<?> thePorts = CommPortIdentifier.getPortIdentifiers();
         while (thePorts.hasMoreElements()) {
             CommPortIdentifier com = (CommPortIdentifier) thePorts.nextElement();
             switch (com.getPortType()) {

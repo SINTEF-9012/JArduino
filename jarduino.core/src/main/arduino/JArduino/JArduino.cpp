@@ -104,12 +104,26 @@ void JArduino::sendpulseInResult(unsigned long value) {
    payload[0] = 0x01; // source addr (not used)
    payload[1] = 0x00; // target addr (not used)
    payload[2] = 0x00; // frame num (not used)
-   payload[3] = 2; // length of the params
+   payload[3] = 4; // length of the params
    payload[4] = 13; // command code
    // set params here
    payload[5] = value >> 24 & 0x00ff; payload[6] = value >> 16 & 0x00ff; payload[7] = value >> 8 & 0x00ff; payload[8] = value & 0x00ff;
    // send the message
    sendOutgoingMessage(payload, 16);
+}
+void JArduino::sendUltrassonicResult(unsigned long value) {
+    payload[0] = 0x01; // source addr (not used)
+    payload[1] = 0x00; // target addr (not used)
+    payload[2] = 0x00; // frame num (not used)
+    payload[3] = 4; // length of the params
+    payload[4] = 99; // command code
+    // set params here
+    payload[5] = value >> 24 & 0x00ff;
+    payload[6] = value >> 16 & 0x00ff;
+    payload[7] = value >> 8 & 0x00ff;
+    payload[8] = value & 0x00ff;
+    // send the message
+    sendOutgoingMessage(payload, 16);
 }
 void JArduino::sendpong() {
    payload[0] = 0x01; // source addr (not used)
@@ -169,13 +183,14 @@ void JArduino::parseIncommingMessage(uint8_t data[], uint8_t size) {
    case 9: receiveanalogWrite(data[5], data[6]); break;
    case 10: receivetone(data[5], (data[6] << 8) + data[7], (data[8] << 8) + data[9]); break;
    case 11: receivenoTone(data[5]); break;
-   case 12: receivepulseIn(data[5], data[6]); break;
+   case 13: receivepulseIn(data[5], data[6]); break;
    case 66: receiveping(); break;
    case 21: receiveattachInterrupt(data[5], data[6]); break;
    case 22: receivedetachInterrupt(data[5]); break;
    case 31: receiveeeprom_read((data[5] << 8) + data[6]); break;
    case 34: receiveeeprom_sync_write((data[5] << 8) + data[6], data[7]); break;
    case 33: receiveeeprom_write((data[5] << 8) + data[6], data[7]); break;
+   case 99: receiveUltrassonic(data[5], data[6]); break;
    default: break; 
   }
 }

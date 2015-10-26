@@ -17,9 +17,19 @@
  */
 package org.sintef.jarduino;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.sintef.jarduino.msg.*;
 
 public abstract class JArduinoMessageHandler implements IJArduinoMessageHandler{
+	
+	protected static final Map<Byte, MessageHandler<JArduinoProtocolPacket>> MESSAGES_MAP = new HashMap<Byte, MessageHandler<JArduinoProtocolPacket>>();
+	
+	public static final void addMessageHandler(byte code, MessageHandler<JArduinoProtocolPacket> handler) {
+		MESSAGES_MAP.putIfAbsent(code, handler);
+	}
+	
 	@Override public void handlePinMode(PinModeMsg msg){ /* Nothing */ }
 	@Override public void handleDigitalRead(DigitalReadMsg msg){ /* Nothing */ }
 	@Override public void handleDigitalWrite(DigitalWriteMsg msg){ /* Nothing */ }
@@ -35,4 +45,8 @@ public abstract class JArduinoMessageHandler implements IJArduinoMessageHandler{
 	@Override public void handleEeprom_read(Eeprom_readMsg msg){ /* Nothing */ }
 	@Override public void handleEeprom_sync_write(Eeprom_sync_writeMsg msg){ /* Nothing */ }
 	@Override public void handleEeprom_write(Eeprom_writeMsg msg){ /* Nothing */ }
+	
+	public static interface MessageHandler<T> {
+		public void handle(T msg);
+	}
 }

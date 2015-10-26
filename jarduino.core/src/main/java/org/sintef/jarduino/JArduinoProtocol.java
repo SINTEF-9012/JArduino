@@ -17,7 +17,32 @@
  */
 package org.sintef.jarduino;
 
-import org.sintef.jarduino.msg.*;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.sintef.jarduino.msg.AnalogReadMsg;
+import org.sintef.jarduino.msg.AnalogReadResultMsg;
+import org.sintef.jarduino.msg.AnalogReferenceMsg;
+import org.sintef.jarduino.msg.AnalogWriteMsg;
+import org.sintef.jarduino.msg.AttachInterruptMsg;
+import org.sintef.jarduino.msg.DetachInterruptMsg;
+import org.sintef.jarduino.msg.DigitalReadMsg;
+import org.sintef.jarduino.msg.DigitalReadResultMsg;
+import org.sintef.jarduino.msg.DigitalWriteMsg;
+import org.sintef.jarduino.msg.Eeprom_readMsg;
+import org.sintef.jarduino.msg.Eeprom_sync_writeMsg;
+import org.sintef.jarduino.msg.Eeprom_valueMsg;
+import org.sintef.jarduino.msg.Eeprom_writeMsg;
+import org.sintef.jarduino.msg.Eeprom_write_ackMsg;
+import org.sintef.jarduino.msg.InterruptNotificationMsg;
+import org.sintef.jarduino.msg.NoToneMsg;
+import org.sintef.jarduino.msg.PinModeMsg;
+import org.sintef.jarduino.msg.PingMsg;
+import org.sintef.jarduino.msg.PongMsg;
+import org.sintef.jarduino.msg.PulseInMsg;
+import org.sintef.jarduino.msg.PulseInResultMsg;
+import org.sintef.jarduino.msg.ToneMsg;
+import org.sintef.jarduino.msg.UltrassonicMsg;
 
 public abstract class JArduinoProtocol {
 
@@ -44,7 +69,9 @@ public abstract class JArduinoProtocol {
 	public static final byte PONG = 67; 
 	public static final byte INTERRUPT_NOTIFICATION = 23; 
 	public static final byte EEPROM__VALUE = 32; 
-	public static final byte EEPROM__WRITE__ACK = 35; 
+	public static final byte EEPROM__WRITE__ACK = 35;
+	public static final byte ULTRASSONIC = 99;
+	private static final Map<Byte, FixedSizePacket> MESSAGES_MAP = new HashMap<Byte, FixedSizePacket>(); 
 	
 	public static FixedSizePacket createMessageFromPacket(byte[] packet) {
 		byte packetType = packet[4];
@@ -69,10 +96,23 @@ public abstract class JArduinoProtocol {
 			case PONG: result = new PongMsg(packet); break; 
 			case INTERRUPT_NOTIFICATION: result = new InterruptNotificationMsg(packet); break; 
 			case EEPROM__VALUE: result = new Eeprom_valueMsg(packet); break; 
-			case EEPROM__WRITE__ACK: result = new Eeprom_write_ackMsg(packet); break; 
-			default: break;
+			case EEPROM__WRITE__ACK: result = new Eeprom_write_ackMsg(packet); break;
+			case PULSE_IN_RESULT: result = new PulseInResultMsg(packet); break;
+			case ULTRASSONIC: result = new UltrassonicMsg(packet); break;
+			default: result = tryMapped(packetType);
 		}
 		return result;
+	}
+	
+	public static final void addPacketMapping(byte code, FixedSizePacket packet) {
+		MESSAGES_MAP.putIfAbsent(code, packet);
+	}
+
+	private static FixedSizePacket tryMapped(byte packetType) {
+		if(MESSAGES_MAP.containsKey(packetType)) {
+			return MESSAGES_MAP.get(packetType);
+		}
+		return null;
 	}
 
 	public static FixedSizePacket createPinMode(DigitalPin pin, PinMode mode) {
@@ -109,6 +149,10 @@ public abstract class JArduinoProtocol {
 
     public static FixedSizePacket createPulseIn(DigitalPin pin, DigitalState state) {
         return new PulseInMsg(pin, state);
+    }
+
+    public static FixedSizePacket createUltrassonic(DigitalPin pinOut, DigitalPin pinIn) {
+        return new UltrassonicMsg(pinOut, pinIn);
     }
 	
 	public static FixedSizePacket createPing() {

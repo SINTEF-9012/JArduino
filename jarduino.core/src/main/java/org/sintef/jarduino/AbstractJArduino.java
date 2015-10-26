@@ -18,7 +18,14 @@
 package org.sintef.jarduino;
 
 import org.sintef.jarduino.comm.Udp4JArduino;
-import org.sintef.jarduino.msg.*;
+import org.sintef.jarduino.msg.AnalogReadResultMsg;
+import org.sintef.jarduino.msg.DigitalReadResultMsg;
+import org.sintef.jarduino.msg.Eeprom_valueMsg;
+import org.sintef.jarduino.msg.Eeprom_write_ackMsg;
+import org.sintef.jarduino.msg.InterruptNotificationMsg;
+import org.sintef.jarduino.msg.PongMsg;
+import org.sintef.jarduino.msg.PulseInResultMsg;
+import org.sintef.jarduino.msg.UltrassonicMsg;
 import org.sintef.jarduino.observer.JArduinoClientObserver;
 import org.sintef.jarduino.observer.JArduinoObserver;
 import org.sintef.jarduino.observer.JArduinoSubject;
@@ -38,13 +45,13 @@ public abstract class AbstractJArduino {
             }
             if (com.equals(JArduinoCom.Serial)) {
                 //conf must be null as there is no configuration needed
-                Class clazz = this.getClass().getClassLoader().loadClass("org.sintef.jarduino.comm.Serial4JArduino");
+                Class<?> clazz = this.getClass().getClassLoader().loadClass("org.sintef.jarduino.comm.Serial4JArduino");
                 serial = (JArduinoClientObserver) clazz.getConstructor(String.class).newInstance(ID);
                 messageHandler = new JArduinoDriverMessageHandler();
                 ((JArduinoSubject) serial).register(messageHandler);
             }
             if (com.equals(JArduinoCom.AndroidBluetooth)) {
-                Class clazz = this.getClass().getClassLoader().loadClass("org.sintef.jarduino.comm.AndroidBluetooth4JArduino");
+                Class<?> clazz = this.getClass().getClassLoader().loadClass("org.sintef.jarduino.comm.AndroidBluetooth4JArduino");
                 serial = (JArduinoClientObserver) clazz.getConstructor(ProtocolConfiguration.class).newInstance(conf);
                 messageHandler = new JArduinoDriverMessageHandler();
                 ((JArduinoSubject) serial).register(messageHandler);
@@ -243,6 +250,27 @@ public abstract class AbstractJArduino {
         return 0;
 
     }
+    
+    private int ultrassonic_result;
+    private boolean ultrassonic_result_available;
+    private final Object ultrassonicMonitor = "pulseInMonitor";
+
+    public int ultrassonic(DigitalPin pinOut, DigitalPin pinIn) {
+        try {
+            synchronized (ultrassonicMonitor) {
+                ultrassonic_result_available = false;
+                // Create message using the factory
+                FixedSizePacket p = JArduinoProtocol.createUltrassonic(pinOut, pinIn);
+                // Create message using the factory
+                serial.receiveMsg(p.getPacket());
+                ultrassonicMonitor.wait();
+                if (ultrassonic_result_available) return ultrassonic_result;
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
 
     private byte eeprom_read_result;
     private boolean eeprom_read_result_available;
@@ -281,11 +309,18 @@ public abstract class AbstractJArduino {
 
     private class JArduinoDriverMessageHandler extends JArduinoMessageHandler implements JArduinoObserver {
 
-        @Override
+		@Override
         // Messages from the JArduino device arrive here
         public void receiveMsg(byte[] msg) {
             JArduinoProtocolPacket p = (JArduinoProtocolPacket) JArduinoProtocol.createMessageFromPacket(msg);
             p.acceptHandler(messageHandler);
+        }
+        
+        @Override
+        public void handleResultByCode(byte code, JArduinoProtocolPacket msg) {
+            if(MESSAGES_MAP.containsKey(code)) {
+            	MESSAGES_MAP.get(code).handle(msg);
+            }
         }
 
         //*************************************************************************
@@ -353,5 +388,14 @@ public abstract class AbstractJArduino {
         public void handleInterruptNotification(InterruptNotificationMsg msg) {
             receiveInterruptNotification(msg.getInterrupt());
         }
+        
+		@Override
+		public void handleUltrassonic(UltrassonicMsg msg) {
+            ultrassonic_result = msg.getValue();
+            ultrassonic_result_available = true;
+            synchronized (ultrassonicMonitor) {
+                ultrassonicMonitor.notify();
+            }
+		}
     }
 }

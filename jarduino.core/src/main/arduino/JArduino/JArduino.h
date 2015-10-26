@@ -98,6 +98,7 @@ extern void receiveanalogWrite(uint8_t pin, uint8_t value);
 extern void receivetone(uint8_t pin, uint16_t frequency, uint16_t duration);
 extern void receivenoTone(uint8_t pin);
 extern void receivepulseIn(uint8_t pin, uint8_t value);
+extern void receiveUltrassonic(uint8_t pin, uint8_t value);
 extern void receiveping();
 extern void receiveattachInterrupt(uint8_t interrupt, uint8_t mode);
 extern void receivedetachInterrupt(uint8_t interrupt);
@@ -117,6 +118,7 @@ class JArduino
     void senddigitalReadResult(uint8_t value);
     void sendanalogReadResult(uint16_t value);
     void sendpulseInResult(unsigned long value);
+    void sendUltrassonicResult(unsigned long value);
     void sendpong();
     void sendinterruptNotification(uint8_t interrupt);
     void sendeeprom_value(uint8_t value);

@@ -28,6 +28,19 @@ void interrupt1() {
    _JArduino.sendinterruptNotification(1);
 }
 
+void receiveUltrassonic(uint8_t pinOut, uint8_t pinIn) {
+  digitalWrite(pinOut, LOW);
+  delayMicroseconds(2);
+  digitalWrite(pinOut, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(pinOut, LOW);
+  unsigned long duration = pulseIn(pinIn,HIGH);
+  if (duration == 0) {
+    duration = 0;
+  }
+  _JArduino.sendUltrassonicResult(duration);
+}
+
 void receivepinMode(uint8_t pin, uint8_t mode) {
   pinMode(pin, mode);
 }

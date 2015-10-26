@@ -17,39 +17,36 @@
  */
 package org.sintef.jarduino.msg;
 
+import org.sintef.jarduino.DigitalPin;
 import org.sintef.jarduino.JArduinoMessageHandler;
 import org.sintef.jarduino.JArduinoProtocol;
 import org.sintef.jarduino.JArduinoProtocolPacket;
 
-public class PulseInResultMsg extends JArduinoProtocolPacket {
+public class UltrassonicMsg extends JArduinoProtocolPacket {
 
 	private int value;
 
-	public PulseInResultMsg(int value) {
-		setCommandID(JArduinoProtocol.PULSE_IN_RESULT);
-		setIntValue(value);
-		this.value = value;
+	public UltrassonicMsg(DigitalPin pinOut, DigitalPin pinIn) {
+		setCommandID(JArduinoProtocol.ULTRASSONIC);
+		setByteValue(pinOut.getValue());
+		setByteValue(pinIn.getValue());
 	}
 
-	public PulseInResultMsg(byte[] packet) {
+	public UltrassonicMsg(byte[] packet) {
 		setPacketData(packet);
-		value = buffer.getInt();
+		setValue(buffer.getInt());
 	}
 	
 	@Override
 	public void acceptHandler(JArduinoMessageHandler v) {
-		v.handlePulseInResult(this);
-	}
-
-	@Override
-	public String toString(){
-		String myString = "pulseInResult:";
-		myString += " [value: "+value+"]";
-		return myString;
+		v.handleUltrassonic(this);
 	}
 
 	public int getValue() {
 		return value;
 	}
-	
+
+	public void setValue(int value) {
+		this.value = value;
+	}
 }
