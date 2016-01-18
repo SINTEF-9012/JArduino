@@ -99,7 +99,7 @@ public class Serial4JArduino implements JArduinoClientObserver, JArduinoSubject 
                 CommPort commPort = portIdentifier.open(this.getClass().getName(), 2000);
 
                 if (commPort instanceof SerialPort) {
-                    SerialPort serialPort = (SerialPort) commPort;
+                    serialPort = (SerialPort) commPort;
                     serialPort.setSerialPortParams(9600, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
 
                     in = serialPort.getInputStream();
