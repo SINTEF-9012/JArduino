@@ -11,13 +11,12 @@ If you are more into the code, just try it out for real!
 
 Before using JArduino, please make sure your Arduino board contains the JArduino firmware:
 
-1. Copy the JArduino folder (located in the distribution in org.sintef.jarduino.samples/arduino) into /libraries/
+1. Copy the JArduino folder (located in the distribution in jarduino.core/src/main/arduino/ into your arduino working directory at Arduino/libraries/
 2. Launch your Arduino environment
 3. File -> Examples -> JArduino -> JArduino firmware. It should open an Arduino program that you should upload to your board using the normal Arduino procedure.
 4. Your Arduino board is now ready for Jarduino. You can exit the Arduino environment forever and launch Eclipse. Just run the Java/JArduino program.
 
-
-To test samples using the current version of JArduino (requires Maven + the Arduino board connect on the serial port of the PC):
+To test samples using the current version of JArduino (requires Maven + the Arduino board connect on the serial port of the computer):
 
 	$ cd JArduino	
 	$ mvn clean install
