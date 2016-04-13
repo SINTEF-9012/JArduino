@@ -22,7 +22,7 @@ import java.util.Map;
 
 public enum DigitalState {
 	LOW((byte)0),
-	HIGH((byte)1);
+	HIGH((byte)127);
 
 	private final byte value;
 	
