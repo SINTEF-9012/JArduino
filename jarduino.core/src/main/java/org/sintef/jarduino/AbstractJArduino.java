@@ -112,7 +112,15 @@ public abstract class AbstractJArduino {
     	if(!pin.isDigital()) throw new InvalidPinTypeException();
         tone(DigitalPin.fromValue(pin.getValue()), frequency, duration);
     }
-
+    
+    public void tone(DigitalPin pin, Note note, short duration) {
+    	tone(pin, note.getFrequency(), duration);
+    }
+    
+    public void tone(Pin pin, Note note, short duration) throws InvalidPinTypeException {
+    	tone(pin, note.getFrequency(), duration);
+    }
+    
     public void noTone(DigitalPin pin) {
         // Create message using the factory
         FixedSizePacket p = JArduinoProtocol.createNoTone(pin);
