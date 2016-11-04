@@ -54,6 +54,36 @@ public abstract class JArduino extends AbstractJArduino {
 	
     private final DigitalState LOW = DigitalState.LOW;
     private final DigitalState HIGH = DigitalState.HIGH;
+    private final Pin p0 = Pin.PIN_0;
+    private final Pin p1 = Pin.PIN_1;
+    private final Pin p2 = Pin.PIN_2;
+    private final Pin p3 = Pin.PIN_3;
+    private final Pin p4 = Pin.PIN_4;
+    private final Pin p5 = Pin.PIN_5;
+    private final Pin p6 = Pin.PIN_6;
+    private final Pin p7 = Pin.PIN_7;
+    private final Pin p8 = Pin.PIN_8;
+    private final Pin p9 = Pin.PIN_9;
+    private final Pin p10 = Pin.PIN_10;
+    private final Pin p11 = Pin.PIN_11;
+    private final Pin p12 = Pin.PIN_12;
+    private final Pin p13 = Pin.PIN_13;
+    private final Pin p14 = Pin.A_0;
+    private final Pin pA0 = Pin.A_0;
+    private final Pin p15 = Pin.A_1;
+    private final Pin pA1 = Pin.A_1;
+    private final Pin p16 = Pin.A_2;
+    private final Pin pA2 = Pin.A_2;
+    private final Pin p17 = Pin.A_3;
+    private final Pin pA3 = Pin.A_3;
+    private final Pin p18 = Pin.A_4;
+    private final Pin pA4 = Pin.A_4;
+    private final Pin p19 = Pin.A_5;
+    private final Pin pA5 = Pin.A_5;
+
+
+
+
 
     @Override
     protected void receiveInterruptNotification(InterruptPin interrupt) {

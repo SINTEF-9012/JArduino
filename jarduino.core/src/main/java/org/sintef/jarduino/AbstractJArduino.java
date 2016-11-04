@@ -63,12 +63,23 @@ public abstract class AbstractJArduino {
         // Send the message on the serial line
         serial.receiveMsg(p.getPacket());
     }
+    
+    public void pinMode(Pin pin, PinMode mode) throws InvalidPinTypeException {
+    	if(!pin.isDigital()) throw new InvalidPinTypeException();
+        pinMode(DigitalPin.fromValue(pin.getValue()), mode);
+    }
 
     public void digitalWrite(DigitalPin pin, DigitalState value) {
         // Create message using the factory
         FixedSizePacket p = JArduinoProtocol.createDigitalWrite(pin, value);
         // Send the message on the serial line
         serial.receiveMsg(p.getPacket());
+    }
+    
+    public void digitalWrite(Pin pin, DigitalState value) throws InvalidPinTypeException {
+    	if(!pin.isDigital()) throw new InvalidPinTypeException();
+        digitalWrite(DigitalPin.fromValue(pin.getValue()), value);
+        
     }
 
     public void analogReference(AnalogReference type) {
@@ -84,12 +95,22 @@ public abstract class AbstractJArduino {
         // Send the message on the serial line
         serial.receiveMsg(p.getPacket());
     }
-
+    
+    public void analogWrite(Pin pin, byte value) throws InvalidPinTypeException {
+    	if(!pin.isPWM()) throw new InvalidPinTypeException();
+        analogWrite(PWMPin.fromValue(pin.getValue()), value);
+    }
+    
     public void tone(DigitalPin pin, short frequency, short duration) {
         // Create message using the factory
         FixedSizePacket p = JArduinoProtocol.createTone(pin, frequency, duration);
         // Send the message on the serial line
         serial.receiveMsg(p.getPacket());
+    }
+    
+    public void tone(Pin pin, short frequency, short duration) throws InvalidPinTypeException {
+    	if(!pin.isDigital()) throw new InvalidPinTypeException();
+        tone(DigitalPin.fromValue(pin.getValue()), frequency, duration);
     }
 
     public void noTone(DigitalPin pin) {
@@ -99,6 +120,11 @@ public abstract class AbstractJArduino {
         serial.receiveMsg(p.getPacket());
     }
 
+    public void noTone(Pin pin) throws InvalidPinTypeException {
+    	if(!pin.isDigital()) throw new InvalidPinTypeException();
+        noTone(DigitalPin.fromValue(pin.getValue()));
+    }
+    
     public void attachInterrupt(InterruptPin interrupt, InterruptTrigger mode) {
         // Create message using the factory
         FixedSizePacket p = JArduinoProtocol.createAttachInterrupt(interrupt, mode);
@@ -189,7 +215,11 @@ public abstract class AbstractJArduino {
         // The error message alternative
         System.err.println("JArduino: Timeout waiting for the result of digitalRead");
         return null;
-
+    }
+    
+    public DigitalState digitalRead(Pin pin) throws InvalidPinTypeException {
+    	if(!pin.isDigital()) throw new InvalidPinTypeException();
+    	return digitalRead(DigitalPin.fromValue(pin.getValue()));
     }
 
     private short analogRead_result;
@@ -217,6 +247,11 @@ public abstract class AbstractJArduino {
         return 0;
 
     }
+    
+    public short analogRead(Pin pin) throws InvalidPinTypeException {
+    	if(!pin.isAnalog()) throw new InvalidPinTypeException();
+    	return analogRead(AnalogPin.fromValue(pin.getValue()));
+    }
 
     private int pulseIn_result;
     private boolean pulseIn_result_available;
@@ -242,6 +277,11 @@ public abstract class AbstractJArduino {
         System.err.println("JArduino: Timeout waiting for the result of pulseIn");
         return 0;
 
+    }
+    
+    public int pulseIn(Pin pin, DigitalState state, long timeout) throws InvalidPinTypeException {
+    	if(!pin.isDigital()) throw new InvalidPinTypeException();
+    	return pulseIn(DigitalPin.fromValue(pin.getValue()), state, timeout);
     }
 
     private byte eeprom_read_result;
