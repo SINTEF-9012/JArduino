@@ -1,3 +1,8 @@
+/**
+ * Author(s): Jainil Sutaria
+ * Date Created: Nov. 4, 2016
+ * Date Edited: Nov. 4, 2016
+ */
 package org.sintef.jarduino;
 
 public enum Note {
