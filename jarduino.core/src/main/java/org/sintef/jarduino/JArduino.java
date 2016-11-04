@@ -51,6 +51,9 @@ public abstract class JArduino extends AbstractJArduino {
     public JArduino(String id, ProtocolConfiguration prot) {
         super(id, JArduinoCom.Serial, prot); //Serial by default
     }
+	
+    private final DigitalState LOW = DigitalState.LOW;
+    private final DigitalState HIGH = DigitalState.HIGH;
 
     @Override
     protected void receiveInterruptNotification(InterruptPin interrupt) {
