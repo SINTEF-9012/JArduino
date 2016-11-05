@@ -1,7 +1,7 @@
 /**
  * Author(s): Jainil Sutaria
  * Date Created: Nov. 4, 2016
- * Date Edited: Nov. 4, 2016
+ * Date Edited: Nov. 5, 2016
  */
 package org.sintef.jarduino;
 
@@ -14,8 +14,8 @@ import java.util.Set;
 public enum Pin {
 	PIN_0(new HashSet<PinType>() {{add(PinType.Digital);}}, (byte) 0),
 	PIN_1(new HashSet<PinType>() {{add(PinType.Digital);}}, (byte) 1),
-	PIN_2(new HashSet<PinType>() {{add(PinType.Digital);}}, (byte) 2),
-	PIN_3(new HashSet<PinType>() {{add(PinType.Digital); add(PinType.PWM);}}, (byte) 3),
+	PIN_2(new HashSet<PinType>() {{add(PinType.Digital); add(PinType.Interrupt);}}, (byte) 2),
+	PIN_3(new HashSet<PinType>() {{add(PinType.Digital); add(PinType.PWM); add(PinType.Interrupt);}}, (byte) 3),
 	PIN_4(new HashSet<PinType>() {{add(PinType.Digital);}}, (byte) 4),
 	PIN_5(new HashSet<PinType>() {{add(PinType.Digital); add(PinType.PWM);}}, (byte) 5),
 	PIN_6(new HashSet<PinType>() {{add(PinType.Digital); add(PinType.PWM);}}, (byte) 6),
@@ -86,6 +86,10 @@ public enum Pin {
 	
 	public boolean isPWM() {
 		return this.pinType.contains(PinType.PWM);
+	}
+	
+	public boolean isInterrupt() {
+		return this.pinType.contains(PinType.Interrupt);
 	}
 	
 }
