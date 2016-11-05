@@ -139,12 +139,22 @@ public abstract class AbstractJArduino {
         // Send the message on the serial line
         serial.receiveMsg(p.getPacket());
     }
+    
+    public void attachInterrupt(Pin pin, InterruptTrigger mode) throws InvalidPinTypeException {
+    	if(!pin.isInterrupt()) throw new InvalidPinTypeException();
+    	attachInterrupt(InterruptPin.fromValue(pin.getValue()), mode);
+    }
 
     public void detachInterrupt(InterruptPin interrupt) {
         // Create message using the factory
         FixedSizePacket p = JArduinoProtocol.createDetachInterrupt(interrupt);
         // Send the message on the serial line
         serial.receiveMsg(p.getPacket());
+    }
+    
+    public void detachInterrupt(Pin pin) throws InvalidPinTypeException {
+    	if(!pin.isInterrupt()) throw new InvalidPinTypeException();
+    	detachInterrupt(InterruptPin.fromValue(pin.getValue()));
     }
 
     public void eeprom_write(short address, byte value) {
