@@ -52,6 +52,10 @@ public abstract class JArduino extends AbstractJArduino {
     public JArduino(String id, ProtocolConfiguration prot) {
         super(id, JArduinoCom.Serial, prot); //Serial by default
     }
+    
+    protected final PinMode
+    		OUTPUT = PinMode.OUTPUT,
+    		INPUT = PinMode.INPUT;
 	
     protected final DigitalState
     		LOW = DigitalState.LOW, 
