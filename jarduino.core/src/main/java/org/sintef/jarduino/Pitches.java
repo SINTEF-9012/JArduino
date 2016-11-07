@@ -1,4 +1,4 @@
-package org.sintef.jarduino.examples.digital;
+package org.sintef.jarduino;
 
 
 public interface Pitches {

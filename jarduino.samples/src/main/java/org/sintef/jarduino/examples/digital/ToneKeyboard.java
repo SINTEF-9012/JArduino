@@ -20,6 +20,7 @@ package org.sintef.jarduino.examples.digital;
 import org.sintef.jarduino.AnalogPin;
 import org.sintef.jarduino.DigitalPin;
 import org.sintef.jarduino.JArduino;
+import org.sintef.jarduino.Pitches;
 import org.sintef.jarduino.comm.Serial4JArduino;
 
 
