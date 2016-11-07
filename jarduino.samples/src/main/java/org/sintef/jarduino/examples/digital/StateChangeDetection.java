@@ -17,48 +17,46 @@
  */
 package org.sintef.jarduino.examples.digital;
 
-import org.sintef.jarduino.DigitalPin;
 import org.sintef.jarduino.DigitalState;
+import org.sintef.jarduino.InvalidPinTypeException;
 import org.sintef.jarduino.JArduino;
-import org.sintef.jarduino.PinMode;
+import org.sintef.jarduino.Pin;
 import org.sintef.jarduino.comm.Serial4JArduino;
-
 
 public class StateChangeDetection extends JArduino {
 
     // the number of the pushbutton pin
-    final DigitalPin buttonPin = DigitalPin.PIN_2;
+    final Pin buttonPin = p2;
     // the number of the LED pin
-    final DigitalPin ledPin = DigitalPin.PIN_9;
+    final Pin ledPin = p9;
     // counter for the number of button presses
     int buttonPushCounter = 0;
     // current state of the button
-    DigitalState buttonState = DigitalState.LOW;
+    DigitalState buttonState = LOW;
     // previous state of the button
-    DigitalState lastButtonState = DigitalState.LOW;
+    DigitalState lastButtonState = LOW;
 
     public StateChangeDetection(String port) {
         super(port);
     }
 
     @Override
-    protected void setup() {
-        // initialize the LED pin as an output:
-        pinMode(ledPin, PinMode.OUTPUT);
+    protected void setup() throws InvalidPinTypeException {
+    	// initialize the LED pin as an output:
+        pinMode(ledPin, OUTPUT);
         // initialize the pushbutton pin as an input:
-        pinMode(buttonPin, PinMode.INPUT);
+        pinMode(buttonPin, INPUT);
     }
 
     @Override
-    protected void loop() {
-
-        // read the pushbutton input pin:
+    protected void loop() throws InvalidPinTypeException {
+    	// read the pushbutton input pin:
         buttonState = digitalRead(buttonPin);
 
         // compare the buttonState to its previous state
         if (buttonState != lastButtonState) {
             // if the state has changed, increment the counter
-            if (buttonState == DigitalState.HIGH) {
+            if (buttonState == HIGH) {
                 // if the current state is HIGH then the button
                 // wend from off to on:
                 buttonPushCounter++;
@@ -81,9 +79,9 @@ public class StateChangeDetection extends JArduino {
         // the modulo function gives you the remainder of
         // the division of two numbers:
         if (buttonPushCounter % 4 == 0) {
-            digitalWrite(ledPin, DigitalState.HIGH);
+            digitalWrite(ledPin, HIGH);
         } else {
-            digitalWrite(ledPin, DigitalState.LOW);
+            digitalWrite(ledPin, LOW);
         }
     }
 

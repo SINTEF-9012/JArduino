@@ -21,7 +21,9 @@ import org.sintef.jarduino.DigitalPin;
 import org.sintef.jarduino.DigitalState;
 import org.sintef.jarduino.InterruptPin;
 import org.sintef.jarduino.InterruptTrigger;
+import org.sintef.jarduino.InvalidPinTypeException;
 import org.sintef.jarduino.JArduino;
+import org.sintef.jarduino.Pin;
 import org.sintef.jarduino.PinMode;
 import org.sintef.jarduino.comm.Serial4JArduino;
 
@@ -32,20 +34,20 @@ arduino board.
 
 public class SimpleInterrupt extends JArduino {
 
-    final DigitalPin ledPin = DigitalPin.PIN_9; // Analog output pin that the LED is attached to
+    final Pin ledPin = p9; // Analog output pin that the LED is attached to
 
     public SimpleInterrupt(String port) {
         super(port);
     }
 
     @Override
-    protected void setup() {
+    protected void setup() throws InvalidPinTypeException {
         // initialize the digital pin as an output.
         // Pin 13 has an LED connected on most Arduino boards:
-        pinMode(ledPin, PinMode.OUTPUT);
+    	pinMode(ledPin, OUTPUT);
+        attachInterrupt(p2, InterruptTrigger.RISING);
         // with a button connected on pin2, this will generate an
         // interrupt when the button is pressed
-        attachInterrupt(InterruptPin.PIN_2_INT0, InterruptTrigger.RISING);
     }
 
     @Override
@@ -53,18 +55,21 @@ public class SimpleInterrupt extends JArduino {
         // Do Nothing
         delay(1000); // wait for a second
     }
-    DigitalState state = DigitalState.LOW;
+    
+    DigitalState state = LOW;
 
     @Override
-    protected void interrupt0() {
+    protected void interrupt0() throws InvalidPinTypeException {
         // This operation gets invoked when an INT0 is generated
         System.out.println("INT0: Button pressed!");
-        if (state == DigitalState.LOW) {
-            state = DigitalState.HIGH;
+        if (state == LOW) {
+            state = HIGH;
         } else {
-            state = DigitalState.LOW;
+            state = LOW;
         }
-        digitalWrite(ledPin, state);
+        
+		digitalWrite(ledPin, state);
+
     }
 
     public static void main(String[] args) {

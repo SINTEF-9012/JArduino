@@ -95,18 +95,32 @@ public abstract class JArduino extends AbstractJArduino {
         if (interrupt == InterruptPin.PIN_2_INT0) {
             interruptRoutineExecutor.submit(new Runnable() {
                 public void run() {
-                    interrupt0();
+                    try {
+						interrupt0();
+					} catch (InvalidPinTypeException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
                 }
             });
         } else if (interrupt == InterruptPin.PIN_3_INT1) {
             interruptRoutineExecutor.submit(new Runnable() {
                 public void run() {
-                    interrupt0();
+					try {
+						interrupt0();
+					} catch (InvalidPinTypeException e) {
+						e.printStackTrace();
+					}
                 }
             });
         }
     }
 
+    @Override
+    protected void receiveInterruptNotification(Pin interrupt) throws InvalidPinTypeException {
+		if(!interrupt.isInterrupt()) throw new InvalidPinTypeException();
+		receiveInterruptNotification(InterruptPin.fromValue(interrupt.getValue()));
+	}
 	
 	/* ******************************************************
      * JAVA Version of common Arduino operations
@@ -129,15 +143,15 @@ public abstract class JArduino extends AbstractJArduino {
      * Operation to be implemented by the application
 	 ********************************************************/
 
-    protected abstract void setup();
+    protected abstract void setup() throws InvalidPinTypeException;
 
-    protected abstract void loop();
+    protected abstract void loop() throws InvalidPinTypeException;
 
     // Operation to be redefined to handle interrupts
-    protected void interrupt0() {
+    protected void interrupt0() throws InvalidPinTypeException {
     }
-
-    protected void interrupt1() {
+    
+    protected void interrupt1() throws InvalidPinTypeException {
     }
 	
 	/* ******************************************************
@@ -166,9 +180,17 @@ public abstract class JArduino extends AbstractJArduino {
         }
 
         public void run() {
-            setup();
+            try {
+				setup();
+			} catch (InvalidPinTypeException e1) {
+				e1.printStackTrace();
+			}
             while (!stop) {
-                loop();
+                try {
+					loop();
+				} catch (InvalidPinTypeException e1) {
+					e1.printStackTrace();
+				}
                 try {
                     // Just to avoid blocking everything else if the
                     // application loop does not have delays
@@ -180,4 +202,5 @@ public abstract class JArduino extends AbstractJArduino {
         }
 
     }
+
 }

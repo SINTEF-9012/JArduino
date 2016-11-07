@@ -12,7 +12,9 @@ import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.sintef.jarduino.AnalogPin;
+import org.sintef.jarduino.InvalidPinTypeException;
 import org.sintef.jarduino.JArduino;
+import org.sintef.jarduino.Pin;
 import org.sintef.jarduino.comm.Serial4JArduino;
 import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
@@ -24,7 +26,7 @@ public class TemperatureGrapher extends JArduino{
 	//Change this to false to graph out raw sensor reading also
 	private boolean onlyDisplayTemperature = true;
 	
-	private AnalogPin analogPin = AnalogPin.A_0;
+	private Pin analogPin = pA0;
 	private short sensorValue;
 	private long counter; 
 	private final int B=3975; 
@@ -55,7 +57,7 @@ public class TemperatureGrapher extends JArduino{
     }
 
     @Override
-    protected void loop() {
+    protected void loop() throws InvalidPinTypeException {
     	dataset =  new XYSeriesCollection();
         // read the analog in value:
         sensorValue = analogRead(analogPin);

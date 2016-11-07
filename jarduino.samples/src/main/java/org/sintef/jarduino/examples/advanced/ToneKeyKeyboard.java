@@ -30,7 +30,9 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import org.sintef.jarduino.DigitalPin;
+import org.sintef.jarduino.InvalidPinTypeException;
 import org.sintef.jarduino.JArduino;
+import org.sintef.jarduino.Pin;
 import org.sintef.jarduino.comm.Serial4JArduino;
 
 public class ToneKeyKeyboard extends JArduino {
@@ -39,7 +41,7 @@ public class ToneKeyKeyboard extends JArduino {
     private JPanel contentPane;
     private JTextField textField;
     //Connect your pieze element to digital pin 8
-    private DigitalPin pin = DigitalPin.PIN_10;
+    private Pin pin = p10;
     private Timer timer;
     private Timeout timeout;
     private JFrame frame;
@@ -104,7 +106,11 @@ public class ToneKeyKeyboard extends JArduino {
         @Override
         public void keyPressed(KeyEvent arg0) {
             //release a current playing tone when a key is pressed
-            noTone(pin);
+            try {
+				noTone(pin);
+			} catch (InvalidPinTypeException e) {
+				e.printStackTrace();
+			}
         }
 
         @Override
@@ -119,7 +125,11 @@ public class ToneKeyKeyboard extends JArduino {
             tone = map(tone, 65, 229, 30, 5000);
             System.out.println(tone);
             //play the newly acquired tone on the Arduino board
-            tone(pin, (short) tone, (short) 0);
+            try {
+				tone(pin, (short) tone, (short) 0);
+			} catch (InvalidPinTypeException e) {
+				e.printStackTrace();
+			}
             //create a new timeout that will end the tone after 1,3 seconds
             if (timeout != null) {
                 timeout.cancel();
@@ -135,7 +145,11 @@ public class ToneKeyKeyboard extends JArduino {
 
         @Override
         public void run() {
-            noTone(pin);
+            try {
+				noTone(pin);
+			} catch (InvalidPinTypeException e) {
+				e.printStackTrace();
+			}
         }
     }
 }

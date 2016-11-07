@@ -17,10 +17,8 @@
  */
 package org.sintef.jarduino.examples.basic;
 
-import org.sintef.jarduino.DigitalPin;
-import org.sintef.jarduino.DigitalState;
+import org.sintef.jarduino.InvalidPinTypeException;
 import org.sintef.jarduino.JArduino;
-import org.sintef.jarduino.PinMode;
 import org.sintef.jarduino.comm.Serial4JArduino;
 /*
 Blink
@@ -36,20 +34,21 @@ public class Blink extends JArduino {
     }
 
     @Override
-    protected void setup() {
+    protected void setup() throws InvalidPinTypeException {
         // initialize the digital pin as an output.
         // Pin 13 has an LED connected on most Arduino boards:
-        pinMode(DigitalPin.PIN_12, PinMode.OUTPUT);
+		pinMode(p12, OUTPUT);
+
     }
 
     @Override
-    protected void loop() {
-        // set the LED on
-        digitalWrite(DigitalPin.PIN_12, DigitalState.HIGH);
+    protected void loop() throws InvalidPinTypeException {
+    	digitalWrite(p12, HIGH); // set the LED on
+		delay(1000); // wait for a second
+        
+        digitalWrite(p12, LOW); // set the LED off
         delay(1000); // wait for a second
-        // set the LED off
-        digitalWrite(DigitalPin.PIN_12, DigitalState.LOW);
-        delay(1000); // wait for a second
+        
     }
 
     public static void main(String[] args) {

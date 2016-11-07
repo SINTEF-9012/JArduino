@@ -24,7 +24,9 @@ import java.util.logging.Logger;
 import org.sintef.jarduino.DigitalPin;
 import org.sintef.jarduino.DigitalState;
 import org.sintef.jarduino.InterruptTrigger;
+import org.sintef.jarduino.InvalidPinTypeException;
 import org.sintef.jarduino.JArduino;
+import org.sintef.jarduino.Pin;
 import org.sintef.jarduino.PinMode;
 import org.sintef.jarduino.InterruptPin;
 
@@ -49,8 +51,8 @@ import org.jivesoftware.smack.packet.Presence;
  */
 public class GTalkAlert extends JArduino {
 
-    private DigitalPin led;
-    private InterruptPin button;
+    private Pin led;
+    private Pin button;
     private String gmailOtherUser;
     private String gmailUser;
     private String gmailPassword;
@@ -61,7 +63,7 @@ public class GTalkAlert extends JArduino {
         super(port);
     }
 
-    public GTalkAlert(String port, String user, String pwd, String otherUser, DigitalPin led, InterruptPin button) {
+    public GTalkAlert(String port, String user, String pwd, String otherUser,  Pin led, Pin button) throws InvalidPinTypeException {
         this(port);
 
         this.led = led;
@@ -101,9 +103,10 @@ public class GTalkAlert extends JArduino {
      * When button is clicked, sends a message to your friend
      *
      * @param interrupt
+     * @throws InvalidPinTypeException 
      */
     @Override
-    protected void receiveInterruptNotification(InterruptPin interrupt) {
+    protected void receiveInterruptNotification(Pin interrupt) throws InvalidPinTypeException {
         System.out.println("Interrupt " + interrupt);
         super.receiveInterruptNotification(interrupt);
         if (interrupt == button) {
@@ -114,24 +117,24 @@ public class GTalkAlert extends JArduino {
         }
     }
 
-    public void turnOffLED() {
-        digitalWrite(led, DigitalState.LOW);
+    public void turnOffLED() throws InvalidPinTypeException {
+        digitalWrite(led, LOW);
         System.out.println("Hopefully, the LED should now be turned OFF");
     }
 
-    public void turnOnLED() {
-        digitalWrite(led, DigitalState.HIGH);
+    public void turnOnLED() throws InvalidPinTypeException {
+        digitalWrite(led, HIGH);
         System.out.println("Hopefully, the LED should now be turned ON");
     }
 
-    public void turnOnLEDfor(long delay) {
+    public void turnOnLEDfor(long delay) throws InvalidPinTypeException {
         turnOnLED();
         timer.schedule(new Timeout(), delay);
     }
 
     @Override
-    protected void setup() {
-        pinMode(led, PinMode.OUTPUT);
+    protected void setup() throws InvalidPinTypeException {
+        pinMode(led, OUTPUT);
     }
 
     @Override
@@ -142,7 +145,11 @@ public class GTalkAlert extends JArduino {
 
         @Override
         public void run() {
-            turnOffLED();
+            try {
+				turnOffLED();
+			} catch (InvalidPinTypeException e) {
+				e.printStackTrace();
+			}
         }
     }
 
@@ -154,7 +161,11 @@ public class GTalkAlert extends JArduino {
             if (p instanceof Message) {
                 Message msg = (Message) p;
                 System.out.println(msg.getFrom() + ": " + msg.getBody());
-                turnOnLEDfor(5000);
+                try {
+					turnOnLEDfor(5000);
+				} catch (InvalidPinTypeException e) {
+					e.printStackTrace();
+				}
             }
         }
         
@@ -166,15 +177,16 @@ public class GTalkAlert extends JArduino {
      * Arduino board. Disclaimer: We are not responsible for any troubles with
      * your google account. The connection to your Google account is entirely
      * delegated to the Smack API
+     * @throws InvalidPinTypeException 
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InvalidPinTypeException {
         String otherName = "your.friend@gmail.com";
         String userName = "first.last@gmail.com";
         String password = "yourPassword";
         String serialPort = "COM4";
 
-        DigitalPin led = DigitalPin.PIN_9;
-        InterruptPin button = InterruptPin.PIN_2_INT0;
+        Pin led = Pin.PIN_9;
+        Pin button = Pin.PIN_2;
 
         JArduino arduino = new GTalkAlert(serialPort, userName, password, otherName, led, button);
         arduino.runArduinoProcess();
