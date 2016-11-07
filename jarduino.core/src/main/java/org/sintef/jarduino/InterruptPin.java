@@ -21,8 +21,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum InterruptPin {
-	PIN_2_INT0((byte)0),
-	PIN_3_INT1((byte)1);
+	PIN_2_INT0((byte)2),
+	PIN_3_INT1((byte)3);
 
 	private final byte value;
 	
@@ -38,8 +38,8 @@ public enum InterruptPin {
 	
 	static {
 		map = new HashMap<Byte, InterruptPin>();
-		map.put((byte)0, InterruptPin.PIN_2_INT0);
-		map.put((byte)1, InterruptPin.PIN_3_INT1);
+		map.put((byte)2, InterruptPin.PIN_2_INT0);
+		map.put((byte)3, InterruptPin.PIN_3_INT1);
 	}
 	
 	public static InterruptPin fromValue(byte b) {
