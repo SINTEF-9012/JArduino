@@ -114,14 +114,6 @@ public abstract class AbstractJArduino {
         tone(DigitalPin.fromValue(pin.getValue()), frequency, duration);
     }
     
-    public void tone(DigitalPin pin, Note note, short duration) {
-    	tone(pin, note.getFrequency(), duration);
-    }
-    
-    public void tone(Pin pin, Note note, short duration) throws InvalidPinTypeException {
-    	tone(pin, note.getFrequency(), duration);
-    }
-    
     public void noTone(DigitalPin pin) {
         // Create message using the factory
         FixedSizePacket p = JArduinoProtocol.createNoTone(pin);
@@ -337,7 +329,8 @@ public abstract class AbstractJArduino {
      * Implement this method to handle the incoming message interruptNotification
      */
     protected abstract void receiveInterruptNotification(InterruptPin interrupt);
-
+    protected abstract void receiveInterruptNotification(Pin interrupt) throws InvalidPinTypeException;
+    
     private class JArduinoDriverMessageHandler extends JArduinoMessageHandler implements JArduinoObserver {
 
         @Override
@@ -413,4 +406,6 @@ public abstract class AbstractJArduino {
             receiveInterruptNotification(msg.getInterrupt());
         }
     }
+
+	
 }

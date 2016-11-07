@@ -35,19 +35,19 @@ public class BlinkEthernet extends JArduino {
     }
 
     @Override
-    protected void setup() {
+    protected void setup() throws InvalidPinTypeException {
         // initialize the digital pin as an output.
         // Pin 13 has an LED connected on most Arduino boards:
-        pinMode(DigitalPin.PIN_9, PinMode.OUTPUT);
+		pinMode(p9, OUTPUT);
+
     }
 
     @Override
-    protected void loop() {
-        // set the LED on
-        digitalWrite(DigitalPin.PIN_9, DigitalState.HIGH);
-        delay(1000); // wait for a second
-        // set the LED off
-        digitalWrite(DigitalPin.PIN_9, DigitalState.LOW);
+    protected void loop() throws InvalidPinTypeException {
+    	digitalWrite(p9, HIGH); // set the LED on
+		delay(1000); // wait for a second
+        
+        digitalWrite(p9, LOW); // set the LED off
         delay(1000); // wait for a second
     }
 

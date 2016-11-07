@@ -17,16 +17,17 @@
  */
 package org.sintef.jarduino.examples.digital;
 
-import org.sintef.jarduino.DigitalPin;
+import org.sintef.jarduino.InvalidPinTypeException;
 import org.sintef.jarduino.JArduino;
+import org.sintef.jarduino.Pin;
 import org.sintef.jarduino.Pitches;
 import org.sintef.jarduino.comm.Serial4JArduino;
 
 public class ToneMultiple extends JArduino implements Pitches {
 
-    private DigitalPin speakerOne = DigitalPin.PIN_6;
-    private DigitalPin speakerTwo = DigitalPin.PIN_7;
-    private DigitalPin speakerThree = DigitalPin.PIN_8;
+    private Pin speakerOne = p6;
+    private Pin speakerTwo = p7;
+    private Pin speakerThree = p8;
 
     public ToneMultiple(String port) {
         super(port);
@@ -37,10 +38,10 @@ public class ToneMultiple extends JArduino implements Pitches {
     }
 
     @Override
-    protected void loop() {
+    protected void loop() throws InvalidPinTypeException {
         // turn off tone function for pin 8:
-        noTone(speakerThree);
-        // play a note on pin 6 for 200 ms:
+    	noTone(speakerThree);
+		// play a note on pin 6 for 200 ms:
         tone(speakerOne, (short) 440, (short) 200);
         delay(200);
 
@@ -55,6 +56,7 @@ public class ToneMultiple extends JArduino implements Pitches {
         // play a note on pin 8 for 500 ms:
         tone(speakerThree, (short) 523, (short) 300);
         delay(300);
+        
     }
 
     public static void main(String[] args) {

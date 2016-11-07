@@ -17,7 +17,7 @@
  */
 package org.sintef.jarduino.examples.digital;
 
-import org.sintef.jarduino.DigitalPin;
+import org.sintef.jarduino.InvalidPinTypeException;
 import org.sintef.jarduino.JArduino;
 import org.sintef.jarduino.Pitches;
 import org.sintef.jarduino.comm.Serial4JArduino;
@@ -38,13 +38,13 @@ public class ToneMelody extends JArduino implements Pitches {
     }
 
     @Override
-    protected void loop() {
+    protected void loop() throws InvalidPinTypeException {
         for (int thisNote = 0; thisNote < 8; thisNote++) {
             // to calculate the note duration, take one second 
             // divided by the note type.
             //e.g. quarter note = 1000 / 4, eighth note = 1000/8, etc.
             short noteDuration = (short) (1000 / noteDurations[thisNote]);
-            tone(DigitalPin.A_0, melody[thisNote], noteDuration);
+            tone(pA0, melody[thisNote], noteDuration);
 
             // to distinguish the notes, set a minimum time between them.
             // the note's duration + 30% seems to work well:

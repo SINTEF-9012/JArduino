@@ -23,7 +23,9 @@ import java.util.TimerTask;
 
 import org.sintef.jarduino.DigitalPin;
 import org.sintef.jarduino.DigitalState;
+import org.sintef.jarduino.InvalidPinTypeException;
 import org.sintef.jarduino.JArduino;
+import org.sintef.jarduino.Pin;
 import org.sintef.jarduino.PinMode;
 
 import twitter4j.Status;
@@ -44,7 +46,7 @@ import twitter4j.auth.AccessToken;
  */
 public class Twitter4Arduino extends JArduino{
 	
-	private DigitalPin led = DigitalPin.PIN_13;
+	private Pin led = p13;
 	private Twitter twitter;
 	private Status last;
 	private Timer timer;
@@ -65,19 +67,19 @@ public class Twitter4Arduino extends JArduino{
 	/*
 	 * Turns off the LED
 	 */
-	public void turnOffLED() {
+	public void turnOffLED() throws InvalidPinTypeException {
 		digitalWrite(led, DigitalState.LOW);
 	}	
 	
 	@Override
-	public void setup() {	
+	public void setup() throws InvalidPinTypeException {	
 		//connect pin 13 to LED
 		pinMode(led, PinMode.OUTPUT);
 		turnOffLED(); //turn it of in case it is on after running another application
 	}
 
 	@Override
-	protected void loop() {
+	protected void loop() throws InvalidPinTypeException {
 		List<Status> statuses;
 		try {
 			//Get status updates from your tweet feed
@@ -93,7 +95,7 @@ public class Twitter4Arduino extends JArduino{
 							status.getText()); 	
 					last = status;
 					//light up the Arduino
-					digitalWrite(led, DigitalState.HIGH);
+					digitalWrite(led, HIGH);
 					timer.schedule(new Timeout(this), 10000);
 				}
 			}
@@ -131,7 +133,11 @@ public class Twitter4Arduino extends JArduino{
         
 		@Override
 		public void run() {
-			t4a.turnOffLED();
+			try {
+				t4a.turnOffLED();
+			} catch (InvalidPinTypeException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }
