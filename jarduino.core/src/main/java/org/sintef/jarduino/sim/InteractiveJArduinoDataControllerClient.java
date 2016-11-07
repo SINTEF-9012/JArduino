@@ -30,10 +30,7 @@ import java.util.Date;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-
-
-
-
+@SuppressWarnings({"unused"})
 public class InteractiveJArduinoDataControllerClient implements ActionListener, JArduinoObserver, JArduinoClientSubject {
 
 

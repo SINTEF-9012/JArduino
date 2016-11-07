@@ -17,6 +17,8 @@ import java.util.Set;
  * Date: 17/04/13
  * Time: 20:40
  */
+
+@SuppressWarnings({"deprecation", "unused"})
 public class Udp4JArduino implements JArduinoClientObserver, JArduinoSubject, Runnable {
 
     public static final byte START_BYTE = 0x12;
@@ -42,7 +44,7 @@ public class Udp4JArduino implements JArduinoClientObserver, JArduinoSubject, Ru
         reader.start();
     }
 
-    public void stop() {
+	public void stop() {
         reader.stop();
     }
 
@@ -84,7 +86,7 @@ public class Udp4JArduino implements JArduinoClientObserver, JArduinoSubject, Ru
     public static final int RCV_WAIT = 0;
     public static final int RCV_MSG = 1;
     public static final int RCV_ESC = 2;
-    private byte[] buffer = new byte[256];
+	private byte[] buffer = new byte[256];
     protected int buffer_idx = 0;
     protected int state = RCV_WAIT;
 
