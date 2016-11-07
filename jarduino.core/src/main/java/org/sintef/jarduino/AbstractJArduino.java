@@ -23,12 +23,13 @@ import org.sintef.jarduino.observer.JArduinoClientObserver;
 import org.sintef.jarduino.observer.JArduinoObserver;
 import org.sintef.jarduino.observer.JArduinoSubject;
 
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public abstract class AbstractJArduino {
 
     protected JArduinoDriverMessageHandler messageHandler;
     protected JArduinoClientObserver serial;
 
-    public AbstractJArduino(String ID, JArduinoCom com, ProtocolConfiguration conf) {
+	public AbstractJArduino(String ID, JArduinoCom com, ProtocolConfiguration conf) {
         try {
             if (com.equals(JArduinoCom.Ethernet)) {
                 //conf must be null as there is no configuration needed
@@ -38,7 +39,7 @@ public abstract class AbstractJArduino {
             }
             if (com.equals(JArduinoCom.Serial)) {
                 //conf must be null as there is no configuration needed
-                Class clazz = this.getClass().getClassLoader().loadClass("org.sintef.jarduino.comm.Serial4JArduino");
+				Class clazz = this.getClass().getClassLoader().loadClass("org.sintef.jarduino.comm.Serial4JArduino");
                 serial = (JArduinoClientObserver) clazz.getConstructor(String.class, this.getClass().getClassLoader().loadClass("org.sintef.jarduino.comm.SerialConfiguration")).newInstance(ID,conf);
                 messageHandler = new JArduinoDriverMessageHandler();
                 ((JArduinoSubject) serial).register(messageHandler);

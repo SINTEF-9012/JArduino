@@ -53,11 +53,11 @@ public abstract class JArduino extends AbstractJArduino {
         super(id, JArduinoCom.Serial, prot); //Serial by default
     }
 	
-    private final DigitalState
+    protected final DigitalState
     		LOW = DigitalState.LOW, 
     		HIGH = DigitalState.HIGH;
     
-	private final Pin
+	protected final Pin
     	p0 = Pin.PIN_0,
 		p1 = Pin.PIN_1,
 	    p2 = Pin.PIN_2,

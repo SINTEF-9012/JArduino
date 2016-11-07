@@ -43,6 +43,7 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
 
+@SuppressWarnings({ "rawtypes", "unused", "unchecked"})
 public class InteractiveJArduinoDataGUIClient implements ActionListener {
 	
 	private static boolean init = false;
