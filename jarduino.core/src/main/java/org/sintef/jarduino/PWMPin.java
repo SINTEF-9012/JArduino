@@ -20,6 +20,11 @@ package org.sintef.jarduino;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Pin using Pulse Width Modulation (PWM) to mimic analog output. It creates a square wave with different proportions
+ * of ON (Pulse width) and OFF to simulate simulate steady voltages ranging from full on (5 Volts) and off (0 Volts).
+ * This allows controlling the brightness of an LED.
+ */
 public enum PWMPin {
 	PWM_PIN_3((byte)3),
 	PWM_PIN_5((byte)5),
@@ -34,6 +39,10 @@ public enum PWMPin {
 		this.value = value;
 	}
 	
+	/** 
+	 * returns the surrent value of the Pin, ranging from (byte)0 - OFF to (byte)255 - ON
+	 *
+	 */
 	public byte getValue(){
 		return value;
 	}
