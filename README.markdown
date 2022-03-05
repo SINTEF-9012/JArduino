@@ -7,7 +7,7 @@ If you are more into the code, just try it out for real!
 	$ git clone https://github.com/SINTEF-9012/JArduino.git
 
 
-##Serial usage
+## Serial usage
 
 Before using JArduino, please make sure your Arduino board contains the JArduino firmware:
 
