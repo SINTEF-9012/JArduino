@@ -7,7 +7,7 @@ If you are more into the code, just try it out for real!
 	$ git clone https://github.com/SINTEF-9012/JArduino.git
 
 
-##Serial usage
+## Serial usage
 
 Before using JArduino, please make sure your Arduino board contains the JArduino firmware:
 
@@ -29,7 +29,7 @@ To run some examples without IDE
 Replace "org.sintef.jarduino.gui.JArduinoGUI" with your own main class
 
 
-Please read our [2-minute tutorial] (https://github.com/SINTEF-9012/JArduino/wiki/2-Minute-Tutorial)
+Please read our [2-minute tutorial](https://github.com/SINTEF-9012/JArduino/wiki/2-Minute-Tutorial)
 
 
 ## Ethernet usage
@@ -43,10 +43,10 @@ Please read our [2-minute tutorial] (https://github.com/SINTEF-9012/JArduino/wik
 
 > JArduinoEthernet does not need  JArduino.serial maven dependency, don't forget to remove it if you want to **use JArduino from an Android application** for instance.
 
-You Can can now use the JArduino constructor to configure the IP of your device. Don't forget to set the communication module to ethernet:
+You can now use the JArduino constructor to configure the IP of your device. Don't forget to set the communication module to ethernet:
 
 ```java
-JArduino arduino = new BlinkEthernet(ip, JArduinoCom.Ethernet)
+JArduino arduino = new BlinkEthernet(ip, JArduinoCom.Ethernet);
 ```
 
 To run a sample using Ethernet:
